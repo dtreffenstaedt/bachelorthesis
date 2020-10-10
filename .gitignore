@@ -1,0 +1,7 @@
+*
+*/
+
+!.gitignore
+!thesis.tex
+!jluthesis.cls
+!data/*
