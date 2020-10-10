@@ -19,7 +19,6 @@
 \makeglossaries
 \RequirePackage{amsmath} % mathematical function
 \RequirePackage{amssymb} % mathematical symbols
-%\RequirePackage{units} % useful tools for showing units
 
 \RequirePackage{xifthen}
 
@@ -102,61 +101,6 @@
 % +++ custom commands
 \newcommand{\todo}[1]{\textbf{\textcolor{red}{TODO: #1}}}
 \newcommand{\note}[1]{\textbf{\textcolor{red}{NOTE: #1}}}
-
- \pgfplotsset{
-	trig format plots=rad,
-	%
-	% create a style to scale x axis values by \pi and
-	% remove the corresponding label
-	x axis in pi/.style={
-		scaled x ticks={real:\PI},
-		xtick scale label code/.code={},
-		% in case you want to set an explicit tick distance
-		xtick distance=pi/#1,
-		% add code here for formatting the `xticklabels'
-		% I configured exceptions for \pm\pi where no number in front
-		% of these are shown and for fractional values these should be
-		% shown as fractions
-		xticklabel={%
-			% to avoid some mess with TeX precision, first
-			% round the `\tick' value to one digit after the comma
-			\pgfmathparse{round(100*\tick)/100}
-			\ifdim \pgfmathresult pt = 1pt
-				\strut$\pi$%
-			\else\ifdim \pgfmathresult pt = 0pt
-				\strut$0$%
-			\else\ifdim \pgfmathresult pt = -1pt
-				\strut$-\pi$%
-			\else
-			% depending on whether the resulting number is an integer
-			% show it as integer only, otherwise use the style given
-			% in `xticklabel style'
-			\pgfmathifisint{\pgfmathresult}{%
-				\strut$\pgfmathprintnumber[int detect]{\pgfmathresult}\pi$%
-			}{%
-				% show \pi next to the frac
-				\strut$\pgfmathprintnumber{\pgfmathresult}\pi$%
-				%                        % show \pi in the numerator of the frac
-				%                        \pgfmathparse{\pgfmathresult*#1}%
-				%                        \strut$\frac{\pgfmathprintnumber[int detect]{\pgfmathresult}\pi}{#1}$%
-			}
-			\fi\fi\fi
-		},
-		% set number plotting to frac style
-		xticklabel style={
-			/pgf/number format/.cd,
-			frac,
-			frac whole=false,
-			%                    % if you prefer to have the same denominator value everywhere
-			%                    frac denom=#1,
-		},
-	},
-}
-% define precision of \pi
-% this is set here to the value of \pgfmathpi
-
-\pgfmathsetmacro{\PI}{pi}
-
 % --- custom commands
 
 % +++ header and footer definitions
@@ -164,7 +108,6 @@
 \pagestyle{scrheadings}
 \clearpairofpagestyles
 \ihead{\@shorttitle}
-%\ohead{\includegraphics[width=1.5cm]{\@headpicture}}
 \ofoot*{\pagemark}
 \ifoot{\@shortauthor}
 
@@ -283,7 +226,7 @@
 	\ifx\@abstr\undefined
 	\else
 		\iflanguage{english}{\section*{Abstract}\addcontentsline{toc}{section}{Abstract}}{}
-		\iflanguage{ngerman}{\section*{Kurzbeschreibung}\addcontentsline{toc}{section}{Kurzbeschreibung}}{}
+		\iflanguage{ngerman}{\section*{Abstract}\addcontentsline{toc}{section}{Abstract}}{}
 		\begin{abstract}#1\end{abstract}
 	\fi
 }
@@ -315,8 +258,8 @@
 	\else
 		\iflanguage{english}{\printbibliography[heading=bibintoc,title={References}]}{}
 		\iflanguage{ngerman}{\printbibliography[heading=bibintoc,title={Referenzen}]}{}
-%		\nocite{*}
-%        \printbibliography
+		\nocite{*}
+        \printbibliography
 	\fi
 }
 \makeatother
