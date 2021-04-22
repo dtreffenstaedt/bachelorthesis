@@ -25,7 +25,7 @@
 \RequirePackage{chngcntr} % for per- chapter counters
 \RequirePackage[margin=3cm]{geometry}
 \RequirePackage[headsepline,footsepline]{scrlayer-scrpage}
-\RequirePackage[style=verbose-trad2,defernumbers=true, backend=biber]{biblatex}
+\RequirePackage[backend=biber]{biblatex}
 
 \RequirePackage{pgfplots}
 \usetikzlibrary{arrows,patterns} % which tikz libraries to use
@@ -260,8 +260,6 @@
 	\else
 		\iflanguage{english}{\printbibliography[heading=bibintoc,title={References}]}{}
 		\iflanguage{ngerman}{\printbibliography[heading=bibintoc,title={Referenzen}]}{}
-		\nocite{*}
-        \printbibliography
 	\fi
 }
 \makeatother
