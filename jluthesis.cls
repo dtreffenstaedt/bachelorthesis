@@ -1,6 +1,6 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{jluthesis}[JLU Thesis Klasse]
- 
+\ProvidesClass{jluthesis}[JLU Thesis document class]
+
 \LoadClass[a4paper,11pt,BCOR=-10mm]{scrartcl}
 
 \RequirePackage[utf8]{inputenc} % encoding
@@ -33,8 +33,6 @@
 \listfiles
 \urlstyle{same} % Url font the same as rest of the text
 \RequirePackage{wrapfig}
-%\RequirePackage{helvet} % font definition
-%\renewcommand{\familydefault}{\sfdefault} % font definition
 
 \RequirePackage{hyperref}
 \hypersetup{
@@ -96,8 +94,6 @@
 \counterwithin{equation}{section}
 % +++ redefine counters
 
-%\newcommand{\testa}[1]{\ohead{\includegraphics[width=1.5cm]{#1}}}
-%\newcommand{\testb}[1]{\ohead{\includegraphics[width=1.5cm]{#1}}}
 % +++ custom commands
 \newcommand{\todo}[1]{\textbf{\textcolor{red}{TODO: #1}}}
 \newcommand{\note}[1]{\textbf{\textcolor{red}{NOTE: #1}}}
@@ -142,14 +138,14 @@
 		\vspace{2cm}
 		\ifx\@author\empty
 		\else
-			\begin{flushleft}
-				\iflanguage{english}{\large\itshape \textbf{Author:}\\}{}
-				\iflanguage{ngerman}{\large\itshape \textbf{Autor:}\\}{}
-				\hspace*{1cm}
-				\begin{minipage}{0.5\textwidth}
-					{\large\itshape \@author}
-				\end{minipage}
-			\end{flushleft}
+		\begin{flushleft}
+			\iflanguage{english}{\large\itshape \textbf{Author:}\\}{}
+			\iflanguage{ngerman}{\large\itshape \textbf{Autor:}\\}{}
+			\hspace*{1cm}
+			\begin{minipage}{0.5\textwidth}
+				{\large\itshape \@author}
+			\end{minipage}
+		\end{flushleft}
 		\fi
 		\ifx\@matnr\empty
 		\else
@@ -187,49 +183,49 @@
 \makeatletter
 \newcommand{\makebeginning}[1]{%
 	\ifx\@english\undefined
-		\selectlanguage{ngerman}
-		\renewcommand{\indexname}{Stichwortverzeichnis}
+	\selectlanguage{ngerman}
+	\renewcommand{\indexname}{Stichwortverzeichnis}
 	\else
-		\selectlanguage{english}
-		\renewcommand{\contentsname}{Table of Contents}
+	\selectlanguage{english}
+	\renewcommand{\contentsname}{Table of Contents}
 	\fi
-
+	
 	\maketitle % Titlepage
-
+	
 	\ifx\@toc\undefined
-		\renewcommand{\numberline}[1]{}
-		\renewcommand{\@seccntformat}[1]{}
+	\renewcommand{\numberline}[1]{}
+	\renewcommand{\@seccntformat}[1]{}
 	\else
-		\thispagestyle{plain}
-		\tableofcontents
-		\newpage
+	\thispagestyle{plain}
+	\tableofcontents
+	\newpage
 	\fi
-
+	
 	\ifx\@lof\undefined
 	\else
-		\thispagestyle{plain}
-		\iflanguage{english}{\addcontentsline{toc}{section}{List of Figures}}{}
-		\iflanguage{ngerman}{\addcontentsline{toc}{section}{Abbildungsverzeichnis}}{}
-		\listoffigures
-		\newpage
+	\thispagestyle{plain}
+	\iflanguage{english}{\addcontentsline{toc}{section}{List of Figures}}{}
+	\iflanguage{ngerman}{\addcontentsline{toc}{section}{Abbildungsverzeichnis}}{}
+	\listoffigures
+	\newpage
 	\fi
-
+	
 	\ifx\@lot\undefined
 	\else
-		\thispagestyle{plain}
-		\iflanguage{english}{\addcontentsline{toc}{section}{List of Tables}}{}
-		\iflanguage{ngerman}{\addcontentsline{toc}{section}{Tabellenverzeichnis}}{}
-		\listoftables
-		\newpage
+	\thispagestyle{plain}
+	\iflanguage{english}{\addcontentsline{toc}{section}{List of Tables}}{}
+	\iflanguage{ngerman}{\addcontentsline{toc}{section}{Tabellenverzeichnis}}{}
+	\listoftables
+	\newpage
 	\fi
-
+	
 	\pagenumbering{arabic} % start main pages Numbering
-
+	
 	\ifx\@abstr\undefined
 	\else
-		\iflanguage{english}{\section*{Abstract}\addcontentsline{toc}{section}{Abstract}}{}
-		\iflanguage{ngerman}{\section*{Abstract}\addcontentsline{toc}{section}{Abstract}}{}
-		\begin{abstract}#1\end{abstract}
+	\iflanguage{english}{\section*{Abstract}\addcontentsline{toc}{section}{Abstract}}{}
+	\iflanguage{ngerman}{\section*{Kurzbeschreibung}\addcontentsline{toc}{section}{Abstract}}{}
+	\begin{abstract}#1\end{abstract}
 	\fi
 }
 \makeatother
@@ -242,24 +238,24 @@
 	\pagenumbering{Roman}
 	\ifx\@gloss\undefined
 	\else
-		\iflanguage{english}{\printglossary[title=Glossary, toctitle=Glossary]}{}
-		\iflanguage{ngerman}{\printglossary[title=Glossar, toctitle=Glossar]}{}
+	\iflanguage{english}{\printglossary[title=Glossary, toctitle=Glossary]}{}
+	\iflanguage{ngerman}{\printglossary[title=Glossar, toctitle=Glossar]}{}
 	\fi
 	\ifx\@acro\undefined
 	\else
-		\iflanguage{english}{\printglossary[type=\acronymtype,title=Acronyms, toctitle=Acronyms]}{}
-		\iflanguage{ngerman}{\printglossary[type=\acronymtype,title=Abkürzungen, toctitle=Abkürzungen]}{}
+	\iflanguage{english}{\printglossary[type=\acronymtype,title=Acronyms, toctitle=Acronyms]}{}
+	\iflanguage{ngerman}{\printglossary[type=\acronymtype,title=Abkürzungen, toctitle=Abkürzungen]}{}
 	\fi
 	\ifx\@myindex\undefined
 	\else
-		\iflanguage{english}{\addcontentsline{toc}{section}{Index}}{}
-		\iflanguage{ngerman}{\addcontentsline{toc}{section}{Stichwortverzeichnis}}{}
-		\printindex
+	\iflanguage{english}{\addcontentsline{toc}{section}{Index}}{}
+	\iflanguage{ngerman}{\addcontentsline{toc}{section}{Stichwortverzeichnis}}{}
+	\printindex
 	\fi
 	\ifx\@los\undefined
 	\else
-		\iflanguage{english}{\printbibliography[heading=bibintoc,title={References}]}{}
-		\iflanguage{ngerman}{\printbibliography[heading=bibintoc,title={Referenzen}]}{}
+	\iflanguage{english}{\printbibliography[heading=bibintoc,title={References}]}{}
+	\iflanguage{ngerman}{\printbibliography[heading=bibintoc,title={Referenzen}]}{}
 	\fi
 }
 \makeatother
