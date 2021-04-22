@@ -33,8 +33,8 @@
 \listfiles
 \urlstyle{same} % Url font the same as rest of the text
 \RequirePackage{wrapfig}
-\RequirePackage{helvet} % font definition
-\renewcommand{\familydefault}{\sfdefault} % font definition
+%\RequirePackage{helvet} % font definition
+%\renewcommand{\familydefault}{\sfdefault} % font definition
 
 \RequirePackage{hyperref}
 \hypersetup{
@@ -101,6 +101,8 @@
 % +++ custom commands
 \newcommand{\todo}[1]{\textbf{\textcolor{red}{TODO: #1}}}
 \newcommand{\note}[1]{\textbf{\textcolor{red}{NOTE: #1}}}
+\newcommand{\sn}[2]{\ensuremath{{#1}{\cdot}10^{#2}}}
+\newcommand{\snsi}[3]{\ensuremath{{#1}{\cdot}10^{#2}\,\si{#3}}}
 % --- custom commands
 
 % +++ header and footer definitions

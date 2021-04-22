@@ -1,19 +1,37 @@
-\documentclass[abstract,toc,english]{jluthesis}
+\documentclass[abstract,toc,english,glossary]{jluthesis}
 
+\usepackage{siunitx}
 
-\title[Thesis]{Bachelor Thesis}
+\input{data/glossaries.tex}
+
+\topic{Realtime data analysis of distributed muon detector network}
+\title[Bachlor Thesis]{Bachelor Thesis}
 \author[Daniel Treffenstädt]{Daniel J.S. Treffenstädt}
 \matnr{6067797}
-%\supervisor{Dr. Hans-Georg Zaunick}
+\supervisor{Prof. Dr. Kai-Thomas Brinkmann\\Dr. Hans-Georg Zaunick}
+
+\bibliography{data/thesis.bib}
 
 
 \begin{document}
 \makebeginning{
-This is the abstract
+	The scope of this thesis is the simulation of 
 }
 
-\section{First header}
-this is a test.
+\section{Extensive air showers}
+\acrfull{eas} on earth are caused by particle interaction of \acrfull{uhecr} with the atmosphere. This \acrshort{uhecr} consists of particles with energies up to $10^{20}$\,eV kinetic energy. These particles are \glspl{hadron}, photons or even \glspl{nucleus}. For the purpose of this thesis mostly protons will be assumed as the primary particle.
+
+\section{Detection methods}
+
+\acrshort{eas} can be detected through a number of methods. One such method is to observe the Cherenkov radiation produced by the primary particle. This radiation occurs since the local speed of light in the visible spectrum is lower than its vacuum speed. Due to the high energy of the primary particle its speed is nearly $1c_0$. This causes an effect comparable to a mach cone for supersonic objects in air and is known as Cherenkow radiation. This radiation is in the UV spectrum and can be observed at the surface of earth for example with an array of sensitive telescopes. One such array is HESS, located in Namibia. \\
+Also detectable is the electromagnetic component of the showers, since its spectrum has a peak in the radio range and this penetrates deeply into the atmosphere. This can be picked up by a range of radio antenna. \\
+Another method is to detect the muonic component. Muons ($\mu$) are elementary particles, often called the heavy sibling of the electron. It also has a charge of $-1$, a spin of $\frac{1}{2}$ but a much higher mass of
+$105.6583755\,\si{MeV/c^2}$. It also only has a mean lifetime of $\snsi{2.1969811}{-6}{s}$. Muons only interact weakly with matter and thus penetrate deeply into the atmosphere. This fact has been used in the past to image large masses such as volcanoes and pyramids by a method called muon tomography.
+
+\section{Detector Network}
+
+\section{Realtime analysis}
+Due to the large number of 
 
 \backmatter
 \end{document}
