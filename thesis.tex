@@ -3,19 +3,19 @@
 \usepackage{siunitx}
 
 \input{data/glossaries.tex}
+\bibliography{data/thesis.bib}
 
-\topic{Realtime data analysis of distributed muon detector network}
-\title[Bachlor Thesis]{Bachelor Thesis}
+\topic{Real-time data analysis of distributed muon detector network}
+\title[Bachelor Thesis]{Bachelor Thesis}
 \author[Daniel Treffenstädt]{Daniel J.S. Treffenstädt}
 \matnr{6067797}
 \supervisor{Prof. Dr. Kai-Thomas Brinkmann\\Dr. Hans-Georg Zaunick}
 
-\bibliography{data/thesis.bib}
 
 
 \begin{document}
 \makebeginning{
-	The scope of this thesis is the simulation of 
+	This thesis attempts to create a real-time analysis of coincidences from timestamped detection events through a network of scintillator detectors. The goal thereby is to create an efficient way to calculate coincidences between all detector stations and hopefully identify cosmic air shower events. Ultimately this could lead to the reconstruction of primary cosmic particles which caused the events.
 }
 
 \section{Extensive air showers}
@@ -29,9 +29,20 @@ Another method is to detect the muonic component. Muons ($\mu$) are elementary p
 $105.6583755\,\si{MeV/c^2}$. It also only has a mean lifetime of $\snsi{2.1969811}{-6}{s}$. Muons only interact weakly with matter and thus penetrate deeply into the atmosphere. This fact has been used in the past to image large masses such as volcanoes and pyramids by a method called muon tomography.
 
 \section{Detector Network}
+The detector network is made up of a number of low-cost scintillator detectors. Each detector consists of a scintillator with \acrfull{sipm} assembly, an interface board with \acrfull{adc} and a RaspberryPi minicomputer. The interface board analyses signals from the \acrshort{sipm}, retrieves the current timestamp and passes this timestamped event along to a software running on the RaspberryPi minicomputer which sends it to a server. Each timestamped event is thus written to a central database where it can be further analysed at a later time. Due to the number of detectors and their respective rate of few Hz, a large number of events is writen to the database. This causes a large strain on the server infrastructure when running post-analysis programs since they need to handle large amounts of data in a short period of time. Since this is sub-optimal, a realtime solution which performs as much analysis and pre-filtering as possible in order to reduce the runtime impact of the analysis is preferable.
 
-\section{Realtime analysis}
-Due to the large number of 
+\section{Real-time analysis}
+\subsection{Coincidence criteria}
+A sturdy criterium to define a coincidence has to be found. Initially the criterium was defined as the $\Delta{t}$ of two events being lower than $100\,\mu\text{s}$, which corresponds to a maximum possible detector distance of $29.97\,\text{km}$. Since in reality the maximum coincidence interval is dependent on the actual detector distance and is limited by the flight distance of a muon, this criterium must be improved upon. A first approach thereby lies in calculating the distance between the detector pair belonging to the coincidence event which is to be analysed. This is implemented as the euclidean distance derived from the detector coordinates. Therefore the WGS84 earth coordinate model has been implemented to be able to convert a given pair of geodetic coordinates to relative carthesian coordinates, specifically in the \acrfull{enu} system. The WGS84 model thereby approximates the shape of earth as an oblate spheroid. Given the straight line distance, the time of flight given the speed of light in vacuum $c_0$ can be taken as a first approximation for the expected maximum coincidence window.
+
+This value however still needs to be refined in two ways. firstly, a minimum value has to be set due to limitations of the possible time resolution of the timestamping of each event and a not well understood per-detector timing offset on the order of magnitude of few tens of ns. This is especially critical in the case of detectors which are close together, since their calculated time of flight is only few ns, and thus would cut off a significant number of coincidence events. In order to mitigate this, a minimum coincidence window of $150\,\text{ns}$ width is defined. This value is chosen to reliably capture all coincidence events for even the closest detector pairs.
+
+A maximum upper coincidence window width has to be defined too, though this requires a more in depth analysis. Following influences have to be considered:
+\begin{itemize}
+	\item maximum expected zenith angle of muons
+	\item maximum flight distance for a muon of maximum expected energy
+	\item Muon flux cutoff value
+\end{itemize}
 
 \backmatter
 \end{document}
