@@ -1,4 +1,4 @@
-\documentclass[abstract,toc,los,english]{jluthesis}
+\documentclass[abstract,toc,los,english, glossaries]{jluthesis}
 
 \usepackage{siunitx}
 
@@ -43,6 +43,34 @@ A maximum upper coincidence window width has to be defined too, though this requ
 	\item maximum flight distance for a muon of maximum expected energy
 	\item Muon flux cutoff value
 \end{itemize}
+\subsubsection*{Zenith angle}
+The muon flux after the zenith angle can be described by \todo{function for distribution} distribution\cite{muonenergyspectrum} which can be approximated by a $\cos^2$ function. A cutoff of relative intensity of $1\,\%$ is chosen for the maximum zenith angle which leads to an angle of $\theta_{max} = \arccos\left(\sqrt{1\,\%}\right) = 84\,^\circ$.
+\subsubsection*{Energy cutoff}
+\subsubsection*{Muon Flux cutoff}
 The muon flux cutoff value is chosen so that the frequency of the muons which are lost is below a threshold of $1\,\frac{1}{\text{a}}$. This frequency is determined through the muon spectrum\cite{muonenergyspectrum} at a zenith angle of $\theta = 0^{\circ}$. 
+\subsection{Coincidence and plausability determination}
+In order to determine coincidences, each event needs to be checked against all other events which are currently in the event buffer. To do this, the 
+\section{Program layout}
+The path of an event in the program is shown in figure \ref{fig:programlayout}. The source receives the event data and passes it on to the Station supervision class. It supervises the runtime data of each detector station and classifies it into reliability states. The specific criteria are described in the flowchart in figure \todo{make flowchart}.
+\begin{figure}
+	\centering
+	\begin{tikzpicture}
+		\draw (-0.5,0) rectangle++(3,1) ++ (-1.5,-0.5) node {Event Source} ++ (0,-0.5) coordinate(esourceout);
+		\draw (-1,-2) rectangle++(4,1) ++ (-2,-0.5) node {Station supervision} ++ (0,0.5) coordinate(stationsin) ++ (0,-1) coordinate(stationsout);
+		\draw (-1,-4) rectangle++(4,1) ++ (-2,-0.5) node {Coincindence Filter} ++ (0,0.5) coordinate(coincfin) ++ (0,-1) coordinate(coincfout) ++ (-2,0.5) coordinate(coincfleft);
+		\draw (-1.5,-6) rectangle++(5,1) ++ (-2.5,-0.5) node {Coincindence Refinement} ++ (0,0.5) coordinate(coincrin) ++ (0,-1) coordinate(coincrout);
+		\draw (0,-8) rectangle++(2,1) ++ (-1,-0.5) node {Event Sink} ++ (0,0.5) coordinate(esinkin);
+		
+		\draw (-8,-4) rectangle++(5,1) ++ (-2.5,-0.5) node {Coincindence Criterium} ++ (2.5,0) coordinate(coinccin);
+		
+		\draw[->, >=latex] (esourceout) -- (stationsin);
+		\draw[->, >=latex] (stationsout) -- (coincfin);
+		\draw[->, >=latex] (coincfout) -- (coincrin);
+		\draw[->, >=latex] (coincrout) -- (esinkin);
+		\draw[<->, >=latex] (coincfleft) -- (coinccin);
+	\end{tikzpicture}
+	\caption{Program layout}
+	\label{fig:programlayout}
+\end{figure}
 \backmatter
 \end{document}
