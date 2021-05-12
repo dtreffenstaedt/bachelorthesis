@@ -1,4 +1,5 @@
-\documentclass[abstract,toc,los,english]{jluthesis}
+% !TeX spellcheck = en_GB
+\documentclass[abstract,toc,los,english,11pt]{jluthesis}
 
 \usepackage{siunitx}
 
@@ -18,11 +19,49 @@
 	This thesis attempts to create a real-time analysis of coincidences from timestamped detection events through a network of scintillator detectors. The goal thereby is to create an efficient way to calculate coincidences between all detector stations and hopefully identify cosmic air shower events. Ultimately this could lead to the reconstruction of primary cosmic particles which caused the events.
 }
 
-\section{Extensive air showers}
-\acrfull{eas} on earth are caused by particle interaction of \acrfull{uhecr} with the atmosphere. This \acrshort{uhecr} consists of particles with energies up to $10^{20}$\,eV kinetic energy. These particles are \glspl{hadron}, photons or even \glspl{nucleus}. For the purpose of this thesis mostly protons will be assumed as the primary particle.
+\section{Introduction}
+\subsection{Cosmic Radiation}
+\acrfull{uhecr} is cosmic radiation in the energy regime of $10^{18}$\,eV to $10^{20}$\,eV. Cosmic radiation has been discovered in 1912 by Viktor Hess by performing measurements with three electrometers in a balloon flight. He discovered the secondary radiation in the atmosphere which is produced through the interaction of primary cosmic radiation with the atmosphere. The cosmic radiation thereby is produced by many different sources, one of which is our sun, which produces radiation up to a few hundreds of MeV of energy. Other sources are mainly other stars, supernovae and also black holes. \\
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.5\linewidth]{data/uhecr-sm-bh}
+	\caption{Trajectory of neutral particle around supermassive black hole \cite{Tursunov_2020}}
+	\label{fig:uhecr-sm-bh}
+\end{figure}\\
+For \acrshort{uhecr}, the exact production mechanism is unknown and an area of active research, though some sources have been speculated. One such proposed mechanism is a spinning supermassive hole with a neutral particle in its accretion disk. The Orbit of this particle decays until it is close enough to the black hole so that the effective electric charge dominates and ionises the particle which causes a large acceleration\cite{Tursunov_2020}. The trajectory of the particle is shown in figure \ref{fig:uhecr-sm-bh}.\\
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.4\linewidth]{data/trajectory-binary-bh}
+	\caption{Possible trajectory of UHECR in Binary Black hole system \cite{Zhang2020}}
+	\label{fig:trajectory-binary-bh}
+\end{figure} \\
+Another proposed mechanism also involves black holes, though here the particle is not produced, rather it is accelerated. This proposition requires a pair of binary black holes which are so close to each other that they move at relativistic speeds. In such a scenario a particle can experience a series of gravitational slingshots\cite{Zhang2020} around the binary black hole and finally be accelerated so much it reaches the necessary energy region to be classified as a \acrshort{uhecr}. One such series of slingshots is shown in figure \ref{fig:trajectory-binary-bh}. \\
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.5\linewidth]{data/cr_spectrum}
+	\caption{Spectrum of cosmic radiation \cite{evoli_carmelo_2020_4396125}}
+	\label{fig:cr_spectrum}
+\end{figure} \\
+The spectrum of this cosmic radiation is shown in figure \ref{fig:cr_spectrum}. There, measurements from different experiments are shown. The y axis shows the energy flux of cosmic rays in units of energy per second per square meter per solid angle $\frac{\text{GeV}}{\text{m}^2\cdot\text{s}\cdot\text{sr}}$. The x axis shows the primary energy of the cosmic rays. Notable here is the much higher number of protons as compared to all other particles by two orders of magnitude. This allows one to make the reasonable assumption that most cosmic rays are protons. \\
+Notable is also that there are protons above $5\cdot10^{19}$\,eV of energy.
+This is usually considered the \acrfull{gzkl}, a limit which arises through the interaction of protons with the microwave background radiation. This limit got its name due to its first computation by three physicists independently of each other in 1966. The violation of this limit could be explained with a proposition by the Pierre Auger Observatory that most \acrshort{uhecr} are in fact heavier nuclei than single protons \cite{thepierreaugercollaboration2017inferences}.
 
-\section{Detection methods}
+\subsection{Cosmic Air Showers}
+In the case that a \acrshort{uhecr} interacts with air molecules in the atmosphere, a cascade of secondary particles is created. This shower can be grouped in three components. They are shown in figure \ref{fig:shower-components} and are:
+\begin{itemize}
+	\item Electromagnetic, photons $\gamma$ and electrons or positrons $e^\pm$
+	\item Mesonic, mostly muons $\mu^\pm$
+	\item Hadronic, protons $p,\bar{p}$ and neutrons $n,\bar{n}$
+\end{itemize}
+\todo{better figure!}
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.6\linewidth]{data/shower-components}
+	\caption{Components of a cosmic air shower \cite{desy-zeuthen}}
+	\label{fig:shower-components}
+\end{figure}
 
+\subsection{Detection methods}
 \acrshort{eas} can be detected through a number of methods. One such method is to observe the Cherenkov radiation produced by the primary particle. This radiation occurs since the local speed of light in the visible spectrum is lower than its vacuum speed. Due to the high energy of the primary particle its speed is nearly $1c_0$. This causes an effect comparable to a mach cone for supersonic objects in air and is known as Cherenkow radiation. This radiation is in the UV spectrum and can be observed at the surface of earth for example with an array of sensitive telescopes. One such array is HESS, located in Namibia. \\
 Also detectable is the electromagnetic component of the showers, since its spectrum has a peak in the radio range and this penetrates deeply into the atmosphere. This can be picked up by a range of radio antenna. \\
 Another method is to detect the muonic component. Muons ($\mu$) are elementary particles, often called the heavy sibling of the electron. It also has a charge of $-1$, a spin of $\frac{1}{2}$ but a much higher mass of
