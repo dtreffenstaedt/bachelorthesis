@@ -6,6 +6,7 @@
 \RequirePackage[utf8]{inputenc} % encoding
 \RequirePackage[english,ngerman]{babel} % languages
 
+\RequirePackage{siunitx}
 \RequirePackage{graphicx}
 \RequirePackage{makeidx}
 \RequirePackage{wrapfig}
@@ -13,6 +14,7 @@
 \RequirePackage{changepage}
 \RequirePackage{enumitem} % advanced enumeration
 \RequirePackage{tikz}
+\RequirePackage{flowchart}
 \RequirePackage[european,EFvoltages]{circuitikz}
 \RequirePackage[acronym,toc]{glossaries}
 
@@ -28,7 +30,7 @@
 \RequirePackage[backend=biber]{biblatex}
 
 \RequirePackage{pgfplots}
-\usetikzlibrary{arrows,patterns} % which tikz libraries to use
+\usetikzlibrary{arrows, patterns,shapes.geometric} % which tikz libraries to use
 \renewcommand{\baselinestretch}{1.5} 
 \listfiles
 \urlstyle{same} % Url font the same as rest of the text
