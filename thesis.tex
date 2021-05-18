@@ -1,5 +1,5 @@
 % !TeX spellcheck = en_GB
-\documentclass[abstract,toc,los,english,11pt,glossaries]{jluthesis}
+\documentclass[abstract,toc,los,english,10pt,glossaries]{jluthesis}
 
 
 \input{data/glossaries.tex}
@@ -101,7 +101,7 @@ A class of cosmic air showers are the \acrfull{eas}, those are showers produced 
 \acrshort{eas} can be detected through a number of methods. One such method is to observe the Cherenkov radiation produced by the primary particle. This radiation occurs since the local speed of light in the visible spectrum is lower than its vacuum speed. Due to the high energy of the primary particle its speed is nearly $1c_0$. This causes an effect comparable to a mach cone for supersonic objects in air and is known as Cherenkow radiation. This radiation is in the UV spectrum and can be observed at the surface of earth for example with an array of sensitive telescopes. One such array is HESS, located in Namibia. \\
 Also detectable is the electromagnetic component of the showers, since its spectrum has a peak in the radio range and this penetrates deeply into the atmosphere. This can be picked up by a range of radio antenna. \\
 Another method is to detect the muonic component. Muons ($\mu$) are elementary particles, often called the heavy sibling of the electron. It also has a charge of $-1$, a spin of $\frac{1}{2}$ but a much higher mass of
-$105.6583755\,\si{MeV/c^2}$. It also only has a mean lifetime of $\snsi{2.1969811}{-6}{s}$. Muons only interact weakly with matter and thus penetrate deeply into the atmosphere. This fact has been used in the past to image large masses such as volcanoes and pyramids by a method called muon tomography.
+$105.6583755\,\si{MeV/c^2}$. It also only has a mean lifetime of $\snsi{2.1969811}{-6}{s}$. Muons only interact weakly with matter and thus penetrate deeply into the atmosphere. This fact has been used in the past as an imaging technology called myon tomography with which the density of large masses such as volcanoes and pyramids can be recorded. This technology has famously been used to find a hidden chamber in the Cheops pyramid.
 \subsection{Range of Muons in Air}
 \section{Detector Network}
 The detector network is made up of a number of low-cost scintillator detectors. Each detector consists of a scintillator with \acrfull{sipm} assembly, an interface board with \acrfull{adc} and a RaspberryPi minicomputer. The interface board analyses signals from the \acrshort{sipm}, retrieves the current timestamp and passes this timestamped event along to a software running on the RaspberryPi minicomputer which sends it to a server. Each timestamped event is thus written to a central database where it can be further analysed at a later time. Due to the number of detectors and their respective rate of few Hz, a large number of events is writen to the database. This causes a large strain on the server infrastructure when running post-analysis programs since they need to handle large amounts of data in a short period of time. Since this is sub-optimal, a realtime solution which performs as much analysis and pre-filtering as possible in order to reduce the runtime impact of the analysis is preferable.
@@ -125,7 +125,7 @@ The muon flux after the zenith angle can be described by \todo{function for dist
 The muon flux cutoff value is chosen so that the frequency of the muons which are lost is below a threshold of $1\,\frac{1}{\text{a}}$. This frequency is determined through the muon spectrum\cite{muonenergyspectrum} at a zenith angle of $\theta = 0^{\circ}$. 
 \subsection{Coincidence and plausability determination}
 In order to determine coincidences, each event needs to be checked against all other events which are currently in the event buffer. To do this, the
-\subsection{Conflicting data resolution}
+\subsection{Resolving conflicting data}
 \clearpage 
 \section{Program layout}
 The path of an event in the program is shown in figure \ref{fig:programlayout}. The source receives the event data and passes it on to the Station supervision class. It supervises the runtime data of each detector station and classifies it into reliability states. The specific criteria are described in the flowchart in figure \todo{make flowchart}.
