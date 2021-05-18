@@ -58,7 +58,7 @@ In the case that a \acrshort{uhecr} interacts with air molecules in the atmosphe
 
 \begin{figure}[ht!]
 	\centering
-	\begin{tikzpicture}[>=latex]
+	\begin{tikzpicture}
 		\draw[->] (0,0.5) node[above] {primary particle} -- ++(0,-1.5) coordinate(primary);
 		\draw[->] (primary) -- ++(-175:1.5) node[above] {$\pi^0$} -- ++(-175:2) coordinate (pi0);
 		\draw[->] (primary) -- ++(-105:1) node[left] {$\pi^\pm$} -- ++(-105:1.5) coordinate (pipm);
@@ -124,20 +124,21 @@ In order to determine coincidences, each event needs to be checked against all o
 The path of an event in the program is shown in figure \ref{fig:programlayout}. The source receives the event data and passes it on to the Station supervision class. It supervises the runtime data of each detector station and classifies it into reliability states. The specific criteria are described in the flowchart in figure \todo{make flowchart}.
 \begin{figure}[ht!]
 	\centering
-	\begin{tikzpicture}
-		\draw (-0.5,0) rectangle++(3,1) ++ (-1.5,-0.5) node {Event Source} ++ (0,-0.5) coordinate(esourceout);
-		\draw (-1,-2) rectangle++(4,1) ++ (-2,-0.5) node {Station supervision} ++ (0,0.5) coordinate(stationsin) ++ (0,-1) coordinate(stationsout);
-		\draw (-1,-4) rectangle++(4,1) ++ (-2,-0.5) node {Coincindence Filter} ++ (0,0.5) coordinate(coincfin) ++ (0,-1) coordinate(coincfout) ++ (-2,0.5) coordinate(coincfleft);
-		\draw (-1.5,-6) rectangle++(5,1) ++ (-2.5,-0.5) node {Coincindence Refinement} ++ (0,0.5) coordinate(coincrin) ++ (0,-1) coordinate(coincrout);
-		\draw (0,-8) rectangle++(2,1) ++ (-1,-0.5) node {Event Sink} ++ (0,0.5) coordinate(esinkin);
+	\begin{tikzpicture}[->]
+		\node (source) [draw, process,minimum height=1cm] {Event Source};
+		\node (supervision) [below=of source, draw, process,minimum height=1cm] {Station supervision};
+		\node (filter) [below=of supervision, draw, process,minimum height=1cm] {Coincidence filter};
+		\node (refinement) [below=of filter, draw, process,minimum height=1cm] {Coincidence refinement};
+		\node (sink) [below=of refinement, draw, process,minimum height=1cm] {Event Sink};
+
+		\node (criterium) [left=of filter, draw, process,minimum height=1cm] {Coincidence criterium};
 		
-		\draw (-8,-4) rectangle++(5,1) ++ (-2.5,-0.5) node {Coincindence Criterium} ++ (2.5,0) coordinate(coinccin);
+		\draw (source) -- (supervision);
+		\draw (supervision) -- (filter);
+		\draw (filter) -- (refinement);
+		\draw (refinement) -- (sink);
 		
-		\draw[->, >=latex] (esourceout) -- (stationsin);
-		\draw[->, >=latex] (stationsout) -- (coincfin);
-		\draw[->, >=latex] (coincfout) -- (coincrin);
-		\draw[->, >=latex] (coincrout) -- (esinkin);
-		\draw[<->, >=latex] (coincfleft) -- (coinccin);
+		\draw[<->] (criterium) -- (filter);
 	\end{tikzpicture}
 	\caption{Program layout}
 	\label{fig:programlayout}
@@ -145,22 +146,70 @@ The path of an event in the program is shown in figure \ref{fig:programlayout}. 
 
 \begin{figure}[ht!]
 	\centering
-	\begin{tikzpicture}[>=latex]
-		\def\smbwd{2cm}
-		\node (terminal1) at (0,0) [draw, terminal,minimum width=\smbwd,minimum height=0.5cm] {START};
-		\node (predproc1) at (0,-1.5) [draw, predproc, align=left,minimum width=\smbwd,minimum height=1cm] {GET DATA};
-		\node (decide1) at (0,-3.5) [draw, decision,minimum width=\smbwd,minimum height=1cm] {C$<$3};
-		\node (storage1) at (0,-5.5) [draw, storage,minimum width=\smbwd,minimum height=1cm] {STORE};
-		\node (process1) at (3,-5.5) [draw, process,minimum width=\smbwd,minimum height=1cm] {PROCESS};
-		\coordinate (point1) at (0,-6.75);
-		\node (terminal2) at (0,-7.75) [draw, terminal,minimum width=\smbwd,minimum height=0.5cm] {END};
+	\begin{tikzpicture}[->]
+		\node (terminal1) at (0,0) [draw, terminal] {START};
+		\node (decide1) [below=of terminal1, draw, decision] {detector known};
+		\node (predproc1) [below=of decide1, draw, predproc, align=left] {calculate event rates};
+		\node (decide2) [below=of predproc1, draw, decision] {detector is reliable};
+		\node (terminal2) [below=of decide2, draw, terminal] {pass to coincidence filter};
+		\node (terminal3) [right=of predproc1, draw, terminal] {discard event};
 		
-		\draw[->] (terminal1) -- (predproc1);
-		\draw[->] (predproc1) -- (decide1);
-		\draw[->] (decide1) -| node[above]{YES} (process1);
-		\draw[->] (decide1) -- (storage1);
-		\draw[->] (process1) |- (point1);
-		\draw[->] (storage1) -- (point1) -- (terminal2);
+		\node (decide1r) [right=of decide1] {no};
+		\node (decide2r) [right=of decide2] {no};
+		
+		
+		\draw (terminal1) -- (decide1);
+		\draw (decide1) -- (predproc1);
+		\draw (predproc1) -- (decide2);
+		\draw (decide2) -- (terminal2);
+		\draw (decide1) -- (decide1r) -| (terminal3);
+		\draw (decide2) -- (decide2r) -| (terminal3);
+	\end{tikzpicture}
+\end{figure}
+\begin{figure}[ht!]
+	\centering
+	\begin{tikzpicture}[->]
+		\node (terminal1) at (0,0) [draw, terminal] {START};
+		\node (decide1) [below=of terminal1, draw, decision] {constructor available};
+		\node (predproc1) [below=of decide1, draw, predproc, align=left] {select next constructor};
+		\node (decide2) [below=of predproc1, draw, decision] {criterium met};
+		\node (predproc2) [below=of decide2, draw, predproc] {add event to constructor};
+		\node (terminal2) [below=of predproc2, draw, terminal] {END};
+		
+		\node (decide1r) [right=of decide1] {no};
+		\node (decide2l) [left=of decide2] {no};
+		
+		
+		\draw (terminal1) -- (decide1);
+		\draw (decide1) -- (predproc1);
+		\draw (predproc1) -- (decide2);
+		\draw (decide2) -- (predproc2);
+		\draw (predproc2) -- (terminal2);
+		\draw (decide1) -- (decide1r) |- (terminal2);
+		\draw (decide2) -- (decide2l) |- (decide1);
+	\end{tikzpicture}
+\end{figure}
+\begin{figure}[ht!]
+	\centering
+	\begin{tikzpicture}[->]
+		\node (terminal1) at (0,0) [draw, terminal] {START};
+		\node (decide1) [below=of terminal1, draw, decision] {constructor is timed out};
+		\node (predproc1) [below=of decide1, draw, predproc, align=left] {select next constructor};
+		\node (decide2) [below=of predproc1, draw, decision] {criterium met};
+		\node (predproc2) [below=of decide2, draw, predproc] {add event to constructor};
+		\node (terminal2) [below=of predproc2, draw, terminal] {END};
+		
+		\node (decide1r) [right=of decide1] {no};
+		\node (decide2l) [left=of decide2] {no};
+		
+		
+		\draw (terminal1) -- (decide1);
+		\draw (decide1) -- (predproc1);
+		\draw (predproc1) -- (decide2);
+		\draw (decide2) -- (predproc2);
+		\draw (predproc2) -- (terminal2);
+		\draw (decide1) -- (decide1r) |- (terminal2);
+		\draw (decide2) -- (decide2l) |- (decide1);
 	\end{tikzpicture}
 \end{figure}
 \section{Primary reconstruction}
@@ -170,7 +219,7 @@ In the case of a coincidence with $n>2$ multiple curves can be calculated relati
 Given that the shower front is not a complete spherical surface but only a spherical section, the possible origin directions can be reduced with this approach. In the case of higher coincidence numbers, the possible direction can be reduced further. Additionally to the possible directions, this approach also provides a lower limit for the shower radius and footprint radius, suggesting a minimum Particle energy.
 \begin{figure}[ht!]
 	\centering
-	\begin{tikzpicture}[>=latex]
+	\begin{tikzpicture}
 		\fill (0,0) coordinate(det1) circle(0.1);
 		\fill (6,0) coordinate(det2) circle(0.1);
 		\draw (det2) circle(1);

@@ -30,7 +30,8 @@
 \RequirePackage[backend=biber]{biblatex}
 
 \RequirePackage{pgfplots}
-\usetikzlibrary{arrows, patterns,shapes.geometric} % which tikz libraries to use
+\usetikzlibrary{arrows, patterns,shapes.geometric,positioning} % which tikz libraries to use
+\tikzset{>=latex}
 \renewcommand{\baselinestretch}{1.5} 
 \listfiles
 \urlstyle{same} % Url font the same as rest of the text
