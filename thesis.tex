@@ -16,36 +16,43 @@
 
 \begin{document}
 \makebeginning{
-	This thesis attempts to create a real-time analysis of coincidences from timestamped detection events through a network of scintillator detectors. The goal thereby is to create an efficient way to calculate coincidences between all detector stations and hopefully identify cosmic air shower events. Ultimately this could lead to the reconstruction of primary cosmic particles which caused the events.
+	This thesis attempts to create a real-time analysis of coincidences from timestamped detection events through a network of scintillator detectors. The goal is to create an efficient way to calculate coincidences between all detector stations and identify cosmic air shower events. Ultimately this could lead to the reconstruction of primary cosmic particles which caused the events.
 }
 
 \section{Introduction}
 \subsection{Cosmic Radiation}
-\acrfull{uhecr} is cosmic radiation in the energy regime of $10^{18}$\,eV to $10^{20}$\,eV.\footnote{The energy unit eV(Electron-Volt) describes the kinetic energy a unit charge holds after being accelerated through an electric field for 1V. It is equivalent to $1.602176634\cdot10^{-19}\,\text{J}$.}
-Cosmic radiation has been discovered in 1912 by Viktor Hess by performing measurements with three electrometers in a balloon flight. He discovered the secondary radiation in the atmosphere which is produced through the interaction of primary cosmic radiation with the atmosphere. The cosmic radiation thereby is produced by many different sources, one of which is our sun, which produces radiation up to a few hundreds of MeV of energy. Other sources are mainly other stars, supernovae and also black holes. \\
+\acrfull{uhecr} is cosmic radiation with energy in the range of $10^{18}$\,eV to $10^{20}$\,eV.\footnote{The energy unit eV(Electron-Volt) describes the kinetic energy a unit charge holds after being accelerated through an electric field for 1V. It is equivalent to $1.602176634\cdot10^{-19}\,\text{J}$.}
+Cosmic radiation has been discovered in 1912 by Viktor Hess by performing measurements with three electrometers in a balloon flight. He measured the energy flux in the atmosphere and showed that it increased with altitude. This is explained by secondary particles which are produced through the interaction of primary cosmic radiation with the atmosphere. The cosmic radiation is produced by many different sources, one of which is our sun. The sun however only produces cosmic radiation up to a few hundred MeV of energy through coronal mass ejections and other processes and so is not contributing to \acrshort{uhecr}. Higher energy sources include other stars, supernovae and also black holes. \\
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.5\linewidth]{data/uhecr-sm-bh}
 	\caption{Trajectory of neutral particle around supermassive black hole \cite{Tursunov_2020}}
 	\label{fig:uhecr-sm-bh}
 \end{figure}\\
-For \acrshort{uhecr}, the exact production mechanism is unknown and an area of active research, though some sources have been speculated. One such proposed mechanism is a spinning supermassive hole with a neutral particle in its accretion disk. The Orbit of this particle decays until it is close enough to the black hole so that the effective electric charge dominates and ionises the particle which causes a large acceleration\cite{Tursunov_2020}. The trajectory of the particle is shown in figure \ref{fig:uhecr-sm-bh}.\\
+The production mechanisms for \acrshort{uhecr} are unknown and an area of active research, though some sources have been speculated. One such proposed mechanism is a spinning supermassive hole with a neutral particle in its accretion disk. The Orbit of this particle decays until it is close enough to the black hole so that the effective electric charge dominates and ionises the particle which causes a large acceleration\cite{Tursunov_2020}. The trajectory of the particle is shown in figure \ref{fig:uhecr-sm-bh}.\\
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.4\linewidth]{data/trajectory-binary-bh}
 	\caption{Possible trajectory of UHECR in Binary Black hole system \cite{Zhang2020}}
 	\label{fig:trajectory-binary-bh}
 \end{figure} \\
-Another proposed mechanism also involves black holes, though here the particle is not produced, rather it is accelerated. This proposition requires a pair of binary black holes which are so close to each other that they move at relativistic speeds. In such a scenario a particle can experience a series of gravitational slingshots\cite{Zhang2020} around the binary black hole and finally be accelerated so much it reaches the necessary energy region to be classified as a \acrshort{uhecr}. One such series of slingshots is shown in figure \ref{fig:trajectory-binary-bh}. \\
+Already high energy particles can be accelerated to the ultra high energy regime. One possible acceleration mechanism relies on a pair of binary black holes which move at relativistic speeds. In such a scenario the particle can experience a series of gravitational slingshots \cite{Zhang2020} around the binary black hole and finally be accelerated so much it reaches the necessary energy region to be classified as a \acrshort{uhecr}. One possible trajectory of a particle in a binary black hole is shown in figure \ref{fig:trajectory-binary-bh}. \\
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=0.8\linewidth]{data/cr_spectrum}
+	\includegraphics[width=0.75\linewidth]{data/cr_spectrum}
 	\caption{Spectrum of cosmic radiation \cite{evoli_carmelo_2020_4396125}}
 	\label{fig:cr_spectrum}
 \end{figure} \\
-The spectrum of this cosmic radiation is shown in figure \ref{fig:cr_spectrum}. There, measurements from different experiments are shown. The y axis shows the energy flux of cosmic rays in units of energy per second per square meter per solid angle $\frac{\text{GeV}}{\text{m}^2\cdot\text{s}\cdot\text{sr}}$. The x axis shows the primary energy of the cosmic rays. Notable here is the much higher number of protons as compared to all other particles by two orders of magnitude. This allows one to make the reasonable assumption that most cosmic rays are protons. \\
-Notable is also that there are protons above $5\cdot10^{19}$\,eV of energy.
-This is usually considered the \acrfull{gzkl}\cite{2021APh...12602526B}, a limit which arises through the interaction of protons with the microwave background radiation. This limit got its name due to its first computation by three physicists independently of each other in 1966. The violation of this limit could be explained with a proposition by the Pierre Auger Observatory that most \acrshort{uhecr} are in fact heavier nuclei than single protons \cite{thepierreaugercollaboration2017inferences}.
+The spectrum of this cosmic radiation is shown in figure \ref{fig:cr_spectrum}. There, measurements from different experiments are shown. The y axis shows the energy flux of cosmic rays in units of energy per second per square meter per solid angle $\frac{\text{GeV}}{\text{m}^2\cdot\text{s}\cdot\text{sr}}$. The x axis shows the primary energy of the cosmic rays, for comparison the upper axis shows the energy in units of Joule, the lower axis shows it in units of electron-Volt. Notable here is the much higher number of protons as compared to all other particles by two orders of magnitude. This allows one to make the reasonable assumption that most cosmic rays are protons. Prominent features of the proton spectrum are two anomalies labeled as Knee and Ankle. \\
+One interesting observation is that the proton spectrum does not have a solid cutoff at $5\cdot10^{19}$\,eV of energy, rather it extends beyond it. This value is significant because it is calculated to be the \acrfull{gzkl}\cite{2021APh...12602526B}. This limit stems from high energy protons interacting with the microwave background radiation and being lifted into an excited state.
+\begin{equation}\label{eq:gzkl}
+	\begin{aligned}
+		\gamma + p &\rightarrow \Delta^+ &\rightarrow p + \pi^0 \\
+		\gamma + p &\rightarrow \Delta^+ &\rightarrow n + \pi^+
+	\end{aligned}
+\end{equation}
+Equation \ref{eq:gzkl} descibes the possible interaction between the microwave background photons and protons. In both cases, the proton gets excited to a $\Delta^+$ resonance state, which can decay to a hadron and a pi meson. One possible decay product is a proton and a $\pi^0$, the other one a neutron and a $\pi^+$.
+The \acrshort{gzkl} got its name due to its first computation by three physicists independently of each other in 1966. The violation of this limit could be explained with a proposition by the Pierre Auger Observatory that most \acrshort{uhecr} are in fact heavier nuclei than single protons \cite{thepierreaugercollaboration2017inferences}.
 
 \clearpage
 \subsection{Cosmic Air Showers}
@@ -101,7 +108,7 @@ The detector network is made up of a number of low-cost scintillator detectors. 
 
 \section{Real-time analysis}
 \subsection{Coincidence criteria}
-A sturdy criterium to define a coincidence has to be found. Initially the criterium was defined as the $\Delta{t}$ of two events being lower than $100\,\mu\text{s}$, which corresponds to a maximum possible detector distance of $29.97\,\text{km}$. Since in reality the maximum coincidence interval is dependent on the actual detector distance and is limited by the flight distance of a muon, this criterium must be improved upon. A first approach thereby lies in calculating the distance between the detector pair belonging to the coincidence event which is to be analysed. This is implemented as the euclidean distance derived from the detector coordinates. Therefore the WGS84 earth coordinate model has been implemented to be able to convert a given pair of geodetic coordinates to relative carthesian coordinates, specifically in the \acrfull{enu} system. The WGS84 model thereby approximates the shape of earth as an oblate spheroid. Given the straight line distance, the time of flight given the speed of light in vacuum $c_0$ can be taken as a first approximation for the expected maximum coincidence window.
+A sturdy criterium to define a coincidence has to be found. Initially the criterium was defined as the $\Delta{t}$ of two events being lower than $100\,\mu\text{s}$, which corresponds to a maximum possible detector distance of $29.97\,\text{km}$. Since in reality the maximum coincidence interval is dependent on the actual detector distance and is limited by the flight distance of a muon, this criterium must be improved upon. A first approach lies in calculating the distance between the detector pair belonging to the coincidence event which is to be analysed. This is implemented as the euclidean distance derived from the detector coordinates. Therefore the WGS84 earth coordinate model has been implemented to be able to convert a given pair of geodetic coordinates to relative carthesian coordinates, specifically in the \acrfull{enu} system. The WGS84 model thereby approximates the shape of earth as an oblate spheroid. Given the straight line distance, the time of flight given the speed of light in vacuum $c_0$ can be taken as a first approximation for the expected maximum coincidence window.
 
 This value however still needs to be refined in two ways. firstly, a minimum value has to be set due to limitations of the possible time resolution of the timestamping of each event and a not well understood per-detector timing offset on the order of magnitude of few tens of ns. This is especially critical in the case of detectors which are close together, since their calculated time of flight is only few ns, and thus would cut off a significant number of coincidence events. In order to mitigate this, a minimum coincidence window of $150\,\text{ns}$ width is defined. This value is chosen to reliably capture all coincidence events for even the closest detector pairs.
 
