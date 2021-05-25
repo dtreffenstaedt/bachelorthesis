@@ -143,29 +143,42 @@ Additionally to cosmic air showers, the primary particles produce Cherenkov radi
 \clearpage
 \subsection{Detection methods}
 
-\todo{scintillators}
+The detection of \acrshort{uhecr} can be done through three main methods.\\
+Two depend on the cosmic air showers described in the section \ref{subsec:airshowers}, namely the muonic and the electromagnetic component. The other method depends on the Cherenkov radiation.
+In the case of Cherenkov radiation, UV telescopes can be used to detect the UV light directly. By observing the same source through multiple locations, the origin can be reconstructed. 
+A popular example of a particle being detected through these means is the so called Oh-My-God particle, likely a proton or heavier nucleus with an energy of  $3.2\pm0.9\cdot10^{20}\,\text{eV}$ of energy. This particular particle is interesting since it was the first particle to exceed the \acrshort{gzkl}. It has been detected by the HiRes detector in Utah.
+
+A method using the electromagnetic component of a cosmic air shower exploits the fact that the frequencies lie in the radio range\cite{NELLES201513} and can be detected through normal radio Antennae\cite{SCHRODER20171}. Due to the polarisation of the radio signal, often multiple antennae with different polarisation characteristics are used.
+
+
+Another method is to detect the muonic component, this can be done through Scintillator detectors. Due to the muon being a charged particle, it interacts with matter and deposits energy. Certain materials can give off this energy via photons, a process which is known as scintillation. Figure \ref{fig:scintillator} shows the process of 
 \begin{figure}[ht!]
 	\centering
 	\begin{tikzpicture}[->]
 		\draw (0,0) rectangle++(8,1);
 		\draw (0,-3) rectangle++(8,-1);
 		
-		\draw (1,-3.5) -- ++(0,4);
+		\draw (1,-3.5) -- ++(0,2) node[left] {excitation} -- ++(0,2);
+		
+		\draw (1.5,0.5) -- ++(2,0) node [above] {transport} -- ++(2,0);
+		
+		\draw[-] (6,-0.5) -- ++(0.5,0);
+		\draw[-] (6.5,-2) -- ++(-0.5,0) node [left] {trap};
+		
+		\draw (6.25,0.5) -- ++(0,-1);
+		\draw (6.25,-0.5) -- ++(0,-0.75) coordinate(emission) -- ++(0,-0.75);
+		\draw (6.25,-2) -- ++(0,-1.5);
+		
+		\draw[decorate, decoration=snake] (emission) -- ++(30:3) node [above] {$\gamma$};
+		\node[below right] at (emission) {emission};
+		
 		
 		\node[left] at (0,-3) {Valence};
 		\node[left] at (0,0) {Conduction};
 	\end{tikzpicture}
+	\caption{Mechanism for crystal scintillators}
+	\label{fig:scintillator}
 \end{figure}
-The detection of \acrshort{uhecr} can be done through three main methods.\\
-Two depend on the cosmic air showers described in the section \ref{subsec:airshowers}, namely the muonic and the electromagnetic component. The other method depends on the Cherenkov radiation.
-In the case of Cherenkov radiation, UV telescopes can be used to detect the UV light directly. By observing the same source through multiple locations, the origin can be reconstructed. 
-A popular example of a particle being detected through these means is the so called Oh-My-God particle, likely a proton or heavier nucleus with an energy of  $3.2\pm0.9\cdot10^{20}\,\text{eV}$ of energy. This particular particle is interesting since it was the first particle to exceed the \acrshort{gzkl}. It has been detected by the HiRes detector in Utah.
-
-A method using the electromagnetic component of a cosmic air shower exploits the fact that the frequencies lie in the radio range and can be detected through normal radio Antennae\cite{SCHRODER20171}.
-
-
-Another method is to detect the muonic component. Muons ($\mu$) are elementary particles, often called the heavy sibling of the electron. It also has a charge of $-1$, a spin of $\frac{1}{2}$ but a much higher mass of
-$105.6583755\,\si{MeV/c^2}$. It also only has a mean lifetime of $\snsi{2.1969811}{-6}{s}$. Muons only interact weakly with matter and thus penetrate deeply into the atmosphere. This fact has been used in the past as an imaging technology called myon tomography with which the density of large masses such as volcanoes and pyramids can be recorded. This technology has famously been used to find a hidden chamber in the Cheops pyramid.
 \subsection{Range of Muons in Air}
 \section{Detector Network}
 The detector network is made up of a number of low-cost scintillator detectors. Each detector consists of a scintillator with \acrfull{sipm} assembly, an interface board with \acrfull{adc} and a RaspberryPi minicomputer. The interface board analyses signals from the \acrshort{sipm}, retrieves the current timestamp and passes this timestamped event along to a software running on the RaspberryPi minicomputer which sends it to a server. Each timestamped event is thus written to a central database where it can be further analysed at a later time. Due to the number of detectors and their respective rate of few Hz, a large number of events is writen to the database. This causes a large strain on the server infrastructure when running post-analysis programs since they need to handle large amounts of data in a short period of time. Since this is sub-optimal, a realtime solution which performs as much analysis and pre-filtering as possible in order to reduce the runtime impact of the analysis is preferable.
