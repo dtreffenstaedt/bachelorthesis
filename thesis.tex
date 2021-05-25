@@ -5,7 +5,7 @@
 \input{data/glossaries.tex}
 \bibliography{data/thesis.bib}
 
-\topic{Real-time data analysis of distributed muon detector network}
+\topic{Real-time data analysis of distributed muon detector network for cosmic shower detection and reconstruction}
 \title[Bachelor Thesis]{Bachelor Thesis}
 \author[Daniel Treffenstädt]{Daniel J.S. Treffenstädt}
 \matnr{6067797}
@@ -16,7 +16,11 @@
 
 \begin{document}
 \makebeginning{
-	This thesis attempts to create a real-time analysis of coincidences from timestamped detection events through a network of scintillator detectors. The goal is to create an efficient way to calculate coincidences between all detector stations and identify cosmic air shower events. Ultimately this could lead to the reconstruction of primary cosmic particles which caused the events.
+	Extensive Air Showers produced by ultra high energy cosmic radiation is still an active area of research. Due to the low number of such events collecting statistics is not a simple task. There are many approaches to collecting enough data about these air showers. One such approach is the usage of a distributed network of low-cost particle detectors which can be operated by persons outside the university environment.
+	
+	In this thesis, a method is developed to perform real-time analysis for a network of low-cost plastic scintillator detectors. This network consists of small scintillator detectors with silicon Photomultiplier units which are attached to a Raspberry-Pi computer. Those detection units are located throughout Germany and send their data to a server where it is continuously monitored for coincidences.
+	
+	An approach to reconstructing the possible incident direction of the primary particle as well as an approximation for plausible energies is presented.
 }
 \includepdf[noautoscale=true, width=\paperwidth]{data/selbststaendigkeit.pdf}
 
