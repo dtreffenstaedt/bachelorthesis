@@ -1,7 +1,7 @@
 % !TeX spellcheck = en_GB
 \documentclass[abstract,toc,los,english,10pt,glossaries]{jluthesis}
 
-
+\usepackage{pdfpages}
 \input{data/glossaries.tex}
 \bibliography{data/thesis.bib}
 
@@ -18,6 +18,8 @@
 \makebeginning{
 	This thesis attempts to create a real-time analysis of coincidences from timestamped detection events through a network of scintillator detectors. The goal is to create an efficient way to calculate coincidences between all detector stations and identify cosmic air shower events. Ultimately this could lead to the reconstruction of primary cosmic particles which caused the events.
 }
+\includepdf[noautoscale=true, width=\paperwidth]{data/selbststaendigkeit.pdf}
+
 
 \section{Introduction}
 \subsection{Cosmic Radiation}
