@@ -195,19 +195,9 @@ A sturdy criterium to define a coincidence has to be found. Initially the criter
 
 This value however still needs to be refined in two ways. firstly, a minimum value has to be set due to limitations of the possible time resolution of the timestamping of each event and a not well understood per-detector timing offset on the order of magnitude of few tens of ns. This is especially critical in the case of detectors which are close together, since their calculated time of flight is only few ns, and thus would cut off a significant number of coincidence events. In order to mitigate this, a minimum coincidence window of $150\,\text{ns}$ width is defined. This value is chosen to reliably capture all coincidence events for even the closest detector pairs.
 
-A maximum upper coincidence window width has to be defined too, though this requires a more in depth analysis. Following influences have to be considered:
-\begin{itemize}
-	\item maximum expected zenith angle of muons
-	\item maximum flight distance for a muon of maximum expected energy
-	\item Muon flux cutoff value
-\end{itemize}
-\subsubsection*{Zenith angle}
-The muon flux after the zenith angle can be described by \todo{function for distribution} distribution\cite{muonenergyspectrum} which can be approximated by a $\cos^2$ function. A cutoff of relative intensity of $1\,\%$ is chosen for the maximum zenith angle which leads to an angle of $\theta_{max} = \arccos\left(\sqrt{1\,\%}\right) = 84\,^\circ$.
-\subsubsection*{Energy cutoff}
-\subsubsection*{Muon Flux cutoff}
-The muon flux cutoff value is chosen so that the frequency of the muons which are lost is below a threshold of $1\,\frac{1}{\text{a}}$. This frequency is determined through the muon spectrum\cite{muonenergyspectrum} at a zenith angle of $\theta = 0^{\circ}$. 
+A maximum upper coincidence window width has to be defined too, though this requires a more in depth analysis. \todo{upper coincidence window}
 \subsection{Coincidence and plausability determination}
-In order to determine coincidences, each event needs to be checked against all other events which are currently in the event buffer. To do this, the
+In order to determine coincidences, each event needs to be checked against all other events which are currently in the event buffer.
 \subsection{Resolving conflicting data}
 \clearpage 
 \section{Program layout}
