@@ -56,7 +56,7 @@ One interesting observation is that the proton spectrum does not have a solid cu
 Equation \ref{eq:gzkl} descibes the possible interaction between the microwave background photons and protons. In both cases, the proton gets excited to a $\Delta^+$ resonance state, which can decay to a hadron and a pi meson. One possible decay product is a proton and a $\pi^0$, the other one a neutron and a $\pi^+$. In this process, the proton loses roughly $20\,\%$ of its energy, since the energy prior to the interaction gets transferred to both resulting particles according to their relative masses. Should the proton then remain above the limit, the same interaction can take place again. It is unlikely that any proton at these energies can travel more than $100\,\cdot10^6\,\text{ly}$ without undergoing this interaction. Since most particles above the ankle in the proton specturm shown in figure \ref{fig:cr_spectrum} are of extragalactic origin, this means that virtually all protons with these high energies must have undergone this interaction, dropping them below the \acrshort{gzkl}.
 The violation of this limit could be explained with a proposition by the Pierre Auger Observatory that most \acrshort{uhecr} are in fact heavier nuclei than single protons \cite{thepierreaugercollaboration2017inferences}.
 
-\subsection{Cosmic Air Showers}
+\subsection{Cosmic Air Showers}\label{subsec:airshowers}
 When a cosmic ray hits the atmosphere, it interacts with the nucleons of the different molecules in air. Due to the relative abundance, it is most likely that the first interaction takes place between the primary particle and a Neutrogen nucleus. This causes interactions described by Quantum Chromo dynamics which is beyond the scope of this thesis. This interaction leaves nucelar fragments and $\pi$ mesons behind which can then interact with other air molecules again or - in the case of pions - decay. This creates a cascade of particles which continue along the trajectory towards the surface of earth. A picture of an air shower produced by a primary proton is shown in figure \ref{fig:proton-shower}. This image is produced at the KIT with the simulation toolkit CORSIKA.
 \begin{figure}[ht!]
 	\centering
@@ -74,7 +74,7 @@ As seen in this figure, neutral Pions $\pi^0$ can decay to two photons $\gamma$ 
 	\end{aligned}
 \end{equation}
 The produced photons can then undergo pair production through which a lepton - anti lepton pair is produced. For this to occur, the photon needs to have an energy higher than twice the rest mass of the lepton. In the case of an electron positron pair, the rest energy is $511\,\text{keV}$ resulting in a minimum photon energy of $1022\,\text{keV}$. Any energy above this limit gets distributed evenly across both resulting particles as kinetic energy. In the \acrfull{com} system due to conservation of impulse, the pair travels in opposite directions to each other in a 90 degree angle to the original photon. In the laboratory system however, the resulting particles continue along the original trajectory.
-
+\todo{sources for decay probabilities}
 Should the photon not have enough energy to produce a pair, it can be absorbed in an atom by raising the energy level of an electron in the shell or loose energy through compton scattering.\\
 In the case of a charged pion $\pi^\pm$, The most likly decay with a probability of $99.9\,\%$ is to a muon $\mu^\pm$ and a muon-neutrino $\nu_\mu$. The interaction is shown in equation \ref{eq:piondecay}.
 \begin{equation}\label{eq:piondecay}
@@ -111,8 +111,38 @@ In the case of a charged pion $\pi^\pm$, The most likly decay with a probability
 The figure does not show all interactions, nor does it show the Neutrinos produced through the different interactions.
 The shower impact is dependent on the type of primary particle and its energy. In the case of \acrshort{uhecr}, the showers are classified as \acrfull{eas}.
 
+Additionally to cosmic air showers, the primary particles produce Cherenkov radiation. This is light in the UV spectrum which results from the particles traveling faster than the local speed of light. This is an effect comparable to the sonic cone for objects traveling faster than the speed of sound in a medium like air.
+\begin{figure}[ht!]
+	\centering
+	\begin{tikzpicture}
+		\draw[->] (0,0) -- ++(1,0) node[above left] {$v$};
+		\draw (0,0) -- ++(7,0) coordinate (tip);
+		
+		\draw (tip) -- ++(135:4) -- ++(-135:2) coordinate(top) -- ++(-135:2);
+		\draw[dashed, ->] (tip) ++(135:1.0) -- ++(45:1);
+		\draw[dashed, ->] (tip) ++(135:1.5) -- ++(45:1);
+		\draw[dashed, ->] (tip) ++(135:2.0) -- ++(45:1);
+		\draw[dashed, ->] (tip) ++(135:2.5) -- ++(45:1);
+		\draw[dashed, ->] (tip) ++(135:3.0) -- ++(45:1);
+		\draw[dashed, ->] (tip) ++(135:3.5) -- ++(45:1);
+		
+		\draw (tip) -- ++(-135:4) -- ++(135:4);
+		\draw[dashed, ->] (tip) ++(-135:1.0) -- ++(-45:1);
+		\draw[dashed, ->] (tip) ++(-135:1.5) -- ++(-45:1);
+		\draw[dashed, ->] (tip) ++(-135:2.0) -- ++(-45:1);
+		\draw[dashed, ->] (tip) ++(-135:2.5) -- ++(-45:1);
+		\draw[dashed, ->] (tip) ++(-135:3.0) -- ++(-45:1);
+		\draw[dashed, ->] (tip) ++(-135:3.5) -- ++(-45:1);
+		
+		\draw[<->] (top) arc(45:22.5:2) coordinate(theta) arc(22.5:0:2);
+		\node[below left] at (theta) {$\theta$};
+	\end{tikzpicture}
+	\caption{Geometry of cherenkov radiation. Dashed are the UV photons, the angle $\theta$ is dependent on the incident particle velocity $v$ and the refractive index $n$ of the medium.}
+	\label{fig:cherenkov}
+\end{figure}
 \clearpage
 \subsection{Detection methods}
+
 \todo{scintillators}
 \begin{figure}[ht!]
 	\centering
@@ -127,8 +157,13 @@ The shower impact is dependent on the type of primary particle and its energy. I
 	\end{tikzpicture}
 \end{figure}
 The detection of \acrshort{uhecr} can be done through three main methods.\\
-Firstly, the Cherenkov radiation can be observed from the surface of earth. This light is light in the near UV spectrum and occurs since the local speed of light in the visible spectrum is lower than its vacuum speed. Due to the high energy of the primary particle its speed is nearly $1c_0$. This causes an effect comparable to a mach cone for supersonic objects in air and is known as Cherenkow radiation. This light can be detected through optical and near UV telescopes and other detectors. The first particle exceeding the \acrshort{gzkl} - the so called Oh-My-God particle - has been detected through its Cherenkov radiation by the HiRes detector in Utah. \\
-Also detectable is the electromagnetic component of the showers, since its spectrum has a peak in the radio range. At those frequencies, the absorption cross section in air is low which allows them to penetrate deeply into the atmosphere. Traditional radio antennae can be used to detect the radio emissions from the shower. \\
+Two depend on the cosmic air showers described in the section \ref{subsec:airshowers}, namely the muonic and the electromagnetic component. The other method depends on the Cherenkov radiation.
+In the case of Cherenkov radiation, UV telescopes can be used to detect the UV light directly. By observing the same source through multiple locations, the origin can be reconstructed. 
+A popular example of a particle being detected through these means is the so called Oh-My-God particle, likely a proton or heavier nucleus with an energy of  $3.2\pm0.9\cdot10^{20}\,\text{eV}$ of energy. This particular particle is interesting since it was the first particle to exceed the \acrshort{gzkl}. It has been detected by the HiRes detector in Utah.
+
+A method using the electromagnetic component of a cosmic air shower exploits the fact that the frequencies lie in the radio range and can be detected through normal radio Antennae\cite{SCHRODER20171}.
+
+
 Another method is to detect the muonic component. Muons ($\mu$) are elementary particles, often called the heavy sibling of the electron. It also has a charge of $-1$, a spin of $\frac{1}{2}$ but a much higher mass of
 $105.6583755\,\si{MeV/c^2}$. It also only has a mean lifetime of $\snsi{2.1969811}{-6}{s}$. Muons only interact weakly with matter and thus penetrate deeply into the atmosphere. This fact has been used in the past as an imaging technology called myon tomography with which the density of large masses such as volcanoes and pyramids can be recorded. This technology has famously been used to find a hidden chamber in the Cheops pyramid.
 \subsection{Range of Muons in Air}
