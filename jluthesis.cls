@@ -54,6 +54,7 @@
 \def\@author{}
 \def\@shortauthor{}
 \def\@supervisor{}
+\def\@reviewer{}
 \def\@school{Justus-Liebig-Universität}
 \def\@title{}
 \def\@matnr{}
@@ -65,6 +66,7 @@
 \newcommand{\program}[1]{\def\@program{#1}}
 \newcommand{\topic}[1]{\def\@topic{#1}}
 \newcommand{\supervisor}[1]{\def\@supervisor{#1}}
+\newcommand{\reviewer}[1]{\def\@reviewer{#1}}
 \newcommand{\matnr}[1]{\def\@matnr{#1}}
 \renewcommand{\author}[2][]{\def\@shortauthor{#1}\def\@author{#2}}
 \newcommand{\school}[1]{\def\@school{#1}}
@@ -158,6 +160,17 @@
 			\hspace*{1cm}
 			\begin{minipage}{0.5\textwidth}
 				{\large\itshape \@matnr}
+			\end{minipage}
+		\end{flushleft}
+		\fi
+		\ifx\@reviewer\empty
+		\else
+		\begin{flushleft}
+			\iflanguage{english}{\large\itshape \textbf{Reviewer:}\\}{}
+			\iflanguage{ngerman}{\large\itshape \textbf{Gutachter:}\\}{}
+			\hspace*{1cm}
+			\begin{minipage}{0.5\textwidth}
+				{\large\itshape \@reviewer}
 			\end{minipage}
 		\end{flushleft}
 		\fi
