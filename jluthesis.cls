@@ -198,17 +198,17 @@
 
 \makeatletter
 \newcommand{\makebeginning}[1]{%
-	\ifx\@english\undefined
-	\selectlanguage{ngerman}
-	\renewcommand{\indexname}{Stichwortverzeichnis}
-	\else
+	\ifdefined\@english
 	\selectlanguage{english}
 	\renewcommand{\contentsname}{Table of Contents}
+	\else
+	\selectlanguage{ngerman}
+	\renewcommand{\indexname}{Stichwortverzeichnis}
 	\fi
 	
 	\maketitle % Titlepage
 	
-	\ifx\@toc\defined
+	\ifdefined\@toc
 	\thispagestyle{plain}
 	\tableofcontents
 	\newpage
@@ -217,7 +217,7 @@
 	\renewcommand{\@seccntformat}[1]{}
 	\fi
 	
-	\ifx\@lof\defined
+	\ifdefined\@lof
 	\thispagestyle{plain}
 	\iflanguage{english}{\addcontentsline{toc}{section}{List of Figures}}{}
 	\iflanguage{ngerman}{\addcontentsline{toc}{section}{Abbildungsverzeichnis}}{}
@@ -225,7 +225,7 @@
 	\newpage
 	\fi
 	
-	\ifx\@lot\defined
+	\ifdefined\@lot
 	\thispagestyle{plain}
 	\iflanguage{english}{\addcontentsline{toc}{section}{List of Tables}}{}
 	\iflanguage{ngerman}{\addcontentsline{toc}{section}{Tabellenverzeichnis}}{}
@@ -235,7 +235,7 @@
 	
 	\pagenumbering{arabic} % start main pages Numbering
 	
-	\ifx\@abstr\defined
+	\ifdefined\@abstr
 	\iflanguage{english}{\section*{Abstract}\addcontentsline{toc}{section}{Abstract}}{}
 	\iflanguage{ngerman}{\section*{Kurzbeschreibung}\addcontentsline{toc}{section}{Abstract}}{}
 	\begin{abstract}#1\end{abstract}
@@ -249,25 +249,21 @@
 	\setcounter{section}{0}
 	\renewcommand*{\thesection}{\Alph{section}}
 	\pagenumbering{Roman}
-	\ifx\@acro\undefined
-	\else
+	\ifdefined\@acro
 	\iflanguage{english}{\printglossary[type=\acronymtype,title=Acronyms, toctitle=Acronyms]}{}
 	\iflanguage{ngerman}{\printglossary[type=\acronymtype,title=Abkürzungen, toctitle=Abkürzungen]}{}
 	\clearpage
 	\fi
-	\ifx\@gloss\undefined
-	\else
+	\ifdefined\@gloss
 	\iflanguage{english}{\printglossary[title=Glossary, toctitle=Glossary]}{}
 	\iflanguage{ngerman}{\printglossary[title=Glossar, toctitle=Glossar]}{}
 	\fi
-	\ifx\@myindex\undefined
-	\else
+	\ifdefined\@myindex
 	\iflanguage{english}{\addcontentsline{toc}{section}{Index}}{}
 	\iflanguage{ngerman}{\addcontentsline{toc}{section}{Stichwortverzeichnis}}{}
 	\printindex
 	\fi
-	\ifx\@los\undefined
-	\else
+	\ifdefined\@los
 	\iflanguage{english}{\printbibliography[heading=bibintoc,title={References}]}{}
 	\iflanguage{ngerman}{\printbibliography[heading=bibintoc,title={Referenzen}]}{}
 	\fi
