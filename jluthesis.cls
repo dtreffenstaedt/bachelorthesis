@@ -16,7 +16,7 @@
 \RequirePackage{tikz}
 \RequirePackage{flowchart}
 \RequirePackage[european,EFvoltages]{circuitikz}
-\RequirePackage[acronym,toc]{glossaries}
+\RequirePackage[acronym,toc,automake]{glossaries}
 
 \makeglossaries
 \RequirePackage{amsmath} % mathematical function
@@ -208,17 +208,16 @@
 	
 	\maketitle % Titlepage
 	
-	\ifx\@toc\undefined
-	\renewcommand{\numberline}[1]{}
-	\renewcommand{\@seccntformat}[1]{}
-	\else
+	\ifx\@toc\defined
 	\thispagestyle{plain}
 	\tableofcontents
 	\newpage
+	\else
+	\renewcommand{\numberline}[1]{}
+	\renewcommand{\@seccntformat}[1]{}
 	\fi
 	
-	\ifx\@lof\undefined
-	\else
+	\ifx\@lof\defined
 	\thispagestyle{plain}
 	\iflanguage{english}{\addcontentsline{toc}{section}{List of Figures}}{}
 	\iflanguage{ngerman}{\addcontentsline{toc}{section}{Abbildungsverzeichnis}}{}
@@ -226,8 +225,7 @@
 	\newpage
 	\fi
 	
-	\ifx\@lot\undefined
-	\else
+	\ifx\@lot\defined
 	\thispagestyle{plain}
 	\iflanguage{english}{\addcontentsline{toc}{section}{List of Tables}}{}
 	\iflanguage{ngerman}{\addcontentsline{toc}{section}{Tabellenverzeichnis}}{}
@@ -237,8 +235,7 @@
 	
 	\pagenumbering{arabic} % start main pages Numbering
 	
-	\ifx\@abstr\undefined
-	\else
+	\ifx\@abstr\defined
 	\iflanguage{english}{\section*{Abstract}\addcontentsline{toc}{section}{Abstract}}{}
 	\iflanguage{ngerman}{\section*{Kurzbeschreibung}\addcontentsline{toc}{section}{Abstract}}{}
 	\begin{abstract}#1\end{abstract}
@@ -247,20 +244,21 @@
 \makeatother
 
 \makeatletter
-\newcommand{\backmatter}{%
+\newcommand{\makeback}{%
 	\newpage
 	\setcounter{section}{0}
 	\renewcommand*{\thesection}{\Alph{section}}
 	\pagenumbering{Roman}
-	\ifx\@gloss\undefined
-	\else
-	\iflanguage{english}{\printglossary[title=Glossary, toctitle=Glossary]}{}
-	\iflanguage{ngerman}{\printglossary[title=Glossar, toctitle=Glossar]}{}
-	\fi
 	\ifx\@acro\undefined
 	\else
 	\iflanguage{english}{\printglossary[type=\acronymtype,title=Acronyms, toctitle=Acronyms]}{}
 	\iflanguage{ngerman}{\printglossary[type=\acronymtype,title=Abkürzungen, toctitle=Abkürzungen]}{}
+	\clearpage
+	\fi
+	\ifx\@gloss\undefined
+	\else
+	\iflanguage{english}{\printglossary[title=Glossary, toctitle=Glossary]}{}
+	\iflanguage{ngerman}{\printglossary[title=Glossar, toctitle=Glossar]}{}
 	\fi
 	\ifx\@myindex\undefined
 	\else
