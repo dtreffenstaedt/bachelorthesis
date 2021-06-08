@@ -183,16 +183,67 @@ A method using the electromagnetic component of a cosmic air shower exploits the
 	\caption{Mechanism for crystal scintillators}
 	\label{fig:scintillator}
 \end{figure}
-Another method is to detect the muonic component, this can be done through Scintillator detectors. Due to the muon being a charged particle, it interacts with matter and deposits energy. Certain materials can give off this energy via photons, a process which is known as scintillation. Figure \ref{fig:scintillator} shows the mechanism through which scintillation occurs. First, an electron is excited from the valence band into the conduction band through energy deposit from an incident particle. This electron then is transported through the conduction band where it can drop back down to the valence band. Though if it dropped back directly, a photon would be emitted which could immediatly excit another electron in the valence band. What makes scintillators special is the existance of traps which reduce the energy of the emitted photons. Those photons then do not have enough energy to excite eletrons in the material so they can pass through it. With the use of a photmultiplier, the emitted photons can then be detected.
+Another method is to detect the muonic component, this can be done through Scintillator detectors. Due to the muon being a charged particle, it interacts with matter and deposits energy. Certain materials can give off this energy via photons, a process which is known as scintillation. Figure \ref{fig:scintillator} shows the mechanism through which scintillation occurs. First, an electron is excited from the valence band into the conduction band through energy deposit from an incident particle. This electron then is transported through the conduction band where it can drop back down to the valence band. Though if it dropped back directly, a photon would be emitted which could immediately excite another electron in the valence band. What makes scintillators special is the existence of traps which reduce the energy of the emitted photons. Those photons then do not have enough energy to excite electrons in the material so they can pass through it. With the use of a photomultiplier, the emitted photons can then be detected.
 \section{Detector Network}
-Since one detector alone only provides the timestamp of one particle hit, it does not provide useful information on its own. That is why for real measurements a network of detectors has to be used. The network on which this thesis is based consists of low-cost plastic scintillator detector units utilising a RaspberryPi minicomputer addon board as readout electronics.
+Since one detector alone only provides the timestamp of one particle hit, it does not provide useful information on its own when the goal is to measure cosmic shower events. That is why for real measurements a network of detectors has to be used. The network on which this thesis is based consists of low-cost plastic scintillator detector units utilising a Raspberry Pi minicomputer add-on board as readout electronics. Those detectors are specifically intended as a citizen science project. This has the benefit of being able to distribute detectors over a large area with minimal resource use.
 
 
-The detector network is made up of a number of low-cost scintillator detectors. Each detector consists of a scintillator with \acrfull{sipm} assembly, an interface board with \acrfull{adc} and a RaspberryPi minicomputer. The interface board analyses signals from the \acrshort{sipm}, retrieves the current timestamp and passes this timestamped event along to a software running on the RaspberryPi minicomputer which sends it to a server. Each timestamped event is thus written to a central database where it can be further analysed at a later time. Due to the number of detectors and their respective rate of few Hz, a large number of events is writen to the database. This causes a large strain on the server infrastructure when running post-analysis programs since they need to handle large amounts of data in a short period of time. Since this is sub-optimal, a realtime solution which performs as much analysis and pre-filtering as possible in order to reduce the runtime impact of the analysis is preferable.
+Each detector in the network consists of a scintillator with \acrfull{sipm} assembly, an interface board with \acrfull{adc} and a Raspberry Pi minicomputer. The interface board receives signals from the \acrshort{sipm} and records the current timestamp. This timestamp is then processed by a software running on the Raspberry Pi minicomputer which sends it to a server. Each timestamped event is thus written to a central database where it can be further analysed at a later time. Due to the number of detectors and their respective rate of few Hz each, a large number of events is written to the database. In set intervals, this Data is analysed through post-processing methods. This however puts a large strain on the server infrastructure due to the amount of data being read and written back to the database. A better approach is to perform a pre-processing step through a filter before storing each the data point in the database.
+\begin{figure}[ht!]
+	\centering
+	\begin{tikzpicture}[>=latex, ->]
+		\node (scintillator) [draw, process, minimum height=1cm] {Scintillator};
+		\node (sipm) [right=of scintillator, draw, process, minimum height=1cm] {SiPM};
+		\node (cdu) [right=of sipm, draw, process, minimum height=1cm] {CDU};
+		\node (rapi) [right=of cdu, draw, process, minimum height=1cm] {Raspberry Pi};
+		\node (server) [below=of rapi, draw, process, minimum height=1cm] {Server};
+		\node (dnp) [left=of server, draw, process, minimum height=1cm] {DNP};
+		\node (db) [left=of dnp, draw, process, minimum height=1cm] {Database};
+		
+		\draw (scintillator) -- (sipm);
+		\draw (sipm) -- (cdu);
+		\draw (cdu) -- (rapi);
+		\draw (rapi) -- (server);
+		\draw (server) -- (dnp);
+		\draw (dnp) -- (db);
+	\end{tikzpicture}
+	\caption{Path of one event through the detector network}
+	\label{fig:event-path}
+\end{figure}
+The path of an event through the detector network is shown in figure \ref{fig:event-path}. There, CDU stands for Cosmic Detector Unit, which is the hardware add-on board on top of the Raspberry Pi. DNP stands for Detector Network Processor, the software running on the server which analyses each event.
 
+\subsection{Data}
+The shape of the shower front of a cosmic shower can initially be assumed to be a thick spherical cap. In reality it is deformed by relativistic effects due to the propagation velocity of close to the speed of light.
+\begin{figure}[ht!]
+	\centering
+	\begin{tikzpicture}
+		\fill (0,0) coordinate(det1) circle(0.1) node[above right] {Detector 1};
+		\fill (6,0) coordinate(det2) circle(0.1) node[below right] {Detector 2};
+		\draw[ultra thick] (det2) ++ (125:1) arc(-55:-35:6.1) arc(-35:-125:6.1) node[left] {$t_1$};
+		\draw[ultra thick, dashed] (det2) arc(-55:-35:7.1) arc(-35:-125:7.1) node[left] {$t_2$};
+		\path (det2) arc(-55:-70:7.1) coordinate(source);
+		\draw[<-, >=latex] (source) -- ++ (110:5) node[left] {propagation direction};
+	\end{tikzpicture}
+	\caption{Propagation of the shower front}
+	\label{fig:data-shape}
+\end{figure}
+Figure \ref{fig:data-shape} shows the propagation of the shower front in relation to two detectors. Assuming both detectors have a detection efficiency of $100\,\%$, both will show an event at their respective timestamps $t_1$ and $t_2$. The time difference between both measured timestamps can help to reconstruct the direction of propagation, a method how to do this is shown later in this thesis.
+
+This can be used to formulate a criterium for combination of single events to one connected event, here called a coincidence.
 \section{Real-time analysis}
+In order to detect coincidences from all incoming single data points, each data point has to be compared with all others in order to find all possible combinations. In order to do this, a useful criterium for a coincidence has to be found. A simple approach is to select a fixed maximum time difference which two events can have in order to be counted towards a coincidence. This however is inefficient and leads to large numbers of false positives, since a fixed interval can not perform well for detector combinations with large and short distances at the same time. Due to this a variable distance based criterium is necessary.
 \subsection{Coincidence criteria}
-A sturdy criterium to define a coincidence has to be found. Initially the criterium was defined as the $\Delta{t}$ of two events being lower than $100\,\mu\text{s}$, which corresponds to a maximum possible detector distance of $29.97\,\text{km}$. Since in reality the maximum coincidence interval is dependent on the actual detector distance and is limited by the flight distance of a muon, this criterium must be improved upon. A first approach lies in calculating the distance between the detector pair belonging to the coincidence event which is to be analysed. This is implemented as the euclidean distance derived from the detector coordinates. Therefore the WGS84 earth coordinate model has been implemented to be able to convert a given pair of geodetic coordinates to relative carthesian coordinates, specifically in the \acrfull{enu} system. The WGS84 model thereby approximates the shape of earth as an oblate spheroid. Given the straight line distance, the time of flight given the speed of light in vacuum $c_0$ can be taken as a first approximation for the expected maximum coincidence window.
+\begin{figure}[ht!]
+	\centering
+	\begin{tikzpicture}
+		\draw[ultra thick, -> , >=latex] (0,0) -- ++(10,0) node[below] {$t$};
+		\draw[dashed] (1,0.5) -- ++(0,-1) node[below] {$t_1$};
+		\draw[dashed] (3,0.5) -- ++(0,-1) node[below] {$t_2$};
+		\draw[dashed] (5,0.5) -- ++(0,-1) node[below] {$t_3$};
+		\draw[dashed] (8,0.5) -- ++(0,-1) node[below] {$t_4$};
+	\end{tikzpicture}
+\end{figure}
+Initially the criterium was defined as the $\Delta{t}$ of two events being lower than $100\,\mu\text{s}$, which corresponds to a maximum possible detector distance of $29.97\,\text{km}$. Since in reality the maximum coincidence interval is dependent on the actual detector distance and is limited by the flight distance of a muon, this criterium must be improved upon. A first approach lies in calculating the distance between the detector pair belonging to the coincidence event which is to be analysed. This is implemented as the euclidean distance derived from the detector coordinates. Therefore the WGS84 earth coordinate model has been implemented to be able to convert a given pair of geodetic coordinates to relative carthesian coordinates, specifically in the \acrfull{enu} system. The WGS84 model thereby approximates the shape of earth as an oblate spheroid. Given the straight line distance, the time of flight given the speed of light in vacuum $c_0$ can be taken as a first approximation for the expected maximum coincidence window.
 
 This value however still needs to be refined in two ways. firstly, a minimum value has to be set due to limitations of the possible time resolution of the timestamping of each event and a not well understood per-detector timing offset on the order of magnitude of few tens of ns. This is especially critical in the case of detectors which are close together, since their calculated time of flight is only few ns, and thus would cut off a significant number of coincidence events. In order to mitigate this, a minimum coincidence window of $150\,\text{ns}$ width is defined. This value is chosen to reliably capture all coincidence events for even the closest detector pairs.
 
@@ -206,7 +257,7 @@ The path of an event in the program is shown in figure \ref{fig:programlayout}. 
 \begin{figure}[ht!]
 	\centering
 	\begin{tikzpicture}[->]
-		\node (source) [draw, process,minimum height=1cm] {Event Source};
+		\node (source) [draw, process,minimum height=1cm] {};
 		\node (supervision) [below=of source, draw, process,minimum height=1cm] {Station supervision};
 		\node (filter) [below=of supervision, draw, process,minimum height=1cm] {Coincidence filter};
 		\node (refinement) [below=of filter, draw, process,minimum height=1cm] {Coincidence refinement};
@@ -308,7 +359,7 @@ Given that the shower front is not a complete spherical surface but only a spher
 		\draw[dashed] (det2) ++(125:1) ++ (215:2) -- ++(35:4) node[right] {tangent};
 		\draw (det2) ++ (125:1) arc(-55:-35:6.1) arc(-35:-125:6.1) node[left] {shower front};
 		\draw (center) -- (det1) -- (det2);
-		\draw (center) -- ++(0,-6.1);
+		\draw (center) -- ++(-81:6.1);
 		\draw[<->] (center) ++(-55:1) arc(-55:-90:1);
 		\draw[<->] (center) ++(-55:1) arc(-55:-90:1);
 		\draw (det2) ++(125:1) -- (det1);
