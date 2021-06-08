@@ -268,7 +268,9 @@ In order to determine coincidences, each event needs to be checked against all o
 	\caption{Conflicting data state of four single events}
 	\label{fig:conflicts}
 \end{figure}
-There, \tikz \draw (0,0) -- (0.5,0); marks a physical time difference and \tikz \draw[dashed] (0,0) -- (0.5,0); marks an unphysical time difference. This leads to a conflict, since all stations $s_{1,2,3,4}$ have at least one physical coincidence time to at least one other station, but also do not fit together with other stations. This means that the whole coincidence is not physical, though an unknown number of partial coincidences can be. This conflict required further investigation and can not be resolved easily without access to more information.
+There, \tikz \draw (0,0) -- (0.5,0); marks a physical time difference and \tikz \draw[dashed] (0,0) -- (0.5,0); marks an unphysical time difference. This leads to a conflict, since all stations $s_{1,2,3,4}$ have at least one physical coincidence time to at least one other station, but also do not fit together with other stations. This means that the whole coincidence is not physically viable, though an unknown number of partial coincidences can be. This conflict required further investigation and can not be resolved easily without access to more information. At this point in time the event will be accepted but marked as containing a conflict. In the future with more data available, it might be possible to resolve such a conflict though.
+
+\todo{plausability score}
 \subsection{Resolving conflicting data}
 \clearpage 
 \section{Program layout}
@@ -276,11 +278,11 @@ The path of an event in the program is shown in figure \ref{fig:programlayout}. 
 \begin{figure}[ht!]
 	\centering
 	\begin{tikzpicture}[->]
-		\node (source) [draw, process,minimum height=1cm] {};
+		\node (source) [draw, terminal,minimum height=1cm] {Event source};
 		\node (supervision) [below=of source, draw, process,minimum height=1cm] {Station supervision};
 		\node (filter) [below=of supervision, draw, process,minimum height=1cm] {Coincidence filter};
 		\node (refinement) [below=of filter, draw, process,minimum height=1cm] {Coincidence refinement};
-		\node (sink) [below=of refinement, draw, process,minimum height=1cm] {Event Sink};
+		\node (sink) [below=of refinement, draw, terminal,minimum height=1cm] {Event Sink};
 
 		\node (criterium) [left=of filter, draw, process,minimum height=1cm] {Coincidence criterium};
 		
@@ -368,6 +370,7 @@ The path of an event in the program is shown in figure \ref{fig:programlayout}. 
 Through the assumptions shown in figure \ref{fig:angle-assumptions}, the possible source directions of a primary particle can be reduced. There, the geometry of a coincidence with $n=2$ is shown. Since she shower front can be simplified as a spherical section and the propagation speed can be assumed to be near the speed of light, two spheres with a shared tangent can be constructed. One spherical surface is the shower front, the other is a sphere around the detector which had the later event timing. Its radius $\ell$ is equal to the propagation time of light for the coincidence time. Through geometrical analysis of this arrangement, the Radius and angle pair can be derived as a function of the angle $\alpha$. This creates a curve in the plane on which the primary interaction must have taken place. Due to the symmetry of this arrangement however, in 3-D space, this curve becomes a rotational surface. \\
 In the case of a coincidence with $n>2$ multiple curves can be calculated relative to the same root detector. This allows for the intersection points of each rotational surface to be calculated, which results in a reduced possible origin area for the primary interaction. \\
 Given that the shower front is not a complete spherical surface but only a spherical section, the possible origin directions can be reduced with this approach. In the case of higher coincidence numbers, the possible direction can be reduced further. Additionally to the possible directions, this approach also provides a lower limit for the shower radius and footprint radius, suggesting a minimum Particle energy.
+\clearpage
 \begin{figure}[ht!]
 	\centering
 	\begin{tikzpicture}
@@ -378,32 +381,40 @@ Given that the shower front is not a complete spherical surface but only a spher
 		\draw[dashed] (det2) ++(125:1) ++ (215:2) -- ++(35:4) node[right] {tangent};
 		\draw (det2) ++ (125:1) arc(-55:-35:6.1) arc(-35:-125:6.1) node[left] {shower front};
 		\draw (center) -- (det1) -- (det2);
-		\draw (center) -- ++(-81:6.1);
-		\draw[<->] (center) ++(-55:1) arc(-55:-90:1);
-		\draw[<->] (center) ++(-55:1) arc(-55:-90:1);
 		\draw (det2) ++(125:1) -- (det1);
 		\draw (det2) ++(125:1) -- ++(0,1) -- ++(0,-2);
 		
-		\draw[<->] (det2) ++(125:0.25) arc(-55:-90:0.75) node[above right] {$\alpha$};
+		\draw (det1) -- ++(0,-0.9) coordinate(det1b) -- ++(0,-0.1);
+		\draw (det2) -- ++(0,-0.9) coordinate(det2b) -- ++(0,-0.1);
+		
+		\draw[<->] (det2b) -- (det1b);
+		\node[above] at ($(det1b)!0.5!(det2b)$) {$d$};
+		\node[above left] at ($(det1)!0.5!(center)$) {$r$};
+		
+		\draw[<->] (det2) ++(125:2) arc(125:90:1) node[above left] {$\alpha$};
+		\draw[<->] (det2) ++(125:2) arc(125:189:1) node[above right] {$\gamma$};
+		\draw[<->] (det1) ++(0:1) arc(0:72:1) node[above right] {$\xi$};
+		\draw[<->] (det1) ++(0:3) arc(0:8.584336297778657:3) node[below right] {$\beta$};
+		\draw[<->] (det1) ++(8.584336297778657:3) node[above] {$s$};
 		
 	\end{tikzpicture}
 	\caption{Assumption for possible incidence angles}
 	\label{fig:angle-assumptions}
 \end{figure}
 \begin{equation}
-	\gamma = \frac{\pi}{2} - \alpha - \arctan\left(\frac{\ell\cdot\cos\alpha}{d - \ell\sin\alpha}\right)
+	\beta = \arctan\left(\frac{\ell\cdot\cos\alpha}{d - \ell\sin\alpha}\right)
 \end{equation}
 \begin{equation}
-	\frac{\delta}{2} = \frac{\pi}{2} - \gamma = \alpha + \arctan\left(\frac{\ell\cdot\cos\alpha}{d - \ell\sin\alpha}\right)
+	\gamma = \frac{\pi}{2} - \alpha + \beta
 \end{equation}
 \begin{equation}
-	\begin{aligned}
-	\xi &= \frac{\pi}{2} - \delta - \left(\gamma + \beta\right) = \frac{\pi}{2} - 2\left(\alpha + \arctan\left(\frac{\ell\cdot\cos\alpha}{d - \ell\sin\alpha}\right)\right) - \left(\frac{\pi}{2} - \alpha\right) \\
-	&= -3\alpha - 2\arctan\left(\frac{\ell\cdot\cos\alpha}{d - \ell\sin\alpha}\right)
-\end{aligned}
+	\xi = \gamma + \beta
 \end{equation}
 \begin{equation}
-	r = \frac{s}{2\cdot\sin\left(\frac{\delta}{2}\right)}
+	s = \frac{d - l}{\cos\left(\beta\right)}
+\end{equation}
+\begin{equation}
+	r = \frac{s}{2\cdot\cos\left(\gamma\right)}
 \end{equation}
 \clearpage
 \section{Conclusion}
