@@ -380,13 +380,16 @@ Figure \ref{fig:reconstruction_example} shows an example for possible combinatio
 	\caption{Plot of an example to reconstruct the possible direction of incident primary particle}
 	\label{fig:reconstruction_example}
 \end{figure}
-\begin{equation}
+\begin{equation*}
 	\begin{aligned}
-		x\lim_{\alpha\rightarrow0}r\left(\alpha\right) &= \infty\\
+		\lim_{\alpha\rightarrow0}r\left(\alpha\right) &= \infty\\
 		\lim_{\alpha\rightarrow0}\phi\left(\alpha\right) &= \phi_\infty
 	\end{aligned}
+\end{equation*}
+Noteworthy is that the possible values for $\alpha$ are constrained by a maximum value for $\delta$ due to a maximum shower footprint on earth. Adjusting for that, a lower limit for the radius r can be calculated iteratively through equation \ref{eq:delta_alpha}.
+\begin{equation}\label{eq:delta_alpha}
+	\delta = \pi - 2\cdot\gamma = 2\cdot\alpha - 2\cdot\arctan\left(\frac{\ell\cdot\cos\alpha}{d - \ell\sin\alpha}\right)
 \end{equation}
-Noteworthy is that the possible values for $\alpha$ are constrained by a maximum value for $\delta$ due to a maximum shower footprint on earth. Adjusting for that, a lower limit for the radius r can be calculated.
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.4\linewidth]{data/example_plot_vertical_constrained}
