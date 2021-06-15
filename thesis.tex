@@ -397,12 +397,15 @@ Figure \ref{fig:reconstruction_example_constrained} shows the same plot as figur
 
 Due to the inherent rotational symmetry of the system around the connecting straight line between both detectors, the curve shown in figures \ref{fig:reconstruction_example} and \ref{fig:reconstruction_example_constrained} show the outline of a rotational body with rotational axis equal to the connecting line. This permits a projection of the curve onto the ground in either direction. Doing this, the curves for all pairs involving a reference detector station can be calculted and projected onto the same plot, aligned according to the real world positions. Figure \ref{fig:reconstruction_example_ground} shows this construction for a coincidence $n=3$, where the reference detector is located in the center and both other detectors are located towards the right. The real world distance between the reference station and station1 is $3.4\,\text{km}$, between the reference and station2 $2\,\text{km}$.
 It can be seen that the curves overlap in the bottom half of the plot, indicating a possible origin region for the primary interaction.
+
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.4\linewidth]{data/example_plot_ground}
 	\caption{Ground plot for a coincidence with $n=3$.}
 	\label{fig:reconstruction_example_ground}
 \end{figure}
+
+Though due to the fact that the space of possible origin points is a rotational body, the cross section between both curves is a region in 3D space.
 \clearpage
 \section{Program layout}
 The path of an event in the program is shown in figure \ref{fig:programlayout}. The source receives the event data and passes it on to the Station supervision class. It supervises the runtime data of each detector station and classifies it into reliability states. The specific criteria are described in the flowchart in figure \todo{make flowchart}.
