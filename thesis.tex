@@ -409,6 +409,8 @@ It can be seen that the curves overlap in the bottom half of the plot, indicatin
 \end{figure}
 
 Though due to the fact that the space of possible origin points is a rotational body, the cross section between both curves is a region in 3D space.
+
+There are also other methods for primary vertex reconstruction, one of which is multilateration. However, that requires a minimum number of four detector stations in order to converge and provide a viable solution. The presented method provides a good first order approximation for the primary vertex with minimal computational effort.
 \clearpage
 \section{Program layout}
 The path of an event in the program is shown in figure \ref{fig:programlayout}. The source receives the event data and passes it on to the Station supervision class. It supervises the runtime data of each detector station and classifies it into reliability states. The specific criteria are described in the flowchart in figure \todo{make flowchart}.
