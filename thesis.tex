@@ -243,7 +243,12 @@ It is also necessary to define an upper window, since the range of muons in air 
 	\label{fig:muon-energy-spectrum}
 \end{figure}
 \subsection{Coincidence and plausability determination}
-In order to determine coincidences, each event needs to be checked against all other events which are currently in the event buffer. If the coincidence coindition described before is met, the event is combined to a coincidence event and processed further. However there are cases where conflicting data has to be processed, which is shown in figure \ref{fig:conflicts}.
+In order to determine coincidences, each event needs to be checked against all other events which are currently in the event buffer. To determine whether two events contain a coincidence, it is beneficial to calculate a score for each pair as follows:
+\begin{equation}\label{eq:coinc_score}
+	c = \frac{1 - |t_1 - t_2|}{t_{tof}}
+\end{equation}
+In equation \ref{eq:coinc_score} $t_1$ and $t_2$ denote the timestamps of both events and $t_{tof}$ the time of flight between both stations. This results in a number $c\leq1$ where a value $\leq0$ describes an unphysical coincidence. In the case that multiple stations need to be compared, a complete graph needs to be calculated with edge weights equalling the score of the pair connected by this edge. An example of this construction is shown in figure \ref{fig:conflicts}.
+
 \begin{figure}[ht!]
 	\centering
 	\begin{tikzpicture}
@@ -264,14 +269,36 @@ In order to determine coincidences, each event needs to be checked against all o
 		\draw (s2) -- (s3);
 		\draw[dashed] (s2) -- (s4);
 		\draw (s3) -- (s4);
+		
+		\node[below left] at ($(s1)!0.5!(s2)$) {$c_{12}$};
+		\node[above right] at ($(s1)!0.5!(s3)$) {$c_{13}$};
+		\node[below right] at ($(s1)!0.5!(s4)$) {$c_{14}$};
+		\node[below left] at ($(s2)!0.5!(s4)$) {$c_{24}$};
+		\node[above right] at ($(s2)!0.5!(s3)$) {$c_{23}$};
+		\node[above right] at ($(s3)!0.5!(s4)$) {$c_{34}$};
 	\end{tikzpicture}
-	\caption{Conflicting data state of four single events}
+	\caption{Visualisation of four single events with possible coincidences}
 	\label{fig:conflicts}
 \end{figure}
-There, \tikz \draw (0,0) -- (0.5,0); marks a physical time difference and \tikz \draw[dashed] (0,0) -- (0.5,0); marks an unphysical time difference. This leads to a conflict, since all stations $s_{1,2,3,4}$ have at least one physical coincidence time to at least one other station, but also do not fit together with other stations. This means that the whole coincidence is not physically viable, though an unknown number of partial coincidences can be. This conflict required further investigation and can not be resolved easily without access to more information. At this point in time the event will be accepted but marked as containing a conflict. In the future with more data available, it might be possible to resolve such a conflict though.
+There, \tikz \draw (0,0) -- (0.5,0); marks a physical time difference and \tikz \draw[dashed] (0,0) -- (0.5,0); marks an unphysical time difference. This leads to a conflict, since all stations $s_{1,2,3,4}$ have at least one physical coincidence time to at least one other station, but also do not fit together with other stations. This means that the whole coincidence is not physically viable, though an unknown number of partial coincidences can be.
 
-\todo{plausability score}
-\subsection{Resolving conflicting data}
+In order to quantify this problem as one number, the unweighted plausibility score is introduced. Consider the graph with vertices $V = (s_1; s_2; s_3; s_4)$ from figure \ref{fig:conflicts} where the edges describe possible coincidences and the vertices detector stations. Only the set of edges $E = (c_{12}; c_{13}; c_{23}; c_{24})$ contains valid coincidences. The plausibility score of a full event with $n$ detector stations is then defined through
+\begin{equation}
+p = \frac{|E|}{\Delta_{n-1}}=\frac{2\cdot|E|}{n(n-1)}
+\end{equation}
+where $\Delta_n$ is the triangular number and $|E|$ the number of edges in the set $E$.
+
+For a fully plausible coincidence event, this score is $1$, for the example in figure \ref{fig:conflicts} it is $p = \frac{4}{6}=\frac{2}{3}$.
+
+In order to attempt to resolve this conflict additionally the weighted plausibility score $_wp$ is introduced:
+\begin{equation}
+	_wp = \frac{\sum^{n}_{i}\sum^{n}_{j} c_{ij}}{\Delta_{n-1}}
+\end{equation}
+
+The goal in resolving conflicting data is to maximise $_wp$ and reach $p=1$. Without access to more data is is impossible to definitively resolve this conflict, however an approximation can be performed.
+
+This approximation can be done through selectively removing the vertex $s_i$ with lowest weighted rank $_wrank(s_i) = \sum_{j}^{n}c_{ij}$ in the graph and recalculating $_wp$, this is repeated until $p=1$ is reached. Should this prove to be impossible without removing too many edges for the purpose of preserving potentially useful data the process is cancelled and the whole event is accepted tentatively.
+
 \clearpage 
 \section{Program layout}
 The path of an event in the program is shown in figure \ref{fig:programlayout}. The source receives the event data and passes it on to the Station supervision class. It supervises the runtime data of each detector station and classifies it into reliability states. The specific criteria are described in the flowchart in figure \todo{make flowchart}.
