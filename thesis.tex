@@ -230,6 +230,20 @@ The shower front shape of a cosmic shower can initially be assumed to be a thick
 Figure \ref{fig:data-shape} shows the propagation of the shower front in relation to two detectors. Assuming both detectors have a detection efficiency of $100\,\%$, both will show an event at their respective timestamps $t_1$ and $t_2$. The time difference between both measured timestamps can help to reconstruct the direction of propagation, a method how to do this is shown later in this thesis.
 
 Comparing the timestamps of single detector hits can be used to correlate single data points and combine them to coincidences.
+
+\begin{figure}[ht!]
+	\centering
+	\begin{tikzpicture}
+		\begin{axis}[area style, xlabel={$\Delta{t}\,[\text{ns}]$},ylabel={$n$}, xmin=-150,xmax=150]% coordinates
+			\addplot+[ybar interval,mark=no] table {data/hgz0_hgzHeuchelheim2.hist};
+		\end{axis}
+	\end{tikzpicture} \\
+	\begin{tikzpicture}
+		\draw[ultra thick] (0,0) -- ++(1,0);
+		\draw[ultra thick] (4,4) -- ++(1,0);
+	\end{tikzpicture}
+	\caption{Coincidence time histogram for two detector pairs with geometric}
+\end{figure}
 \section{Real-time analysis}
 In order to detect coincidences from all incoming single data points, each data point has to be compared with all others in order to find all possible combinations. In order to do this, a useful criterium for a coincidence has to be found. A simple approach is to select a fixed maximum time difference which two events can have in order to be counted towards a coincidence. This however is inefficient and leads to large numbers of false positives, since a fixed interval can not perform well for detector combinations with large and short distances at the same time. Due to this a variable distance based criterium is used. For this purpose, the geodetic coordinates of both detector stations are taken and the straight line distance is calculated through \acrfull{enu} coordinates with the WGS84 model. With this distance, the time of flight for the speed of light is calculated in order to receive the maximum physically viable time difference for one detector pair. This value however has large uncertainties especially for detector pairs which are close together.
 
@@ -248,7 +262,6 @@ In order to determine coincidences, each event needs to be checked against all o
 	c = \frac{1 - |t_1 - t_2|}{t_{tof}}
 \end{equation}
 In equation \ref{eq:coinc_score} $t_1$ and $t_2$ denote the timestamps of both events and $t_{tof}$ the time of flight between both stations. This results in a number $c\leq1$ where a value $\leq0$ describes an unphysical coincidence. In the case that multiple stations need to be compared, a complete graph needs to be calculated with edge weights equalling the score of the pair connected by this edge. An example of this construction is shown in figure \ref{fig:conflicts}.
-
 \begin{figure}[ht!]
 	\centering
 	\begin{tikzpicture}
@@ -280,7 +293,7 @@ In equation \ref{eq:coinc_score} $t_1$ and $t_2$ denote the timestamps of both e
 	\caption{Visualisation of four single events with possible coincidences}
 	\label{fig:conflicts}
 \end{figure}
-There, \tikz \draw (0,0) -- (0.5,0); marks a physical time difference and \tikz \draw[dashed] (0,0) -- (0.5,0); marks an unphysical time difference. This leads to a conflict, since all stations $s_{1,2,3,4}$ have at least one physical coincidence time to at least one other station, but also do not fit together with other stations. This means that the whole coincidence is not physically viable, though an unknown number of partial coincidences can be.
+There, \tikz \draw (0,0) -- (0.5,0); marks a physical time difference and \tikz \draw[dashed] (0,0) -- (0.5,0); marks an unphysical time difference. This leads to a conflict, since all stations $s_{1,2,3,4}$ have at least one physical coincidence time to at least one other station, but the data for $s_4$ only fits together with the data of $s_3$. This means that the whole coincidence is not physically viable, though an unknown number of partial coincidences can be.
 
 In order to quantify this problem as one number, the unweighted plausibility score is introduced. Consider the graph with vertices $V = (s_1; s_2; s_3; s_4)$ from figure \ref{fig:conflicts} where the edges describe possible coincidences and the vertices detector stations. Only the set of edges $E = (c_{12}; c_{13}; c_{23}; c_{24})$ contains valid coincidences. The plausibility score of a full event with $n$ detector stations is then defined through
 \begin{equation}
@@ -297,9 +310,100 @@ In order to attempt to resolve this conflict additionally the weighted plausibil
 
 The goal in resolving conflicting data is to maximise $_wp$ and reach $p=1$. Without access to more data is is impossible to definitively resolve this conflict, however an approximation can be performed.
 
-This approximation can be done through selectively removing the vertex $s_i$ with lowest weighted rank $_wrank(s_i) = \sum_{j}^{n}c_{ij}$ in the graph and recalculating $_wp$, this is repeated until $p=1$ is reached. Should this prove to be impossible without removing too many edges for the purpose of preserving potentially useful data the process is cancelled and the whole event is accepted tentatively.
+This approximation can be done through selectively removing the vertex $s_i$ with lowest weighted rank
+\begin{equation}
+_wrank(s_i) = \sum_{j}^{n}c_{ij}
+\end{equation}
+in the graph and recalculating $_wp$, this is repeated until $p=1$ is reached. Should this prove to be impossible without removing too many edges for the purpose of preserving potentially useful data the process is cancelled and the whole event is accepted tentatively.
 
-\clearpage 
+\section{Primary reconstruction}\label{sec:reconstruction}
+\subsection{Possible primary incident angles}
+Through the assumptions shown in figure \ref{fig:angle-assumptions}, the possible source directions of a primary particle can be reduced. There, the geometry of a coincidence with $n=2$ is shown. Since she shower front can be simplified as a spherical section and the propagation speed can be assumed to be near the speed of light, two spheres with a shared tangent can be constructed. One spherical surface is the shower front, the other is a sphere around the detector which had the later event timing. Its radius $\ell$ is equal to the propagation time of light for the coincidence time. Through geometrical analysis of this arrangement, the Radius and angle pair can be derived as a function of the angle $\alpha$. This creates a curve in the plane on which the primary interaction must have taken place. Due to the symmetry of this arrangement however, in 3-D space, this curve becomes a rotational surface. \\
+In the case of a coincidence with $n>2$ multiple curves can be calculated relative to the same root detector. This allows for the intersection points of each rotational surface to be calculated, which results in a reduced possible origin area for the primary interaction. \\
+Given that the shower front is not a complete spherical surface but only a spherical section, the possible origin directions can be reduced with this approach. In the case of higher coincidence numbers, the possible direction can be reduced further. Additionally to the possible directions, this approach also provides a lower limit for the shower radius and footprint radius, suggesting a minimum Particle energy.
+\begin{figure}[ht!]
+	\centering
+	\begin{tikzpicture}
+		\fill (0,0) coordinate(det1) circle(0.1);
+		\fill (6,0) coordinate(det2) circle(0.1);
+		\draw (det2) circle(1);
+		\draw (det2) -- ++(125:0.7) node[right] {$\ell$} -- ++(125:6.4) coordinate(center);
+		\draw[dashed] (det2) ++(125:1) ++ (215:2) -- ++(35:4) node[right] {tangent};
+		\draw (det2) ++ (125:1) arc(-55:-35:6.1) arc(-35:-125:6.1) node[left] {shower front};
+		\draw (center) -- (det1) -- (det2);
+		\draw (det2) ++(125:1) -- (det1);
+		\draw (det2) ++(125:1) -- ++(0,1) -- ++(0,-2);
+		
+		\draw (det1) -- ++(0,-0.9) coordinate(det1b) -- ++(0,-0.1);
+		\draw (det2) -- ++(0,-0.9) coordinate(det2b) -- ++(0,-0.1);
+		
+		\draw[<->] (det2b) -- (det1b);
+		\node[above] at ($(det1b)!0.5!(det2b)$) {$d$};
+		\node[above left] at ($(det1)!0.5!(center)$) {$r$};
+		
+		\draw[<->] (center) ++(-55:2) arc(-55:-108:2) node[above right] {$\delta$};
+		\draw[<->] (det2) ++(125:2) arc(125:90:1) node[above left] {$\alpha$};
+		\draw[<->] (det2) ++(125:2) arc(125:189:1) node[above right] {$\gamma$};
+		\draw[<->] (det1) ++(0:1) arc(0:72:1) node[above right] {$\phi$};
+		\draw[<->] (det1) ++(0:3) arc(0:8.584336297778657:3) node[below right] {$\beta$};
+		\draw[<->] (det1) ++(8.584336297778657:3) node[above] {$s$};
+		
+	\end{tikzpicture}
+	\caption{Assumption for possible incidence angles}
+	\label{fig:angle-assumptions}
+\end{figure}
+Calculating the angles $\beta$ and $\gamma$ and length $s$, we get the equations
+\begin{equation}
+	\beta = \arctan\left(\frac{\ell\cdot\cos\alpha}{d - \ell\sin\alpha}\right)
+\end{equation}
+,
+\begin{equation}
+	\gamma = \frac{\pi}{2} - \alpha + \beta
+\end{equation}
+and
+\begin{equation}
+	s = \sqrt{\left(l\cdot\cos\left(\alpha\right)\right)^2 + \left(d - l\cdot\sin\left(\alpha\right)\right)^2} = \sqrt{l^2 + d^2 - 2dl\sin\left(\alpha\right)}
+\end{equation}
+. With those, the polar coordinates $(\phi, r)$ can be calculated with equations \ref{eq:phi} and \ref{eq:r}.
+\begin{equation}\label{eq:phi}
+	\phi = \gamma + \beta = \frac{\pi}{2} - \alpha + 2\cdot\beta
+\end{equation}
+\begin{equation}\label{eq:r}
+	r = \frac{s}{2\cdot\cos\left(\gamma\right)} = \frac{\sqrt{l^2 + d^2 - 2{\cdot}d{\cdot}l{\cdot}\sin\left(\alpha\right)}}{2\cdot\sin\left(\alpha - \beta\right)}
+\end{equation}
+
+
+Figure \ref{fig:reconstruction_example} shows an example for possible combinations of $r$ and $\phi$ as calculated above for a detector pair with distance of $3.4\,\text{km}$ and a coincidence time of $7.37\,\mu\text{s}$. Following the curve, the free parameter $\alpha$ is varied. The minimum possible distance is reached when $\alpha=\frac{\pi}{2}$, since then the center of the constructed circle in figure \ref{fig:angle-assumptions} lies directly on the line between both detectors. As $\alpha$ approaches $0$, the possible radius tends to infinity and $\phi$ tends to a stationary value $\phi_\infty$.
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.4\linewidth]{data/example_plot_vertical}
+	\caption{Plot of an example to reconstruct the possible direction of incident primary particle}
+	\label{fig:reconstruction_example}
+\end{figure}
+\begin{equation}
+	\begin{aligned}
+		x\lim_{\alpha\rightarrow0}r\left(\alpha\right) &= \infty\\
+		\lim_{\alpha\rightarrow0}\phi\left(\alpha\right) &= \phi_\infty
+	\end{aligned}
+\end{equation}
+Noteworthy is that the possible values for $\alpha$ are constrained by a maximum value for $\delta$ due to a maximum shower footprint on earth. Adjusting for that, a lower limit for the radius r can be calculated.
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.4\linewidth]{data/example_plot_vertical_constrained}
+	\caption{Possible incident angles and radii constrained to a maximum possible angle $\delta_{max}$}
+	\label{fig:reconstruction_example_constrained}
+\end{figure}
+Figure \ref{fig:reconstruction_example_constrained} shows the same plot as figure \ref{fig:reconstruction_example} but with a constrained angle $\delta_{max} = \frac{\pi}{4}$.
+
+Due to the inherent rotational symmetry of the system around the connecting straight line between both detectors, the curve shown in figures \ref{fig:reconstruction_example} and \ref{fig:reconstruction_example_constrained} show the outline of a rotational body with rotational axis equal to the connecting line. This permits a projection of the curve onto the ground in either direction. Doing this, the curves for all pairs involving a reference detector station can be calculted and projected onto the same plot, aligned according to the real world positions. Figure \ref{fig:reconstruction_example_ground} shows this construction for a coincidence $n=3$, where the reference detector is located in the center and both other detectors are located towards the right. The real world distance between the reference station and station1 is $3.4\,\text{km}$, between the reference and station2 $2\,\text{km}$.
+It can be seen that the curves overlap in the bottom half of the plot, indicating a possible origin region for the primary interaction.
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.4\linewidth]{data/example_plot_ground}
+	\caption{Ground plot for a coincidence with $n=3$.}
+	\label{fig:reconstruction_example_ground}
+\end{figure}
+\clearpage
 \section{Program layout}
 The path of an event in the program is shown in figure \ref{fig:programlayout}. The source receives the event data and passes it on to the Station supervision class. It supervises the runtime data of each detector station and classifies it into reliability states. The specific criteria are described in the flowchart in figure \todo{make flowchart}.
 \begin{figure}[ht!]
@@ -392,57 +496,6 @@ The path of an event in the program is shown in figure \ref{fig:programlayout}. 
 		\draw (decide2) -- (decide2l) |- (decide1);
 	\end{tikzpicture}
 \end{figure}
-\section{Primary reconstruction}\label{sec:reconstruction}
-\subsection{Possible primary incident angles}
-Through the assumptions shown in figure \ref{fig:angle-assumptions}, the possible source directions of a primary particle can be reduced. There, the geometry of a coincidence with $n=2$ is shown. Since she shower front can be simplified as a spherical section and the propagation speed can be assumed to be near the speed of light, two spheres with a shared tangent can be constructed. One spherical surface is the shower front, the other is a sphere around the detector which had the later event timing. Its radius $\ell$ is equal to the propagation time of light for the coincidence time. Through geometrical analysis of this arrangement, the Radius and angle pair can be derived as a function of the angle $\alpha$. This creates a curve in the plane on which the primary interaction must have taken place. Due to the symmetry of this arrangement however, in 3-D space, this curve becomes a rotational surface. \\
-In the case of a coincidence with $n>2$ multiple curves can be calculated relative to the same root detector. This allows for the intersection points of each rotational surface to be calculated, which results in a reduced possible origin area for the primary interaction. \\
-Given that the shower front is not a complete spherical surface but only a spherical section, the possible origin directions can be reduced with this approach. In the case of higher coincidence numbers, the possible direction can be reduced further. Additionally to the possible directions, this approach also provides a lower limit for the shower radius and footprint radius, suggesting a minimum Particle energy.
-\clearpage
-\begin{figure}[ht!]
-	\centering
-	\begin{tikzpicture}
-		\fill (0,0) coordinate(det1) circle(0.1);
-		\fill (6,0) coordinate(det2) circle(0.1);
-		\draw (det2) circle(1);
-		\draw (det2) -- ++(125:0.7) node[right] {$\ell$} -- ++(125:6.4) coordinate(center);
-		\draw[dashed] (det2) ++(125:1) ++ (215:2) -- ++(35:4) node[right] {tangent};
-		\draw (det2) ++ (125:1) arc(-55:-35:6.1) arc(-35:-125:6.1) node[left] {shower front};
-		\draw (center) -- (det1) -- (det2);
-		\draw (det2) ++(125:1) -- (det1);
-		\draw (det2) ++(125:1) -- ++(0,1) -- ++(0,-2);
-		
-		\draw (det1) -- ++(0,-0.9) coordinate(det1b) -- ++(0,-0.1);
-		\draw (det2) -- ++(0,-0.9) coordinate(det2b) -- ++(0,-0.1);
-		
-		\draw[<->] (det2b) -- (det1b);
-		\node[above] at ($(det1b)!0.5!(det2b)$) {$d$};
-		\node[above left] at ($(det1)!0.5!(center)$) {$r$};
-		
-		\draw[<->] (det2) ++(125:2) arc(125:90:1) node[above left] {$\alpha$};
-		\draw[<->] (det2) ++(125:2) arc(125:189:1) node[above right] {$\gamma$};
-		\draw[<->] (det1) ++(0:1) arc(0:72:1) node[above right] {$\xi$};
-		\draw[<->] (det1) ++(0:3) arc(0:8.584336297778657:3) node[below right] {$\beta$};
-		\draw[<->] (det1) ++(8.584336297778657:3) node[above] {$s$};
-		
-	\end{tikzpicture}
-	\caption{Assumption for possible incidence angles}
-	\label{fig:angle-assumptions}
-\end{figure}
-\begin{equation}
-	\beta = \arctan\left(\frac{\ell\cdot\cos\alpha}{d - \ell\sin\alpha}\right)
-\end{equation}
-\begin{equation}
-	\gamma = \frac{\pi}{2} - \alpha + \beta
-\end{equation}
-\begin{equation}
-	\xi = \gamma + \beta
-\end{equation}
-\begin{equation}
-	s = \frac{d - l}{\cos\left(\beta\right)}
-\end{equation}
-\begin{equation}
-	r = \frac{s}{2\cdot\cos\left(\gamma\right)}
-\end{equation}
 \clearpage
 \section{Conclusion}
 \clearpage
