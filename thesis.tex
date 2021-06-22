@@ -616,7 +616,8 @@ The resulting time value can then be used by the coincidence filter as a timeout
 	\end{tikzpicture}
 \end{figure}
 \subsection{Coincidence analysis}\label{subsec:coincidence-s}
-The coincidence analysis creates a graph with data between all detector stations. 
+The coincidence analysis creates a graph with data for all detector station combinations. It records a histogram of the coincidences between each station pair as well as joined uptime and total number of coincidences.
+The histograms use a bin size which is calculated per detector pair depending on their distance so that the interesting data is properly resolved with a total number of 2000 bins.
 \clearpage
 \section{Conclusion}
 \clearpage
