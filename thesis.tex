@@ -16,43 +16,7 @@
 
 
 \begin{document}
-	\pgfdeclaredecoration{discontinuity}{start}{
-		\state{start}[width=0.5\pgfdecoratedinputsegmentremainingdistance-0.5\pgfdecorationsegmentlength,next state=first wave]
-		{}
-		\state{first wave}[width=\pgfdecorationsegmentlength, next state=second wave]
-		{
-			\pgfpathlineto{\pgfpointorigin}
-			\pgfpathmoveto{\pgfqpoint{0pt}{\pgfdecorationsegmentamplitude}}
-			\pgfpathcurveto
-			{\pgfpoint{-0.25*\pgfmetadecorationsegmentlength}{0.75\pgfdecorationsegmentamplitude}}
-			{\pgfpoint{-0.25*\pgfmetadecorationsegmentlength}{0.25\pgfdecorationsegmentamplitude}}
-			{\pgfpoint{0pt}{0pt}}
-			\pgfpathcurveto
-			{\pgfpoint{0.25*\pgfmetadecorationsegmentlength}{-0.25\pgfdecorationsegmentamplitude}}
-			{\pgfpoint{0.25*\pgfmetadecorationsegmentlength}{-0.75\pgfdecorationsegmentamplitude}}
-			{\pgfpoint{0pt}{-\pgfdecorationsegmentamplitude}}
-		}
-		\state{second wave}[width=0pt, next state=do nothing]
-		{
-			\pgfpathmoveto{\pgfqpoint{0pt}{\pgfdecorationsegmentamplitude}}
-			\pgfpathcurveto
-			{\pgfpoint{-0.25*\pgfmetadecorationsegmentlength}{0.75\pgfdecorationsegmentamplitude}}
-			{\pgfpoint{-0.25*\pgfmetadecorationsegmentlength}{0.25\pgfdecorationsegmentamplitude}}
-			{\pgfpoint{0pt}{0pt}}
-			\pgfpathcurveto
-			{\pgfpoint{0.25*\pgfmetadecorationsegmentlength}{-0.25\pgfdecorationsegmentamplitude}}
-			{\pgfpoint{0.25*\pgfmetadecorationsegmentlength}{-0.75\pgfdecorationsegmentamplitude}}
-			{\pgfpoint{0pt}{-\pgfdecorationsegmentamplitude}}
-			\pgfpathmoveto{\pgfpointorigin}
-		}
-		\state{do nothing}[width=\pgfdecorationsegmentlength,next state=do nothing]{
-			\pgfpathlineto{\pgfpointdecoratedinputsegmentlast}
-		}
-		\state{final}
-		{
-			\pgfpathlineto{\pgfpointdecoratedpathlast}
-		}
-	}
+\input{data/definitions.tex}
 	
 	
 \makebeginning{
@@ -314,24 +278,25 @@ In equation \ref{eq:coinc_score} $t_1$ and $t_2$ denote the timestamps of both e
 		\draw[dashed] (5,0.5) -- ++(0,-1) node[below] {$t_3$};
 		\draw[dashed] (8,0.5) -- ++(0,-1) node[below] {$t_4$};
 		
-		\fill[black] (0, -2) circle (0.1) coordinate(s1) node [above right] {$s_1$};
-		\fill[black] (1, -4) circle (0.1) coordinate(s2) node [below left] {$s_2$};
-		\fill[black] (3, -3) circle (0.1) coordinate(s3) node [right] {$s_3$};
-		\fill[black] (4, -5) circle (0.1) coordinate(s4) node [right] {$s_4$};
+		\node (s1) [networknode] at (0, -2) {$s_1$};
+		\node (s1r) [right=of s1] {};
+		\node (s1b) [below=of s1] {};
+		\node (s2) [networknode, below=of s1b] {$s_2$};
+		\node (s3) [networknode, below right=of s1r] {$s_3$};
+		\node (s3r) [below right=of s3] {};
+		\node (s4) [networknode, below=of s3r] {$s_4$};
 		
-		\draw (s1) -- (s2);
-		\draw (s1) -- (s3);
-		\draw[dashed] (s1) -- (s4);
-		\draw (s2) -- (s3);
-		\draw[dashed] (s2) -- (s4);
-		\draw (s3) -- (s4);
+		\path[draw]
+			(s1) edge node[left] {$c_{12}$} (s2)
+			(s1) edge node[above] {$c_{13}$} (s3)
+			(s2) edge node[left] {$c_{23}$} (s3)
+			(s3) edge node[above right] {$c_{34}$} (s4)
+			;
+		\path[draw, dashed]
+			(s1) edge node[below] {$c_{14}$} (s4)
+			(s2) edge node[below] {$c_{13}$} (s4)
+			;
 		
-		\node[below left] at ($(s1)!0.5!(s2)$) {$c_{12}$};
-		\node[above right] at ($(s1)!0.5!(s3)$) {$c_{13}$};
-		\node[below right] at ($(s1)!0.5!(s4)$) {$c_{14}$};
-		\node[below left] at ($(s2)!0.5!(s4)$) {$c_{24}$};
-		\node[above right] at ($(s2)!0.5!(s3)$) {$c_{23}$};
-		\node[above right] at ($(s3)!0.5!(s4)$) {$c_{34}$};
 	\end{tikzpicture}
 	\caption{Visualisation of four single events with possible coincidences}
 	\label{fig:conflicts}
@@ -557,7 +522,6 @@ In figure \ref{fig:event_station_supervisor} the path of an event through the st
 Since the detector network is so widely distributed, network lag and outages can introduce considerate deviations in arrival times between event messages from different detector stations. Consider the scenario shown in figure \ref{fig:network-topology}. There detector stations $A$, $B$ and $C$ all have different network delays to the server and so the event timestamps marked with $t_{A,B,C}$ have different arrival times at the server marked as $t'_{A,B,C}$. That means that in order to be able to process all possible coincidences, the server needs to wait a considerate amount of time before committing a finished coincidence event.
 \begin{figure}[ht!]
 	\centering
-	\tikzstyle{networknode} = [draw, circle, node distance=0.5cm]
 	\begin{tikzpicture}
 		\node (server) [networknode] at (6.5,5) {Server};
 		\node (serverbl) [below left=of server] {};
