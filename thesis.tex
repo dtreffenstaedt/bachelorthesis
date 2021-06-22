@@ -16,6 +16,45 @@
 
 
 \begin{document}
+	\pgfdeclaredecoration{discontinuity}{start}{
+		\state{start}[width=0.5\pgfdecoratedinputsegmentremainingdistance-0.5\pgfdecorationsegmentlength,next state=first wave]
+		{}
+		\state{first wave}[width=\pgfdecorationsegmentlength, next state=second wave]
+		{
+			\pgfpathlineto{\pgfpointorigin}
+			\pgfpathmoveto{\pgfqpoint{0pt}{\pgfdecorationsegmentamplitude}}
+			\pgfpathcurveto
+			{\pgfpoint{-0.25*\pgfmetadecorationsegmentlength}{0.75\pgfdecorationsegmentamplitude}}
+			{\pgfpoint{-0.25*\pgfmetadecorationsegmentlength}{0.25\pgfdecorationsegmentamplitude}}
+			{\pgfpoint{0pt}{0pt}}
+			\pgfpathcurveto
+			{\pgfpoint{0.25*\pgfmetadecorationsegmentlength}{-0.25\pgfdecorationsegmentamplitude}}
+			{\pgfpoint{0.25*\pgfmetadecorationsegmentlength}{-0.75\pgfdecorationsegmentamplitude}}
+			{\pgfpoint{0pt}{-\pgfdecorationsegmentamplitude}}
+		}
+		\state{second wave}[width=0pt, next state=do nothing]
+		{
+			\pgfpathmoveto{\pgfqpoint{0pt}{\pgfdecorationsegmentamplitude}}
+			\pgfpathcurveto
+			{\pgfpoint{-0.25*\pgfmetadecorationsegmentlength}{0.75\pgfdecorationsegmentamplitude}}
+			{\pgfpoint{-0.25*\pgfmetadecorationsegmentlength}{0.25\pgfdecorationsegmentamplitude}}
+			{\pgfpoint{0pt}{0pt}}
+			\pgfpathcurveto
+			{\pgfpoint{0.25*\pgfmetadecorationsegmentlength}{-0.25\pgfdecorationsegmentamplitude}}
+			{\pgfpoint{0.25*\pgfmetadecorationsegmentlength}{-0.75\pgfdecorationsegmentamplitude}}
+			{\pgfpoint{0pt}{-\pgfdecorationsegmentamplitude}}
+			\pgfpathmoveto{\pgfpointorigin}
+		}
+		\state{do nothing}[width=\pgfdecorationsegmentlength,next state=do nothing]{
+			\pgfpathlineto{\pgfpointdecoratedinputsegmentlast}
+		}
+		\state{final}
+		{
+			\pgfpathlineto{\pgfpointdecoratedpathlast}
+		}
+	}
+	
+	
 \makebeginning{
 	Extensive Air Showers produced by ultra high energy cosmic radiation is still an active area of research. Due to the low number of such events collecting statistics is not a simple task. There are many approaches to collecting enough data about these air showers. One such approach is the usage of a distributed network of low-cost particle detectors which can be operated by persons outside the university environment.
 	
@@ -243,7 +282,9 @@ Comparing the timestamps of single detector hits can be used to correlate single
 		\draw[ultra thick] (4,4) -- ++(1,0);
 	\end{tikzpicture}
 	\caption{Coincidence time histogram for two detector pairs with geometric}
+	\label{fig:histogram-data}
 \end{figure}
+\todo{complete figure \ref{fig:histogram-data}}
 \section{Real-time analysis}
 In order to detect coincidences from all incoming single data points, each data point has to be compared with all others in order to find all possible combinations. In order to do this, a useful criterium for a coincidence has to be found. A simple approach is to select a fixed maximum time difference which two events can have in order to be counted towards a coincidence. This however is inefficient and leads to large numbers of false positives, since a fixed interval can not perform well for detector combinations with large and short distances at the same time. Due to this a variable distance based criterium is used. For this purpose, the geodetic coordinates of both detector stations are taken and the straight line distance is calculated through \acrfull{enu} coordinates with the WGS84 model. The \acrshort{enu} coordinate system is a right handed local tangent plane carthesian coordinate system $\left(\hat{e}_{East},\hat{e}_{North},\hat{e}_{Up}\right)$ which is used to set different coordinates in relation to each other. The WGS84 model describes the shape of earth as an ellipsoid and provides reference measurements for this shape.
 
@@ -415,33 +456,33 @@ Though due to the fact that the space of possible origin points is a rotational 
 There are also other methods for primary vertex reconstruction, one of which is multilateration. However, that requires a minimum number of four detector stations in order to converge and provide a viable solution. The presented method provides a good first order approximation for the primary vertex with minimal computational effort.
 \clearpage
 \section{Program layout}
-An overview of the program layout for the real-time analysis is shown in Figure \ref{fig:programlayout}, the parts Station supervision, Coincidence filter and Coincidence refinement are described in detail in their respective sections.
+An overview of the program layout for the real-time analysis is shown in Figure \ref{fig:programlayout}, the parts Station supervision, Coincidence filter and Coincidence refinement are described in detail in their respective sections. \todo{better description of program structure}
 \begin{figure}[ht!]
 	\centering
 	\begin{tikzpicture}[->]
 		\node (source) [draw, terminal,minimum height=1cm] {Event source};
 		\node (logsource) [right=of source, draw, terminal,minimum height=1cm] {Station log source};
-		\node (supervision) [below=of source, draw, process,minimum height=1cm] {Station supervision};
-		\node (filter) [below=of supervision, draw, process,minimum height=1cm] {Coincidence filter};
-		\node (refinement) [below=of filter, draw, process,minimum height=1cm] {Coincidence refinement};
-		\node (sink) [below=of refinement, draw, terminal,minimum height=1cm] {Event Sink};
+		\node (supervision) [below=of source, draw, process,minimum height=1cm] {Station supervision (\ref{subsec:station-s})};
+		\node (supervision2) [below=of supervision, draw, process,minimum height=1cm] {Time-base supervision (\ref{subsec:timebase-s})};
+		\node (filter) [below=of supervision2, draw, process,minimum height=1cm] {Coincidence filter (\ref{subsec:coincidence-f})};
+		\node (sink) [below=of filter, draw, terminal,minimum height=1cm] {Event Sink};
 
 		\node (criterium) [left=of filter, draw, predproc,minimum height=1cm] {Coincidence criterium};
 		
 		\draw (logsource) |- (supervision);
 		\draw (source) -- (supervision);
-		\draw (supervision) -- (filter);
-		\draw (filter) -- (refinement);
-		\draw (refinement) -- (sink);
+		\draw (supervision) -- (supervision2);
+		\draw (supervision2) -- (filter);
+		\draw (filter) -- (sink);
 		
 		\draw[<->] (criterium) -- (filter);
 	\end{tikzpicture}
 	\caption{Program layout}
 	\label{fig:programlayout}
 \end{figure}
-
-\subsection{Station supervision}
-The station supervision tracks all currently active detector stations and classifies them for reliable and unreliable data states.
+\clearpage
+\subsection{Station supervision}\label{subsec:station-s}
+The station supervision tracks all currently active detector stations and classifies them according to reliable and unreliable data states.
 Additionally it augments each event with the location and user data which is not provided with the default event messages.
 
 \begin{figure}[ht!]
@@ -450,7 +491,7 @@ Additionally it augments each event with the location and user data which is not
 		\node (start) at (0,0) {};
 		\node (terminal1) [below=of start,draw, terminal] {event input};
 		\node (predproc1) [below=of terminal1, draw, predproc, align=left] {calculate event rate};
-		\node (decide1) [below=of predproc1, draw, decision] {$\sigma\geq\mu$};
+		\node (decide1) [below=of predproc1, draw, decision] {$\sigma\geq{k}\cdot\mu$};
 		\node (terminal2) [right=of start, draw, terminal] {station log input};
 		\node (decide2) [below right=of terminal2, draw, decision] {$\bar{f}_{loc}\geq1$};
 		\node (decide3) [right=of predproc1, draw, decision] {$\bar{f}_{time}\geq1$};
@@ -468,6 +509,19 @@ Additionally it augments each event with the location and user data which is not
 	\caption{Criteria for detector station reliability}
 	\label{fig:station_reliability}
 \end{figure}
+Figure \ref{fig:station_reliability} shows the decision process how each station is determined to be reliable. Each event is analysed and the mean event rate as well as the standard deviation of the rate is calculated continuously. If $\sigma\geq{k}\cdot\mu$ is true, where $\sigma$ is the standard deviation of the rate, $\mu$ the mean rate and $k$ a constant, the detector station is determined to have a highly unstable rate and is excluded from contributing events to the analysis.
+
+Additionally two more factors can determine the reliability of a station. Those factors are a normed so that a value of higher than 1 causes an unreliability mark.
+$\bar{f}_{time}$ is the mean time accuracy and $\bar{f}_{loc}$ the mean location precision of the \acrshort{gnss} receiver.
+
+The time accuracy is determined through the detector station itself and results from different factors such as the \acrshort{gnss} signal quality.
+The location precision is calculated through
+\begin{equation*}
+loc = dop\cdot\sqrt{h_{acc}^2 + v_{acc}^2}
+\end{equation*}
+where $dop$ is the delusion of precision, $h_{acc}$ the horizontal and $v_{acc}$ the vertical accuracy of the \acrshort{gnss} receiver. All those values are also determined in each detector station for itself. \todo{source for formula}
+
+For all determining factors, a hysteresis is used in order to provide a more stable status of each detector station.
 \begin{figure}[ht!]
 	\centering
 	\begin{tikzpicture}[->]
@@ -495,7 +549,57 @@ Additionally it augments each event with the location and user data which is not
 		\draw (decide2) -- (decide2r) -- (terminal3);
 		\draw (decide3) -- (decide3r) -| (terminal3);
 	\end{tikzpicture}
+	\caption{Path of an event through the station supervisor}
+	\label{fig:event_station_supervisor}
 \end{figure}
+In figure \ref{fig:event_station_supervisor} the path of an event through the station supervisor is shown. There, only events which can be attributed to a reliable detector are accepted. Additionally, events where the time accuracy reaches extreme values are automatically discarded, since the method shown before in figure \ref{fig:station_reliability} has some inertia. This can cause single events with extremely inaccurate timestamps to artificially increase the time-base to extreme values.
+\subsection{Time-base supervision}\label{subsec:timebase-s}
+Since the detector network is so widely distributed, network lag and outages can introduce considerate deviations in arrival times between event messages from different detector stations. Consider the scenario shown in figure \ref{fig:network-topology}. There detector stations $A$, $B$ and $C$ all have different network delays to the server and so the event timestamps marked with $t_{A,B,C}$ have different arrival times at the server marked as $t'_{A,B,C}$. That means that in order to be able to process all possible coincidences, the server needs to wait a considerate amount of time before committing a finished coincidence event.
+\begin{figure}[ht!]
+	\centering
+	\tikzstyle{networknode} = [draw, circle, node distance=0.5cm]
+	\begin{tikzpicture}
+		\node (server) [networknode] at (6.5,5) {Server};
+		\node (serverbl) [below left=of server] {};
+		\node (serverbr) [below right=of server] {};
+		\node (servera) [above=of server] {};
+		\node (a) [networknode, above=of servera] {A};
+		\node (b) [networknode, below right=of serverbr] {B};
+		\node (c) [networknode, below left=of serverbl] {C};
+		
+		\path[draw]
+			(a) edge node {$100\,\text{ms}$} (server)
+			(b) edge node {$10\,\text{ms}$} (server)
+			(c) edge node {$35\,\text{ms}$} (server)
+			;
+			
+			\draw[decoration={%
+				discontinuity,
+				amplitude=5,
+				meta-segment length=2,
+				segment length=3},
+			decorate, ultra thick] (0,0) -- (10,0);
+			\draw[ultra thick, ->] (10,0) -- (13,0) node[below] {$t$};
+			\draw[dashed] (1,0.5) -- ++(0,-1) node[below] {$t_A$};
+			\draw[dashed] (3,0.5) -- ++(0,-1) node[below] {$t_B$};
+			\draw[dashed] (4,0.5) -- ++(0,-1) node[below] {$t_C$};
+			
+			\draw[dashed] (6,0.5) -- ++(0,-1) node[below] {$t_B'$};
+			\draw[dashed] (7,0.5) -- ++(0,-1) node[below] {$t_C'$};
+			\draw[dashed] (10,0.5) -- ++(0,-1) node[below] {$t_A'$};
+	\end{tikzpicture}
+	\caption{Network topology of detector network}
+	\label{fig:network-topology}
+\end{figure}
+
+The time-base supervisor determines a baseline waiting interval by observing the maximum time difference between event timestamps over a certain sample time interval, this sample time has been selected to be $2\,\text{s}$. However in the case of a total network outage for one detector station, the events will be buffered locally in the station and being sent out at a later time. This can mean delays of up to a few minutes and would lie outside the two second time-base and a loss of data would be the result. In order to mitigate this, an attempt to predict network outages is implemented by observing the current event rate in relation to the mean event rate over a long sample time. A factor is calculated through
+\begin{equation*}
+	f = max(1, \frac{\mu_{r} - r}{\sigma_{r}})
+\end{equation*}
+where $r$ is the current event rate, $\mu_{r}$ the mean rate and $\sigma_{r}$ the standard deviation of the rate over a long sample time. This factor is then relative to the expected event rate of the detector station and is always greater or equal to 1. This is calculated for all detector stations and the maximum value is used as a scaling factor for the previously described time-base.
+
+The resulting time value can then be used by the coincidence filter as a timeout value for the construction of coincidence events.
+\subsection{Coincidence filter}\label{subsec:coincidence-f}
 \begin{figure}[ht!]
 	\centering
 	\begin{tikzpicture}[->]
