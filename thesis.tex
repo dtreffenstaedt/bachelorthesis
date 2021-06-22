@@ -245,7 +245,9 @@ Comparing the timestamps of single detector hits can be used to correlate single
 	\caption{Coincidence time histogram for two detector pairs with geometric}
 \end{figure}
 \section{Real-time analysis}
-In order to detect coincidences from all incoming single data points, each data point has to be compared with all others in order to find all possible combinations. In order to do this, a useful criterium for a coincidence has to be found. A simple approach is to select a fixed maximum time difference which two events can have in order to be counted towards a coincidence. This however is inefficient and leads to large numbers of false positives, since a fixed interval can not perform well for detector combinations with large and short distances at the same time. Due to this a variable distance based criterium is used. For this purpose, the geodetic coordinates of both detector stations are taken and the straight line distance is calculated through \acrfull{enu} coordinates with the WGS84 model. With this distance, the time of flight for the speed of light is calculated in order to receive the maximum physically viable time difference for one detector pair. This value however has large uncertainties especially for detector pairs which are close together.
+In order to detect coincidences from all incoming single data points, each data point has to be compared with all others in order to find all possible combinations. In order to do this, a useful criterium for a coincidence has to be found. A simple approach is to select a fixed maximum time difference which two events can have in order to be counted towards a coincidence. This however is inefficient and leads to large numbers of false positives, since a fixed interval can not perform well for detector combinations with large and short distances at the same time. Due to this a variable distance based criterium is used. For this purpose, the geodetic coordinates of both detector stations are taken and the straight line distance is calculated through \acrfull{enu} coordinates with the WGS84 model. The \acrshort{enu} coordinate system is a right handed local tangent plane carthesian coordinate system $\left(\hat{e}_{East},\hat{e}_{North},\hat{e}_{Up}\right)$ which is used to set different coordinates in relation to each other. The WGS84 model describes the shape of earth as an ellipsoid and provides reference measurements for this shape.
+
+With this distance, the time of flight for the speed of light is calculated in order to receive the maximum physically viable time difference for one detector pair. This value however has large uncertainties especially for detector pairs which are close together.
 
 Since there is a constant timing offset of a few nanoseconds for each detector pair which arises through the specific hardware setup, a minimum coincidence window must be defined in order to capture coincidences even for pairs with a large offset. A partical value of $150\,\text{ns}$ has been chosen.
 
@@ -413,18 +415,20 @@ Though due to the fact that the space of possible origin points is a rotational 
 There are also other methods for primary vertex reconstruction, one of which is multilateration. However, that requires a minimum number of four detector stations in order to converge and provide a viable solution. The presented method provides a good first order approximation for the primary vertex with minimal computational effort.
 \clearpage
 \section{Program layout}
-The path of an event in the program is shown in figure \ref{fig:programlayout}. The source receives the event data and passes it on to the Station supervision class. It supervises the runtime data of each detector station and classifies it into reliability states. The specific criteria are described in the flowchart in figure \todo{make flowchart}.
+An overview of the program layout for the real-time analysis is shown in Figure \ref{fig:programlayout}, the parts Station supervision, Coincidence filter and Coincidence refinement are described in detail in their respective sections.
 \begin{figure}[ht!]
 	\centering
 	\begin{tikzpicture}[->]
 		\node (source) [draw, terminal,minimum height=1cm] {Event source};
+		\node (logsource) [right=of source, draw, terminal,minimum height=1cm] {Station log source};
 		\node (supervision) [below=of source, draw, process,minimum height=1cm] {Station supervision};
 		\node (filter) [below=of supervision, draw, process,minimum height=1cm] {Coincidence filter};
 		\node (refinement) [below=of filter, draw, process,minimum height=1cm] {Coincidence refinement};
 		\node (sink) [below=of refinement, draw, terminal,minimum height=1cm] {Event Sink};
 
-		\node (criterium) [left=of filter, draw, process,minimum height=1cm] {Coincidence criterium};
+		\node (criterium) [left=of filter, draw, predproc,minimum height=1cm] {Coincidence criterium};
 		
+		\draw (logsource) |- (supervision);
 		\draw (source) -- (supervision);
 		\draw (supervision) -- (filter);
 		\draw (filter) -- (refinement);
@@ -436,26 +440,60 @@ The path of an event in the program is shown in figure \ref{fig:programlayout}. 
 	\label{fig:programlayout}
 \end{figure}
 
+\subsection{Station supervision}
+The station supervision tracks all currently active detector stations and classifies them for reliable and unreliable data states.
+Additionally it augments each event with the location and user data which is not provided with the default event messages.
+
 \begin{figure}[ht!]
 	\centering
 	\begin{tikzpicture}[->]
-		\node (terminal1) at (0,0) [draw, terminal] {START};
+		\node (start) at (0,0) {};
+		\node (terminal1) [below=of start,draw, terminal] {event input};
+		\node (predproc1) [below=of terminal1, draw, predproc, align=left] {calculate event rate};
+		\node (decide1) [below=of predproc1, draw, decision] {$\sigma\geq\mu$};
+		\node (terminal2) [right=of start, draw, terminal] {station log input};
+		\node (decide2) [below right=of terminal2, draw, decision] {$\bar{f}_{loc}\geq1$};
+		\node (decide3) [right=of predproc1, draw, decision] {$\bar{f}_{time}\geq1$};
+		\node (predproc2) [below=of decide1, draw, terminal, align=left] {Mark station unreliable};
+		
+		
+		\draw (terminal1) -- (predproc1);
+		\draw (predproc1) -- (decide1);
+		\draw (decide1) -- (predproc2);
+		\draw (terminal2) -| (decide2);
+		\draw (terminal1) -| (decide3);
+		\draw (decide2) |- (predproc2);
+		\draw (decide3) |- (predproc2);
+	\end{tikzpicture}
+	\caption{Criteria for detector station reliability}
+	\label{fig:station_reliability}
+\end{figure}
+\begin{figure}[ht!]
+	\centering
+	\begin{tikzpicture}[->]
+		\node (terminal1) at (0,0) [draw, terminal] {event input};
 		\node (decide1) [below=of terminal1, draw, decision] {detector known};
-		\node (predproc1) [below=of decide1, draw, predproc, align=left] {calculate event rates};
-		\node (decide2) [below=of predproc1, draw, decision] {detector is reliable};
-		\node (terminal2) [below=of decide2, draw, terminal] {pass to coincidence filter};
-		\node (terminal3) [right=of predproc1, draw, terminal] {discard event};
+		\node (decide2) [below=of decide1, draw, decision] {detector reliable};
+		\node (decide3) [below=of decide2, draw, decision] {$f_{time}\gg1$};
+		\node (predproc1) [below=of decide3, draw, predproc, align=left] {Add location info};
+		\node (terminal2) [below=of predproc1, draw, terminal] {pass to coincidence filter};
 		
 		\node (decide1r) [right=of decide1] {no};
 		\node (decide2r) [right=of decide2] {no};
+		\node (decide3r) [right=of decide3] {yes};
+		
+		\node (terminal3) [right=of decide2r, draw, terminal] {discard event};
+		
 		
 		
 		\draw (terminal1) -- (decide1);
-		\draw (decide1) -- (predproc1);
-		\draw (predproc1) -- (decide2);
-		\draw (decide2) -- (terminal2);
+		\draw (decide1) -- (decide2);
+		\draw (decide2) -- (decide3);
+		\draw (decide3) -- (predproc1);
+		\draw (predproc1) -- (terminal2);
 		\draw (decide1) -- (decide1r) -| (terminal3);
-		\draw (decide2) -- (decide2r) -| (terminal3);
+		\draw (decide2) -- (decide2r) -- (terminal3);
+		\draw (decide3) -- (decide3r) -| (terminal3);
 	\end{tikzpicture}
 \end{figure}
 \begin{figure}[ht!]
