@@ -421,15 +421,17 @@ Though due to the fact that the space of possible origin points is a rotational 
 There are also other methods for primary vertex reconstruction, one of which is multilateration. However, that requires a minimum number of four detector stations in order to converge and provide a viable solution. The presented method provides a good first order approximation for the primary vertex with minimal computational effort.
 \clearpage
 \section{Program layout}
-An overview of the program layout for the real-time analysis is shown in Figure \ref{fig:programlayout}, the parts Station supervision, Coincidence filter and Coincidence refinement are described in detail in their respective sections. \todo{better description of program structure}
+The analysis program uses a data driven pipeline design for efficient execution. It supervises itself and stores runtime data like CPU and memory usage in the database in order to be able to later review resource usage. This is useful in extrapolating the runtime impact for larger number of detector stations in the future.
+An overview of the program layout for the real-time analysis is shown in Figure \ref{fig:programlayout}, the parts marked with section numbers are described in detail in their respective sections. \todo{better description of program structure}
 \begin{figure}[ht!]
 	\centering
 	\begin{tikzpicture}[->]
 		\node (source) [draw, terminal,minimum height=1cm] {Event source};
-		\node (logsource) [right=of source, draw, terminal,minimum height=1cm] {Station log source};
+		\node (logsource) [left=of source, draw, terminal,minimum height=1cm] {Station log source};
 		\node (supervision) [below=of source, draw, process,minimum height=1cm] {Station supervision (\ref{subsec:station-s})};
 		\node (supervision2) [below=of supervision, draw, process,minimum height=1cm] {Time-base supervision (\ref{subsec:timebase-s})};
 		\node (filter) [below=of supervision2, draw, process,minimum height=1cm] {Coincidence filter (\ref{subsec:coincidence-f})};
+		\node (analysis) [right=of filter, draw, process,minimum height=1cm] {Coincidence analysis (\ref{subsec:coincidence-s})};
 		\node (sink) [below=of filter, draw, terminal,minimum height=1cm] {Event Sink};
 
 		\node (criterium) [left=of filter, draw, predproc,minimum height=1cm] {Coincidence criterium};
@@ -439,6 +441,8 @@ An overview of the program layout for the real-time analysis is shown in Figure 
 		\draw (supervision) -- (supervision2);
 		\draw (supervision2) -- (filter);
 		\draw (filter) -- (sink);
+		\draw (filter) -- (analysis);
+		\draw (supervision) -| (analysis);
 		
 		\draw[<->] (criterium) -- (filter);
 	\end{tikzpicture}
@@ -564,6 +568,7 @@ where $r$ is the current event rate, $\mu_{r}$ the mean rate and $\sigma_{r}$ th
 
 The resulting time value can then be used by the coincidence filter as a timeout value for the construction of coincidence events.
 \subsection{Coincidence filter}\label{subsec:coincidence-f}
+
 \begin{figure}[ht!]
 	\centering
 	\begin{tikzpicture}[->]
@@ -610,6 +615,8 @@ The resulting time value can then be used by the coincidence filter as a timeout
 		\draw (decide2) -- (decide2l) |- (decide1);
 	\end{tikzpicture}
 \end{figure}
+\subsection{Coincidence analysis}\label{subsec:coincidence-s}
+The coincidence analysis creates a graph with data between all detector stations. 
 \clearpage
 \section{Conclusion}
 \clearpage

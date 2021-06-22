@@ -1,0 +1,39 @@
+\tikzstyle{networknode} = [draw, circle, node distance=0.5cm]
+
+\pgfdeclaredecoration{discontinuity}{start}{
+	\state{start}[width=0.5\pgfdecoratedinputsegmentremainingdistance-0.5\pgfdecorationsegmentlength,next state=first wave]
+	{}
+	\state{first wave}[width=\pgfdecorationsegmentlength, next state=second wave]
+	{
+		\pgfpathlineto{\pgfpointorigin}
+		\pgfpathmoveto{\pgfqpoint{0pt}{\pgfdecorationsegmentamplitude}}
+		\pgfpathcurveto
+		{\pgfpoint{-0.25*\pgfmetadecorationsegmentlength}{0.75\pgfdecorationsegmentamplitude}}
+		{\pgfpoint{-0.25*\pgfmetadecorationsegmentlength}{0.25\pgfdecorationsegmentamplitude}}
+		{\pgfpoint{0pt}{0pt}}
+		\pgfpathcurveto
+		{\pgfpoint{0.25*\pgfmetadecorationsegmentlength}{-0.25\pgfdecorationsegmentamplitude}}
+		{\pgfpoint{0.25*\pgfmetadecorationsegmentlength}{-0.75\pgfdecorationsegmentamplitude}}
+		{\pgfpoint{0pt}{-\pgfdecorationsegmentamplitude}}
+	}
+	\state{second wave}[width=0pt, next state=do nothing]
+	{
+		\pgfpathmoveto{\pgfqpoint{0pt}{\pgfdecorationsegmentamplitude}}
+		\pgfpathcurveto
+		{\pgfpoint{-0.25*\pgfmetadecorationsegmentlength}{0.75\pgfdecorationsegmentamplitude}}
+		{\pgfpoint{-0.25*\pgfmetadecorationsegmentlength}{0.25\pgfdecorationsegmentamplitude}}
+		{\pgfpoint{0pt}{0pt}}
+		\pgfpathcurveto
+		{\pgfpoint{0.25*\pgfmetadecorationsegmentlength}{-0.25\pgfdecorationsegmentamplitude}}
+		{\pgfpoint{0.25*\pgfmetadecorationsegmentlength}{-0.75\pgfdecorationsegmentamplitude}}
+		{\pgfpoint{0pt}{-\pgfdecorationsegmentamplitude}}
+		\pgfpathmoveto{\pgfpointorigin}
+	}
+	\state{do nothing}[width=\pgfdecorationsegmentlength,next state=do nothing]{
+		\pgfpathlineto{\pgfpointdecoratedinputsegmentlast}
+	}
+	\state{final}
+	{
+		\pgfpathlineto{\pgfpointdecoratedpathlast}
+	}
+}
