@@ -536,9 +536,9 @@ Since the detector network is so widely distributed, network lag and outages can
 		\node (c) [networknode, below left=of serverbl] {C};
 		
 		\path[draw]
-			(a) edge node {$100\,\text{ms}$} (server)
-			(b) edge node {$10\,\text{ms}$} (server)
-			(c) edge node {$35\,\text{ms}$} (server)
+			(a) edge node[left] {$100\,\text{ms}$} (server)
+			(b) edge node[above right] {$10\,\text{ms}$} (server)
+			(c) edge node[left] {$35\,\text{ms}$} (server)
 			;
 			
 			\draw[decoration={%
@@ -560,7 +560,7 @@ Since the detector network is so widely distributed, network lag and outages can
 	\label{fig:network-topology}
 \end{figure}
 
-The time-base supervisor determines a baseline waiting interval by observing the maximum time difference between event timestamps over a certain sample time interval, this sample time has been selected to be $2\,\text{s}$. However in the case of a total network outage for one detector station, the events will be buffered locally in the station and being sent out at a later time. This can mean delays of up to a few minutes and would lie outside the two second time-base and a loss of data would be the result. In order to mitigate this, an attempt to predict network outages is implemented by observing the current event rate in relation to the mean event rate over a long sample time. A factor is calculated through
+The time-base supervisor determines a baseline waiting interval by observing the maximum time difference between event timestamps over a certain sample time interval, this sample time has been selected to be $2\,\text{s}$. However in the case of a total network outage for one detector station, the events will be buffered locally in the station and transmitted at a later time when the network connection has been re-established. This can mean delays of up to a few minutes and would lie outside the two second time-base and a loss of data would be the result. In order to mitigate this, an attempt to predict network outages is implemented by observing the current event rate in relation to the mean event rate over a long sample time. A factor is calculated through
 \begin{equation*}
 	f = max(1, \frac{\mu_{r} - r}{\sigma_{r}})
 \end{equation*}
