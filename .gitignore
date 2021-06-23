@@ -1,6 +1,7 @@
 *
 */
 
+!Makefile
 !.gitignore
 !thesis.tex
 !jluthesis.cls
