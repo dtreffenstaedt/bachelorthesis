@@ -14,7 +14,6 @@
 
 
 
-
 \begin{document}
 \input{data/definitions.tex}
 	
@@ -83,8 +82,8 @@ As seen in this figure, neutral Pions $\pi^0$ can decay to two photons $\gamma$ 
 \end{equation}
 The produced photons can then undergo pair production through which a lepton - anti lepton pair is produced. For this to occur, the photon needs to have an energy higher than twice the rest mass of the lepton. In the case of an electron positron pair, the rest energy is $511\,\text{keV}$ resulting in a minimum photon energy of $1022\,\text{keV}$. Any energy above this limit gets distributed evenly across both resulting particles as kinetic energy. In the \acrfull{com} system due to conservation of impulse, the pair travels in opposite directions to each other in a 90 degree angle to the original photon. In the laboratory system however, the resulting particles continue along the original trajectory.
 \todo{sources for decay probabilities}
-Should the photon not have enough energy to produce a pair, it can be absorbed in an atom by raising the energy level of an electron in the shell or loose energy through compton scattering.\\
-In the case of a charged pion $\pi^\pm$, The most likly decay with a probability of $99.9\,\%$ is to a muon $\mu^\pm$ and a muon-neutrino $\nu_\mu$. The interaction is shown in equation \ref{eq:piondecay}.
+Should the photon not have enough energy to produce a pair, it can be absorbed in an atom by raising the energy level of an electron in the shell or loose energy through Compton scattering.\\
+In the case of a charged pion $\pi^\pm$, The most likely decay with a probability of $99.9\,\%$ is to a muon $\mu^\pm$ and a muon-neutrino $\nu_\mu$. The interaction is shown in equation \ref{eq:piondecay}.
 \begin{equation}\label{eq:piondecay}
 	\begin{aligned}
 		\pi^+ &\rightarrow \mu^+ + \nu_\mu \\
@@ -233,7 +232,6 @@ The shower front shape of a cosmic shower can initially be assumed to be a thick
 Figure \ref{fig:data-shape} shows the propagation of the shower front in relation to two detectors. Assuming both detectors have a detection efficiency of $100\,\%$, both will show an event at their respective timestamps $t_1$ and $t_2$. The time difference between both measured timestamps can help to reconstruct the direction of propagation, a method how to do this is shown later in this thesis.
 
 Comparing the timestamps of single detector hits can be used to correlate single data points and combine them to coincidences.
-
 \begin{figure}[ht!]
 	\centering
 	\begin{tikzpicture}
@@ -248,13 +246,14 @@ Comparing the timestamps of single detector hits can be used to correlate single
 	\caption{Coincidence time histogram for two detector pairs with geometric}
 	\label{fig:histogram-data}
 \end{figure}
+When recording all coincidence times of one detector pair the different times can be plotted in a histogram. Figure \ref{fig:histogram-data} shows the geometrical arrangement and the histogram of coincidence data. Due to the close distance between both detectors, a large peak with Gaussian distribution can be seen which is significantly higher than the background which comprises of random coincidences due to noise in the \acrshort{sipm}. In the figure an offset can be observed which is due to hardware limitations in the detector setup.
 \todo{complete figure \ref{fig:histogram-data}}
 \section{Real-time analysis}
 In order to detect coincidences from all incoming single data points, each data point has to be compared with all others in order to find all possible combinations. In order to do this, a useful criterium for a coincidence has to be found. A simple approach is to select a fixed maximum time difference which two events can have in order to be counted towards a coincidence. This however is inefficient and leads to large numbers of false positives, since a fixed interval can not perform well for detector combinations with large and short distances at the same time. Due to this a variable distance based criterium is used. For this purpose, the geodetic coordinates of both detector stations are taken and the straight line distance is calculated through \acrfull{enu} coordinates with the WGS84 model. The \acrshort{enu} coordinate system is a right handed local tangent plane carthesian coordinate system $\left(\hat{e}_{East},\hat{e}_{North},\hat{e}_{Up}\right)$ which is used to set different coordinates in relation to each other. The WGS84 model describes the shape of earth as an ellipsoid and provides reference measurements for this shape.
 
 With this distance, the time of flight for the speed of light is calculated in order to receive the maximum physically viable time difference for one detector pair. This value however has large uncertainties especially for detector pairs which are close together.
 
-Since there is a constant timing offset of a few nanoseconds for each detector pair which arises through the specific hardware setup, a minimum coincidence window must be defined in order to capture coincidences even for pairs with a large offset. A partical value of $150\,\text{ns}$ has been chosen.
+Since there is a constant timing offset of a few nanoseconds for each detector pair which arises through the specific hardware setup, a minimum coincidence window must be defined in order to capture coincidences even for pairs with a large offset. A practical value of $150\,\text{ns}$ has been chosen.
 
 It is also necessary to define an upper window, since the range of muons in air is limited and detector pairs with extremely large distances would create an abnormal and unphysical number of coincidences if left unconstrained. In order to find a useful upper limit for the coincidence window, the maximum possible flight distance for atmospheric muons has to be detemined. For that, the expected maximum range of muons in air is calculated. In order to do that, first a maximum expected energy is determined through the muon energy spectrum at sea level. Figure \ref{fig:muon-energy-spectrum} shows the muon energy spectrum at sea level for two different inclinations. A cutoff value of $10\,\text{TeV}$ is selected to calculate the maximum expected distance in air. Assuming the \acrfull{csda} range for a $10\,\text{TeV}$ muon taken from \cite{muon-range} of $7.634\cdot10^5\,\frac{\text{g}}{\text{cm}^2}$ and assuming standard condition air density of $1.225\,\frac{\text{kg}}{\text{m}^3}$, the maximum expected range of muons at sea level is $62.3\,\text{km}$. That equates to a time of flight of $207.87\,\mu\text{s}$ and thus a coincidence window of larger than that is not useful.
 \begin{figure}
@@ -266,7 +265,7 @@ It is also necessary to define an upper window, since the range of muons in air 
 \subsection{Coincidence and plausability determination}
 In order to determine coincidences, each event needs to be checked against all other events which are currently in the event buffer. To determine whether two events contain a coincidence, it is beneficial to calculate a score for each pair as follows:
 \begin{equation}\label{eq:coinc_score}
-	c = \frac{1 - |t_1 - t_2|}{t_{tof}}
+	c = 1 - \frac{|t_1 - t_2|}{t_{tof}}
 \end{equation}
 In equation \ref{eq:coinc_score} $t_1$ and $t_2$ denote the timestamps of both events and $t_{tof}$ the time of flight between both stations. This results in a number $c\leq1$ where a value $\leq0$ describes an unphysical coincidence. In the case that multiple stations need to be compared, a complete graph needs to be calculated with edge weights equalling the score of the pair connected by this edge. An example of this construction is shown in figure \ref{fig:conflicts}.
 \begin{figure}[ht!]
@@ -361,18 +360,17 @@ Given that the shower front is not a complete spherical surface but only a spher
 	\label{fig:angle-assumptions}
 \end{figure}
 Calculating the angles $\beta$ and $\gamma$ and length $s$, we get the equations
-\begin{equation}
-	\beta = \arctan\left(\frac{\ell\cdot\cos\alpha}{d - \ell\sin\alpha}\right)
-\end{equation}
-,
-\begin{equation}
+\begin{equation*}
+	\beta = \arctan\left(\frac{\ell\cdot\cos\alpha}{d - \ell\sin\alpha}\right),
+\end{equation*}
+\begin{equation*}
 	\gamma = \frac{\pi}{2} - \alpha + \beta
-\end{equation}
+\end{equation*}
 and
-\begin{equation}
-	s = \sqrt{\left(l\cdot\cos\left(\alpha\right)\right)^2 + \left(d - l\cdot\sin\left(\alpha\right)\right)^2} = \sqrt{l^2 + d^2 - 2dl\sin\left(\alpha\right)}
-\end{equation}
-. With those, the polar coordinates $(\phi, r)$ can be calculated with equations \ref{eq:phi} and \ref{eq:r}.
+\begin{equation*}
+	s = \sqrt{\left(l\cdot\cos\hspace{-2pt}\left(\alpha\right)\right)^2 + \left(d - l\cdot\sin\left(\alpha\right)\right)^2} = \sqrt{l^2 + d^2 - 2dl\sin\left(\alpha\right)}.
+\end{equation*}
+With those, the polar coordinates $(\phi, r)$ can be calculated with equations \ref{eq:phi} and \ref{eq:r}.
 \begin{equation}\label{eq:phi}
 	\phi = \gamma + \beta = \frac{\pi}{2} - \alpha + 2\cdot\beta
 \end{equation}
@@ -417,8 +415,6 @@ It can be seen that the curves overlap in the bottom half of the plot, indicatin
 \end{figure}
 
 Though due to the fact that the space of possible origin points is a rotational body, the cross section between both curves is a region in 3D space.
-
-There are also other methods for primary vertex reconstruction, one of which is multilateration. However, that requires a minimum number of four detector stations in order to converge and provide a viable solution. The presented method provides a good first order approximation for the primary vertex with minimal computational effort.
 \clearpage
 \section{Program layout}
 The analysis program uses a data driven pipeline design for efficient execution. It supervises itself and stores runtime data like CPU and memory usage in the database in order to be able to later review resource usage. This is useful in extrapolating the runtime impact for larger number of detector stations in the future.
@@ -523,7 +519,7 @@ For all determining factors, a hysteresis is used in order to provide a more sta
 \end{figure}
 In figure \ref{fig:event_station_supervisor} the path of an event through the station supervisor is shown. There, only events which can be attributed to a reliable detector are accepted. Additionally, events where the time accuracy reaches extreme values are automatically discarded, since the method shown before in figure \ref{fig:station_reliability} has some inertia. This can cause single events with extremely inaccurate timestamps to artificially increase the time-base to extreme values.
 \subsection{Time-base supervision}\label{subsec:timebase-s}
-Since the detector network is so widely distributed, network lag and outages can introduce considerate deviations in arrival times between event messages from different detector stations. Consider the scenario shown in figure \ref{fig:network-topology}. There detector stations $A$, $B$ and $C$ all have different network delays to the server and so the event timestamps marked with $t_{A,B,C}$ have different arrival times at the server marked as $t'_{A,B,C}$. That means that in order to be able to process all possible coincidences, the server needs to wait a considerate amount of time before committing a finished coincidence event.
+Since the detector network is so widely distributed, network lag and outages can introduce considerate deviations in arrival times between event messages from different detector stations. Consider the scenario shown in figure \ref{fig:network-topology}. There detector stations $A$, $B$ and $C$ all have different network delays to the server and so the event timestamps marked with $t_{A,B,C}$ have different arrival times at the server marked as $t'_{A,B,C}$. That necessitates a considerably larger sample interval for the coincidence determination than the expected coincidence interval.
 \begin{figure}[ht!]
 	\centering
 	\begin{tikzpicture}
@@ -560,7 +556,7 @@ Since the detector network is so widely distributed, network lag and outages can
 	\label{fig:network-topology}
 \end{figure}
 
-The time-base supervisor determines a baseline waiting interval by observing the maximum time difference between event timestamps over a certain sample time interval, this sample time has been selected to be $2\,\text{s}$. However in the case of a total network outage for one detector station, the events will be buffered locally in the station and transmitted at a later time when the network connection has been re-established. This can mean delays of up to a few minutes and would lie outside the two second time-base and a loss of data would be the result. In order to mitigate this, an attempt to predict network outages is implemented by observing the current event rate in relation to the mean event rate over a long sample time. A factor is calculated through
+The time-base supervisor determines a baseline waiting interval by observing the maximum time difference between event timestamps over a certain sample time interval. A value of $2\,\text{s}$ proved experimentally to provide a good balance between runtime impact, stability and reaction time. In the case of a total network outage for one detector station however, the events will be buffered locally in the station and transmitted at a later time when the network connection has been re-established. This can mean delays of up to a few minutes and would lie outside the two second time-base and a loss of data would be the result. In order to mitigate this, an attempt to predict network outages is implemented by observing the current event rate in relation to the mean event rate over a long sample time. A factor is calculated through
 \begin{equation*}
 	f = max(1, \frac{\mu_{r} - r}{\sigma_{r}})
 \end{equation*}
@@ -568,14 +564,15 @@ where $r$ is the current event rate, $\mu_{r}$ the mean rate and $\sigma_{r}$ th
 
 The resulting time value can then be used by the coincidence filter as a timeout value for the construction of coincidence events.
 \subsection{Coincidence filter}\label{subsec:coincidence-f}
-
+The coincidence filter inspects each event in order to find all possible coincidences. It does so by creating so-called event constructors which hold the event and information about the creation time and the specific per-constructor timeout period. The timeout is taken from the timebase supervisor described in section \ref{subsec:timebase-s}. It is updated each time a more recent and higher value is received. When the timeout is passed, the constructor is committed in order to send the constructed event off for further processing. The flow of an event through the coincidence filter is shown in figure \ref{fig:coincidence-flow}.
 \begin{figure}[ht!]
 	\centering
 	\begin{tikzpicture}[->]
 		\node (terminal1) at (0,0) [draw, terminal] {START};
 		\node (decide1) [below=of terminal1, draw, decision] {constructor available};
-		\node (predproc1) [below=of decide1, draw, predproc, align=left] {select next constructor};
+		\node (predproc1) [below=of decide1, draw, process, align=left] {select next constructor};
 		\node (decide2) [below=of predproc1, draw, decision] {criterium met};
+		\node (predproc3) [right=of decide2, draw, predproc] {create new constructor};
 		\node (predproc2) [below=of decide2, draw, predproc] {add event to constructor};
 		\node (terminal2) [below=of predproc2, draw, terminal] {END};
 		
@@ -588,32 +585,40 @@ The resulting time value can then be used by the coincidence filter as a timeout
 		\draw (predproc1) -- (decide2);
 		\draw (decide2) -- (predproc2);
 		\draw (predproc2) -- (terminal2);
-		\draw (decide1) -- (decide1r) |- (terminal2);
 		\draw (decide2) -- (decide2l) |- (decide1);
+		\draw (decide1) -- (decide1r) -| (predproc3);
+		\draw (predproc3) |- (terminal2);
 	\end{tikzpicture}
+	\caption{Flow of an event through the coincidence filter}
+	\label{fig:coincidence-flow}
 \end{figure}
 \begin{figure}[ht!]
 	\centering
 	\begin{tikzpicture}[->]
 		\node (terminal1) at (0,0) [draw, terminal] {START};
-		\node (decide1) [below=of terminal1, draw, decision] {constructor is timed out};
-		\node (predproc1) [below=of decide1, draw, predproc, align=left] {select next constructor};
-		\node (decide2) [below=of predproc1, draw, decision] {criterium met};
-		\node (predproc2) [below=of decide2, draw, predproc] {add event to constructor};
-		\node (terminal2) [below=of predproc2, draw, terminal] {END};
+		\node (decide1) [below=of terminal1, draw, decision] {constructor available};
+		\node (process1) [below=of decide1, draw, process, align=left] {select next constructor};
+		\node (process2) [below=of process1, draw, process, align=left] {update timeout value};
+		\node (decide2) [below=of process2, draw, decision] {timed out};
+		\node (process3) [below=of decide2, draw, process] {commit coincidence};
 		
 		\node (decide1r) [right=of decide1] {no};
 		\node (decide2l) [left=of decide2] {no};
 		
+		\node (terminal2) [right=of decide1r, draw, terminal] {END};
+		
 		
 		\draw (terminal1) -- (decide1);
-		\draw (decide1) -- (predproc1);
-		\draw (predproc1) -- (decide2);
-		\draw (decide2) -- (predproc2);
-		\draw (predproc2) -- (terminal2);
-		\draw (decide1) -- (decide1r) |- (terminal2);
+		\draw (decide1) -- (process1);
+		\draw (process1) -- (process2);
+		\draw (process2) -- (decide2);
+		\draw (decide2) -- (process3);
+		\draw (process3) -- ++(-4,0) |- (decide1);
+		\draw (decide1) -- (decide1r) -- (terminal2);
 		\draw (decide2) -- (decide2l) |- (decide1);
 	\end{tikzpicture}
+	\caption{Timeout update and committing of event constructors}
+	 \label{fig:event-constructors}
 \end{figure}
 \subsection{Coincidence analysis}\label{subsec:coincidence-s}
 The coincidence analysis creates a graph with data for all detector station combinations. It records a histogram of the coincidences between each station pair as well as joined uptime and total number of coincidences.
