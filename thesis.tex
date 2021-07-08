@@ -240,8 +240,14 @@ Comparing the timestamps of single detector hits can be used to correlate single
 		\end{axis}
 	\end{tikzpicture} \\
 	\begin{tikzpicture}
-		\draw[ultra thick] (0,0) -- ++(1,0);
-		\draw[ultra thick] (4,4) -- ++(1,0);
+		\draw[ultra thick] (1,0) -- ++(-1,0) node [left] {Detector 1};
+		\draw[ultra thick] (4,4) -- ++(1,0) node [right] {Detector 2};
+		
+		\draw (1,0) -- ++ (4,0);
+		\draw[<->] (4.9,0) -- ++ (0,4);
+		\draw (0.5,0) -- ++(0,5);
+		\draw (4.5,4) -- ++(0,1);
+		\draw[<->] (0.5,4.9) -- ++ (4,0);
 	\end{tikzpicture}
 	\caption{Coincidence time histogram for two detector pairs with geometric}
 	\label{fig:histogram-data}
@@ -414,8 +420,7 @@ It can be seen that the curves overlap in the bottom half of the plot, indicatin
 	\label{fig:reconstruction_example_ground}
 \end{figure}
 
-Though due to the fact that the space of possible origin points is a rotational body, the cross section between both curves is a region in 3D space.
-\clearpage
+Though due to the fact that the space of possible origin points is a rotational body, the cross section between both curves is a region in 3D space.a
 \section{Program layout}
 The analysis program uses a data driven pipeline design for efficient execution. It supervises itself and stores runtime data like CPU and memory usage in the database in order to be able to later review resource usage. This is useful in extrapolating the runtime impact for larger number of detector stations in the future.
 An overview of the program layout for the real-time analysis is shown in Figure \ref{fig:programlayout}, the parts marked with section numbers are described in detail in their respective sections. \todo{better description of program structure}
