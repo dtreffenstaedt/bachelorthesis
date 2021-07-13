@@ -1,5 +1,5 @@
 % !TeX spellcheck = en_GB
-\documentclass[abstract,toc,los,lof,english,10pt,glossary,acronyms]{jluthesis}
+\documentclass[abstract,toc,los,lof,english,10pt,glossary,acronyms,lotl]{jluthesis}
 
 \usepackage{listings}
 \usepackage{float}
@@ -447,7 +447,7 @@ _wrank(s_i) = \sum_{j}^{n}c_{ij}
 \end{equation}
 in the graph and recalculating $_wp$, this is repeated until $p=1$ is reached. Should this prove to be impossible without removing too many edges for the purpose of preserving potentially useful data the process is cancelled and the whole event is accepted tentatively.
 
-\subsection{Reconstruction of possible primary incident angles}
+\subsection{Reconstruction of possible primary incident angles} \label{sec:reconstruction}
 Through the assumptions shown in figure \ref{fig:angle-assumptions}, the possible source directions of a primary particle can be reduced. There, the geometry of a coincidence with $n=2$ is shown.
 \begin{figure}[ht!]
 	\centering
@@ -568,7 +568,7 @@ An overview of the program layout for the real-time analysis is shown in Figure 
 	\end{tikzpicture}
 	\caption{Program layout}
 	\label{fig:programlayout}
-\end{figure} \\
+\end{figure}
 \subsection{Station supervision}\label{subsec:station-s}
 The station supervision tracks all currently active detector stations and classifies them according to reliable and unreliable data states.
 Additionally it augments each event with the location and user data which is not provided with the default event messages.
@@ -747,7 +747,8 @@ The coincidence analysis creates a graph with data for all detector station comb
 The histograms use a bin size which is calculated per detector pair depending on their distance so that the interesting data is properly resolved with a total number of 2000 bins.
 \clearpage
 \section{Conclusion and outlook}
-
+An approach to analyse real-time data for a network of low-cost scintillation detectors is presented and implementation details are discussed.
+\todo{write conclusion}
 \clearpage
 
 \makeback

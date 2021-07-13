@@ -7,6 +7,7 @@
 \RequirePackage[english,ngerman]{babel} % languages
 
 \RequirePackage{siunitx}
+\RequirePackage{tocloft}
 \RequirePackage{graphicx}
 \RequirePackage{makeidx}
 \RequirePackage{wrapfig}
@@ -83,6 +84,7 @@
 \DeclareOption{index}{\def\@myindex{1}\makeindex} % show Index at end of document
 \DeclareOption{lof}{\def\@lof{1}} % show Table of Figures
 \DeclareOption{lot}{\def\@lot{1}} % show Table of Tables
+\DeclareOption{lotl}{\def\@lotl{1}} % show TODO list
 \DeclareOption{los}{\def\@los{1}} % show Table of Sources
 \DeclareOption{abstract}{\def\@abstr{1}} % create an abstract
 \DeclareOption{glossary}{\def\@gloss{1}} % create a glossary
@@ -100,8 +102,13 @@
 % +++ redefine counters
 
 % +++ custom commands
-\newcommand{\todo}[1]{\textbf{\textcolor{red}{TODO: #1}}}
-\newcommand{\note}[1]{\textbf{\textcolor{red}{NOTE: #1}}}
+\newcommand{\todolistname}{TODO list}
+\newlistof{todolist}{todo}{\todolistname}
+\newcommand{\todo}[1]{%
+	\refstepcounter{todolist}
+	\par\noindent\textbf{\textcolor{red}{TODO \thetodolist}: #1}
+	\addcontentsline{todo}{todolist}{\protect\numberline{\thetodolist}#1}\par}
+
 \newcommand{\sn}[2]{\ensuremath{{#1}{\cdot}10^{#2}}}
 \newcommand{\snsi}[3]{\ensuremath{{#1}{\cdot}10^{#2}\,\si{#3}}}
 % --- custom commands
@@ -266,6 +273,12 @@
 	\ifdefined\@los
 	\iflanguage{english}{\printbibliography[heading=bibintoc,title={References}]}{}
 	\iflanguage{ngerman}{\printbibliography[heading=bibintoc,title={Referenzen}]}{}
+	\fi
+	
+	\ifdefined\@lotl
+	\clearpage
+	\addcontentsline{toc}{section}{TODO list}
+	\listoftodolist
 	\fi
 }
 \makeatother
