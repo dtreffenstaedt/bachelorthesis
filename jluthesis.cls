@@ -102,8 +102,8 @@
 % +++ redefine counters
 
 % +++ custom commands
-\newcommand{\todolistname}{TODO list}
-\newlistof{todolist}{todo}{\todolistname}
+\newcommand{\todolistname}{TODO}
+\newlistof{todolist}{todo}{\todolistname\addcontentsline{toc}{section}{\todolistname}}
 \newcommand{\todo}[1]{%
 	\refstepcounter{todolist}
 	\par\noindent\textbf{\textcolor{red}{TODO \thetodolist}: #1}
@@ -277,7 +277,6 @@
 	
 	\ifdefined\@lotl
 	\clearpage
-	\addcontentsline{toc}{section}{TODO list}
 	\listoftodolist
 	\fi
 }

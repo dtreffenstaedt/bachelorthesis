@@ -21,7 +21,7 @@
 
 \begin{document}
 \input{data/definitions.tex}
-	
+
 	
 \makebeginning{
 	Extensive Air Showers produced by ultra high energy cosmic radiation is still an active area of research. Due to the low number of such events collecting statistics is not a simple task. There are many approaches to collecting enough data about these air showers. One such approach is the usage of a distributed network of low-cost particle detectors which can be operated by persons outside the university environment.
@@ -215,8 +215,6 @@ This deadtime makes it unsuitable for high frequency applications though due to 
 
 The detector software collects various information in addition to the timestamp with each event and sends it to the server via the \acrfull{mqtt} protocol. This is a text-based protocol providing reliable information transfer with minimal overhead\cite{mqtt}. Additional to the event information the station sends log information in regular intervals indicative of the current state of the detector station.
 \subsection{Data exchange format}
-The \acrshort{mqtt} messages introduced in the previous sections are described further.
-
 \paragraph{Event messages} contain information about the event with additional details about the current state of the detector station. Each message consists of $8$ fields, one of which is part of the \acrshort{mqtt} message topic and $7$ are part of the payload. An example is shown in listing \ref{lst:mqtt-event}, the fields are described in table \ref{tab:event-message}.
 \begin{lstfloat}[H]
 	\centering
@@ -288,7 +286,8 @@ The \acrshort{mqtt} messages introduced in the previous sections are described f
 	\label{tab:station_logs}
 \end{table}
 \footnotetext{\acrfull{dop}: Numerical value for the statistical dispersion of GNSS measurements}
-
+The 
+\clearpage
 \subsection{Network}
 All detector stations are part of a larger network of detectors with a central data processor which analyses all incoming event data for possible coincidences. The entire analysis stack is shown in Figure \ref{fig:network-stack}.
 \begin{figure}[H]
@@ -319,10 +318,18 @@ All detector stations are part of a larger network of detectors with a central d
 	\caption{Detector network analysis stack}
 	\label{fig:network-stack}
 \end{figure}
+A current overview of active and future stations in Europe can be seen in figure \ref{fig:station-overview}, additional stations are located in north America and Australia. 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{data/detector-stations}
+	\caption[Current overview of detector stations]{Current overview of detector stations\cite{muonpi}. Red are future stations, green active stations.}
+	\label{fig:station-overview}
+\end{figure}
+Due to the 
 
 \subsection{Data}
 The shower front shape of a cosmic shower can initially be assumed to be a thick spherical cap with a thickness of $1\,\text{to}\,2\,\text{m}$\cite{grapes-3-2019}. This shape however fluctuates between shower events and measurements range from spherical cap shapes\cite{chitnis-2002} to conical shapes\cite{grapes-3-2019}. The thickness and deviation from the shape of a spherical cap introduce uncertainties in the calculations presented in this thesis in section \ref{sec:reconstruction}.
-\begin{figure}[ht!]
+\begin{figure}[H]
 	\centering
 	\begin{tikzpicture}
 		\fill (0,0) coordinate(det1) circle(0.1) node[above right] {Detector 1};
@@ -372,6 +379,13 @@ Secondly, \todo{plot for coincidence rate with distance}
 	\caption{Coincidence time histogram for large distance detector pair}
 	\label{fig:histogram-data-950k}
 \end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\linewidth]{data/pair-count-rate}
+\caption{Coincidence time histogram for large distance detector pair\cite{muonpi}}
+\label{fig:pair-count-rate}
+\end{figure}
+
 
 \section{Real-time analysis}
 In order to detect coincidences from all incoming single data points, each data point has to be compared with all others in order to find all possible combinations. In order to do this, a useful criterium for a coincidence has to be found. A simple approach is to select a fixed maximum time difference which two events can have in order to be counted towards a coincidence. This however is inefficient and leads to large numbers of false positives, since a fixed interval can not perform well for detector combinations with large and short distances at the same time. Due to this a variable distance based criterium is used. For this purpose, the geodetic coordinates of both detector stations are taken and the straight line distance is calculated through \acrfull{enu} coordinates with the WGS84 model. The \acrshort{enu} coordinate system is a right handed local tangent plane carthesian coordinate system $\left(\hat{e}_{East},\hat{e}_{North},\hat{e}_{Up}\right)$ which is used to set different coordinates in relation to each other. The WGS84 model describes the shape of earth as an ellipsoid and provides reference measurements for this shape.
@@ -539,11 +553,11 @@ Figure \ref{fig:reconstruction_example_ground} shows this construction for a coi
 It can be seen that the curves overlap in the bottom half of the plot, indicating a possible origin region for the primary interaction.
 
 
-Though due to the fact that the space of possible origin points is a rotational body, the cross section between both curves is a region in 3D space.a
+Though due to the fact that the space of possible origin points is a rotational body, the cross section between both curves is a region in 3D space.
 \section{Program layout}
 The analysis program uses a data driven pipeline design for efficient execution. It supervises itself and periodically stores runtime data like CPU and memory usage in a database in order to be able to later review resource usage. This is useful in extrapolating the runtime impact for larger number of detector stations in the future.
 An overview of the program layout for the real-time analysis is shown in Figure \ref{fig:programlayout}, the parts marked with section numbers are described in detail in their respective sections. \todo{better description of program structure}
-\begin{figure}[ht!]
+\begin{figure}[H]
 	\centering
 	\begin{tikzpicture}[->]
 		\node (source) [draw, terminal,minimum height=1cm] {Event source};
