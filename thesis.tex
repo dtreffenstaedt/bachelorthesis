@@ -208,61 +208,16 @@ Each detector station consists of a Scintillator with \acrshort{sipm} assembly, 
 	\caption{Detector station assembly without Raspberry Pi computer}
 	\label{fig:station_assembly}
 \end{figure}
-In figure \ref{fig:station_assembly} each component excluding the Raspberry Pi is shown. The SiPM is still detached from the Scintillator for this picture since it would not be visible as separate part otherwise. The preamplifier is part of the SiPM assembly and prepares the signal to the readout board in order to prevent loss of signal over the transmission line.
-\subsection{Network}
-Since one detector alone only provides the timestamp of one particle hit, it does not provide useful information on its own when the goal is to measure cosmic shower events. That is why for real measurements a network of detectors has to be used. The network on which this thesis is based consists of low-cost plastic scintillator detector units utilising a Raspberry Pi minicomputer add-on board as readout electronics. Those detectors are specifically intended as a citizen science project. This has the benefit of being able to distribute detectors over a large area with minimal resource use.
+In figure \ref{fig:station_assembly} each component excluding the Raspberry Pi is shown. The SiPM is still detached from the Scintillator for this picture since it would not be visible as separate part otherwise. The preamplifier is part of the SiPM assembly and prepares the signal to the readout board in order to prevent loss of signal over the transmission line. The readout board supports two input channels which can be linked logically either per AND or XOR, though per default only one channel is used.
 
+The readout board uses a ublox NEO GNSS receiver chip which features an interrupt input to accurately timestamp input signals with a maximum resolution of $21\,\text{ns}$ \cite{ublox-datasheet} with a deadtime of $100\,\text{ms}$.
+This deadtime makes it unsuitable for high frequency applications though due to the scintillator size of $286.5\,\text{cm}^2$ and an integral intensity of Muons over the whole energy spectrum above $1\,\text{GeV}$ of $1\,\text{cm}^{-2}\text{min}^{-1}$\cite[512]{10.1093/ptep/ptaa104} the expected maximum detection rate of $4.7\,\text{Hz}$ is within the capabilities of this setup. \\
 
-Each detector in the network consists of a scintillator with \acrfull{sipm} assembly, an interface board with \acrfull{adc} and a Raspberry Pi minicomputer. The interface board receives signals from the \acrshort{sipm} and records the current timestamp. This timestamp is then processed by a software running on the Raspberry Pi minicomputer which sends it to a server. Each timestamped event is thus written to a central database where it can be further analysed at a later time. Due to the number of detectors and their respective rate of few Hz each, a large number of events is written to the database. In set intervals, this Data is analysed through post-processing methods. This however puts a large strain on the server infrastructure due to the amount of data being read and written back to the database. A better approach is to perform a pre-processing step through a filter before storing each the data point in the database.
-\begin{figure}[ht!]
-	\centering
-	\begin{tikzpicture}[>=latex, ->]
-		\node (scintillator) [draw, process, minimum height=1cm] {Scintillator};
-		\node (sipm) [right=of scintillator, draw, process, minimum height=1cm] {SiPM};
-		\node (cdu) [right=of sipm, draw, process, minimum height=1cm] {CDU};
-		\node (rapi) [right=of cdu, draw, process, minimum height=1cm] {Raspberry Pi};
-		\node (server) [below=of rapi, draw, process, minimum height=1cm] {Server};
-		\node (dnp) [left=of server, draw, process, minimum height=1cm] {DNP};
-		\node (db) [left=of dnp, draw, process, minimum height=1cm] {Database};
-		
-		\draw (scintillator) -- (sipm);
-		\draw (sipm) -- (cdu);
-		\draw (cdu) -- (rapi);
-		\draw (rapi) -- (server);
-		\draw (server) -- (dnp);
-		\draw (dnp) -- (db);
-	\end{tikzpicture}
-	\caption{Path of one event through the detector network}
-	\label{fig:event-path}
-\end{figure}
-The path of an event through the detector network is shown in figure \ref{fig:event-path}. There, CDU stands for Cosmic Detector Unit, which is the hardware add-on board on top of the Raspberry Pi. DNP stands for Detector Network Processor, the software running on the server which analyses each event.
+The detector software collects various information in addition to the timestamp with each event and sends it to the server via the \acrfull{mqtt} protocol. This is a text-based protocol providing reliable information transfer with minimal overhead\cite{mqtt}. Additional to the event information the station sends log information in regular intervals indicative of the current state of the detector station.
 \subsection{Data exchange format}
-The Station log source is a part of the program which listens for log messages from every registered detector station. Those log messages contain a multitude of information, some of which are shown in table \ref{tab:station_logs}. Note that this is only an excerpt of the most important information and by no means complete.
-\begin{table}[H]
-	\centering
-	\begin{tabular}{| c | c |}
-		\hline
-		\textbf{Name} & \textbf{Description} \\
-		\hline
-		\verb*|geoHeightMSL| & \\
-		\hline
-		\verb*|geoHorAccuracy| & \\
-		\hline
-		\verb*|geoVertAccuracy| & \\
-		\hline
-		\verb*|positionDOP| & \\
-		\hline
-		\verb*|clockDrift| & \\
-		\hline
-		\verb*|timeAccuracy| & \\
-		\hline
-		\verb*|timeDOP| & \\
-		\hline
-	\end{tabular}
-	\caption{Excerpt from detector station log message content}
-	\label{tab:station_logs}
-\end{table}
-The Event source has a similar function as the Station log source but listens for all event messages from the stations. Each message consists of $8$ fields, one of which is part of the \verb*|mqtt| message topic and $7$ are part of the payload. An example message is shown in listing \ref{lst:mqtt-event}, the fields are described in table \ref{tab:event-message}.
+The \acrshort{mqtt} messages introduced in the previous sections are described further.
+
+\paragraph{Event messages} contain information about the event with additional details about the current state of the detector station. Each message consists of $8$ fields, one of which is part of the \acrshort{mqtt} message topic and $7$ are part of the payload. An example is shown in listing \ref{lst:mqtt-event}, the fields are described in table \ref{tab:event-message}.
 \begin{lstfloat}[H]
 	\centering
 	\begin{verbatim}
@@ -297,6 +252,74 @@ The Event source has a similar function as the Station log source but listens fo
 	\caption{Event message field description}
 	\label{tab:event-message}
 \end{table}
+
+
+\paragraph{Log messages} contain various information about the current station state and are formatted as shown in Listing \ref{lst:mqtt-log}, the unit field is not present in all log messages. A small excerpt of various log message identifiers is shown in Table \ref{tab:station_logs}.
+\begin{lstfloat}[H]
+	\centering
+	\begin{verbatim}
+		jlu/HBR16Lab105_1 <message identifier> <value> [unit]
+	\end{verbatim}
+	\caption{Log message format}
+	\label{lst:mqtt-log}
+\end{lstfloat}
+\begin{table}[H]
+	\centering
+	\begin{tabular}{| c | c |}
+		\hline
+		\textbf{Identifier} & \textbf{Description} \\
+		\hline
+		\verb*|geoHeightMSL| & Vertical height above the reference ellipsoid surface \\
+		\hline
+		\verb*|geoHorAccuracy| & Horizontal accuracy of the GNSS signal \\
+		\hline
+		\verb*|geoVertAccuracy| & Vertical accuracy of the GNSS signal \\
+		\hline
+		\verb*|positionDOP| & Positional dilution of precision\footnotemark \\
+		\hline
+		\verb*|clockDrift| & Current inherent drift of the internal clock\\
+		\hline
+		\verb*|timeAccuracy| & Accuracy of the time measurement \\
+		\hline
+		\verb*|timeDOP| & Time dilution of precision \\
+		\hline
+	\end{tabular}
+	\caption{Excerpt from detector station log message content}
+	\label{tab:station_logs}
+\end{table}
+\footnotetext{\acrfull{dop}: Numerical value for the statistical dispersion of GNSS measurements}
+
+\subsection{Network}
+All detector stations are part of a larger network of detectors with a central data processor which analyses all incoming event data for possible coincidences. The entire analysis stack is shown in Figure \ref{fig:network-stack}.
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[>=latex, ->]
+		\node (scintillator) [draw, process, minimum height=1cm, minimum width=5cm] {Scintillator};
+		\node (cdu) [below=of scintillator, draw, process, minimum height=1cm, minimum width=5cm] {Readout board};
+		\node (raspi) [below=of cdu, draw, process, minimum height=1cm, minimum width=5cm] {Raspberry Pi};
+		
+		\node (mqtt) [right=of raspi, draw, process, minimum height=1cm] {MQTT};
+		
+		\node (server) [right=of mqtt, draw, process, minimum height=1cm, minimum width=5cm] {Server};
+		\node (dnp) [above=of server, draw, process, minimum height=1cm, minimum width=5cm] {Network Processor};
+		\node (db) [above=of dnp, draw, process, minimum height=1cm, minimum width=5cm] {Database};
+		\node (analysis) [above=of db, draw, process, minimum height=1cm, minimum width=5cm] {Further analysis};
+		
+		\node (shower) [above left=of scintillator] {Shower};
+		
+		\draw (shower) -- (scintillator) node [midway, above] {$\mu$};
+		\draw (scintillator) -- (cdu);
+		\draw (cdu) -- (raspi);
+		\draw (raspi) -- (mqtt);
+		\draw (mqtt) -- (server);
+		\draw (server) -- (dnp);
+		\draw (dnp) -- (db);
+		\draw (db) -- (analysis);
+	\end{tikzpicture}
+	\caption{Detector network analysis stack}
+	\label{fig:network-stack}
+\end{figure}
+
 \subsection{Data}
 The shower front shape of a cosmic shower can initially be assumed to be a thick spherical cap with a thickness of $1\,\text{to}\,2\,\text{m}$\cite{grapes-3-2019}. This shape however fluctuates between shower events and measurements range from spherical cap shapes\cite{chitnis-2002} to conical shapes\cite{grapes-3-2019}. The thickness and deviation from the shape of a spherical cap introduce uncertainties in the calculations presented in this thesis in section \ref{sec:reconstruction}.
 \begin{figure}[ht!]
