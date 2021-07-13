@@ -194,8 +194,21 @@ Another method is to detect the muonic component, this can be done through Scint
 
 \section{Detectors}
 \subsection{Station}
-Each detector station consists of a Scintillator with \acrshort{sipm} assembly, a readout board and Raspberry Pi single-board computer.
-\todo{photo of Detector assembly}
+Each detector station consists of a Scintillator with \acrshort{sipm} assembly, a readout board and Raspberry Pi single-board computer and is called a \acrfull{cdu}.
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		\node [anchor=south west] at (0,0) {\includegraphics[width=0.4\linewidth]{data/station-assembly}};
+		
+		\draw[fill=black] (4,7) circle(0.1) -- ++(3,-1) node[below right] {Scintillator};
+		\draw[fill=black] (1,4.5) circle(0.1) -- ++(-2,1) node[above left] {SiPM};
+		\draw[fill=black] (0.75,3.5) circle(0.1) -- ++(-2,0) node[left] {Preamplifier};
+		\draw[fill=black] (4,3) circle(0.1) -- ++(3,0) node[right] {Readout board};
+	\end{tikzpicture}
+	\caption{Detector station assembly without Raspberry Pi computer}
+	\label{fig:station_assembly}
+\end{figure}
+In figure \ref{fig:station_assembly} each component excluding the Raspberry Pi is shown. The SiPM is still detached from the Scintillator for this picture since it would not be visible as separate part otherwise. The preamplifier is part of the SiPM assembly and prepares the signal to the readout board in order to prevent loss of signal over the transmission line.
 \subsection{Network}
 Since one detector alone only provides the timestamp of one particle hit, it does not provide useful information on its own when the goal is to measure cosmic shower events. That is why for real measurements a network of detectors has to be used. The network on which this thesis is based consists of low-cost plastic scintillator detector units utilising a Raspberry Pi minicomputer add-on board as readout electronics. Those detectors are specifically intended as a citizen science project. This has the benefit of being able to distribute detectors over a large area with minimal resource use.
 
@@ -304,30 +317,11 @@ Figure \ref{fig:data-shape} shows the propagation of the shower front in relatio
 Comparing the timestamps of single detector hits can be used to correlate single data points and combine them to coincidences.
 \begin{figure}[H]
 	\centering
-	\begin{minipage}{0.49\linewidth}
-		\begin{tikzpicture}
-			\begin{axis}[area style, xlabel={$\Delta{t}\,[\text{ns}]$},ylabel={$n$}, xmin=-150,xmax=150]% coordinates
-				\addplot+[ybar interval,mark=no] table {data/hgz0_hgzHeuchelheim2.hist};
-			\end{axis}
-		\end{tikzpicture}
-	\end{minipage}
-	\begin{minipage}{0.4\linewidth}
-		\hspace{1.5cm}
-		\vspace{-0.5cm}
-		\begin{tikzpicture}
-			\draw[ultra thick] (0,0) -- ++(1,0) node [above right] {Detector 1};
-			\draw[ultra thick] (5,4) -- ++(-1,0) node [left] {Detector 2};
-			
-			\draw (1,0) -- ++ (3.6,0);
-			\draw[<->] (4.5,0) -- ++ (0,4);
-			\draw (0.5,0) -- ++(0,5);
-			\draw (4.5,4) -- ++(0,1);
-			\draw[<->] (0.5,4.9) -- ++ (4,0);
-			
-			\node[right] at (4.5,2) {$80\,\text{cm}$};
-			\node[above] at (2.25,4.9) {$80\,\text{cm}$};
-		\end{tikzpicture}
-	\end{minipage}
+	\begin{tikzpicture}
+		\begin{axis}[area style, xlabel={$\Delta{t}\,[\text{ns}]$},ylabel={$n$}, xmin=-600,xmax=600,width=\linewidth,height=\axisdefaultheight]% coordinates
+			\addplot+[ybar interval,mark=no] table {data/jluHBR16Lab105_1_jluHBR16Lab105_DoublePaddle.hist};
+		\end{axis}
+	\end{tikzpicture}
 	\caption{Coincidence time histogram for short distance detector pair}
 	\label{fig:histogram-data}
 \end{figure}
@@ -335,7 +329,7 @@ When recording all coincidence times of one detector pair the different times ca
 \begin{figure}[H]
 	\centering
 	\begin{tikzpicture}
-		\begin{axis}[area style, xlabel={$\Delta{t}\,[\text{ns}]$},ylabel={$n$}, xmin=-700,xmax=700]% coordinates
+		\begin{axis}[area style, xlabel={$\Delta{t}\,[\text{ns}]$},ylabel={$n$}, xmin=-600,xmax=600,width=\linewidth,height=\axisdefaultheight]% coordinates
 			\addplot+[ybar interval,mark=no] table {data/CERN1_CERN3.hist};
 		\end{axis}
 	\end{tikzpicture}
@@ -345,6 +339,16 @@ When recording all coincidence times of one detector pair the different times ca
 Comparing this plot to one where both detectors are much further apart as in the case of figure \ref{fig:histogram-data-130} with $131\,\text{m}$, a few things are noteworthy.
 For one the total number of detected events is much lower. \todo{explanation for lower coincidence number in distance}
 Secondly, \todo{plot for coincidence rate with distance}
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		\begin{axis}[area style, xlabel={$\Delta{t}\,[\text{ns}]$},ylabel={$n$}, xmin=-100000,xmax=100000,width=\linewidth,height=\axisdefaultheight]% coordinates
+			\addplot+[ybar interval,mark=no] table {data/simonglm0_mw1cfn0.hist};
+		\end{axis}
+	\end{tikzpicture}
+	\caption{Coincidence time histogram for large distance detector pair}
+	\label{fig:histogram-data-950k}
+\end{figure}
 
 \section{Real-time analysis}
 In order to detect coincidences from all incoming single data points, each data point has to be compared with all others in order to find all possible combinations. In order to do this, a useful criterium for a coincidence has to be found. A simple approach is to select a fixed maximum time difference which two events can have in order to be counted towards a coincidence. This however is inefficient and leads to large numbers of false positives, since a fixed interval can not perform well for detector combinations with large and short distances at the same time. Due to this a variable distance based criterium is used. For this purpose, the geodetic coordinates of both detector stations are taken and the straight line distance is calculated through \acrfull{enu} coordinates with the WGS84 model. The \acrshort{enu} coordinate system is a right handed local tangent plane carthesian coordinate system $\left(\hat{e}_{East},\hat{e}_{North},\hat{e}_{Up}\right)$ which is used to set different coordinates in relation to each other. The WGS84 model describes the shape of earth as an ellipsoid and provides reference measurements for this shape.
