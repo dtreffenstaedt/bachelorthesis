@@ -6,6 +6,11 @@
 \newfloat{lstfloat}{tb}{lop}
 \floatname{lstfloat}{Listing}
 
+
+\usepackage{caption}
+\usepackage{subcaption}
+
+
 \usepackage{pdfpages}
 \input{data/glossaries.tex}
 \bibliography{data/thesis.bib}
@@ -304,9 +309,9 @@ All detector stations are part of a larger network of detectors with a central d
 		\node (db) [above=of dnp, draw, process, minimum height=1cm, minimum width=5cm] {Database};
 		\node (analysis) [above=of db, draw, process, minimum height=1cm, minimum width=5cm] {Further analysis};
 		
-		\node (shower) [above left=of scintillator] {Shower};
+		\node (shower) [above=of scintillator] {Shower};
 		
-		\draw (shower) -- (scintillator) node [midway, above] {$\mu$};
+		\draw (shower) -- (scintillator) node [midway, right] {$\mu$};
 		\draw (scintillator) -- (cdu);
 		\draw (cdu) -- (raspi);
 		\draw (raspi) -- (mqtt);
@@ -347,44 +352,48 @@ Figure \ref{fig:data-shape} shows the propagation of the shower front in relatio
 Comparing the timestamps of single detector hits can be used to correlate single data points and combine them to coincidences.
 \begin{figure}[H]
 	\centering
-	\begin{tikzpicture}
-		\begin{axis}[area style, xlabel={$\Delta{t}\,[\text{ns}]$},ylabel={$n$}, xmin=-600,xmax=600,width=\linewidth,height=\axisdefaultheight]% coordinates
-			\addplot+[ybar interval,mark=no] table {data/jluHBR16Lab105_1_jluHBR16Lab105_DoublePaddle.hist};
-		\end{axis}
-	\end{tikzpicture}
-	\caption{Coincidence time histogram for short distance detector pair}
+	\begin{subfigure}{\linewidth}
+		\begin{tikzpicture}
+			\begin{axis}[area style, xlabel={$\Delta{t}\,[\text{ns}]$},ylabel={$n$}, xmin=-600,xmax=600,width=\linewidth,height=0.2\textheight]% coordinates
+				\addplot+[ybar interval,mark=no] table {data/jluHBR16Lab105_1_jluHBR16Lab105_DoublePaddle.hist};
+			\end{axis}
+		\end{tikzpicture}
+		\caption{Short detector distance}
+		\label{fig:histogram-data:close}
+	\end{subfigure}
+	\begin{subfigure}{\linewidth}
+		\begin{tikzpicture}
+			\begin{axis}[area style, xlabel={$\Delta{t}\,[\text{ns}]$},ylabel={$n$}, xmin=-600,xmax=600,width=\linewidth,height=0.2\textheight]]% coordinates
+				\addplot+[ybar interval,mark=no] table {data/CERN1_CERN3.hist};
+			\end{axis}
+		\end{tikzpicture}
+	\caption{Medium detector distance}
+		\label{fig:histogram-data:mid}
+	\end{subfigure}
+	\begin{subfigure}{\linewidth}
+		\begin{tikzpicture}
+			\begin{axis}[area style, xlabel={$\Delta{t}\,[\text{ns}]$},ylabel={$n$}, xmin=-100000,xmax=100000,width=\linewidth,height=0.2\textheight]]% coordinates
+				\addplot+[ybar interval,mark=no] table {data/simonglm0_mw1cfn0.hist};
+			\end{axis}
+		\end{tikzpicture}
+		\caption{Large detector distance}
+		\label{fig:histogram-data:far}
+	\end{subfigure}
+	\caption{Coincidence time histograms for various distances}
 	\label{fig:histogram-data}
 \end{figure}
-When recording all coincidence times of one detector pair the different times can be plotted in a histogram. Figure \ref{fig:histogram-data} shows the geometrical arrangement and the histogram of coincidence data. Due to the close distance between both detectors, a large peak with Gaussian distribution can be seen which is significantly higher than the background which comprises of random coincidences due to noise in the \acrshort{sipm}. In the figure an offset can be observed which is due to hardware limitations in the detector setup.
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}
-		\begin{axis}[area style, xlabel={$\Delta{t}\,[\text{ns}]$},ylabel={$n$}, xmin=-600,xmax=600,width=\linewidth,height=\axisdefaultheight]% coordinates
-			\addplot+[ybar interval,mark=no] table {data/CERN1_CERN3.hist};
-		\end{axis}
-	\end{tikzpicture}
-	\caption{Coincidence time histogram for medium distance detector pair}
-	\label{fig:histogram-data-130}
-\end{figure}
-Comparing this plot to one where both detectors are much further apart as in the case of figure \ref{fig:histogram-data-130} with $131\,\text{m}$, a few things are noteworthy.
+\todo{Fix subfigure numbering}
+When recording all coincidence times of one detector pair the different times can be plotted in a histogram. Figure \ref{fig:histogram-data}. Due to the close distance between both detectors, a large peak with Gaussian distribution can be seen which is significantly higher than the background which comprises of random coincidences due to noise in the \acrshort{sipm}. In the figure an offset can be observed which is due to hardware limitations in the detector setup.
+Comparing this plot to one where both detectors are much further apart as in the case of figure \ref{fig:histogram-data} with $131\,\text{m}$, a few things are noteworthy.
 For one the total number of detected events is much lower. \todo{explanation for lower coincidence number in distance}
 Secondly, \todo{plot for coincidence rate with distance}
 \begin{figure}[H]
-	\centering
-	\begin{tikzpicture}
-		\begin{axis}[area style, xlabel={$\Delta{t}\,[\text{ns}]$},ylabel={$n$}, xmin=-100000,xmax=100000,width=\linewidth,height=\axisdefaultheight]% coordinates
-			\addplot+[ybar interval,mark=no] table {data/simonglm0_mw1cfn0.hist};
-		\end{axis}
-	\end{tikzpicture}
-	\caption{Coincidence time histogram for large distance detector pair}
-	\label{fig:histogram-data-950k}
-\end{figure}
-\begin{figure}[H]
 \centering
 \includegraphics[width=0.7\linewidth]{data/pair-count-rate}
-\caption{Coincidence time histogram for large distance detector pair\cite{muonpi}}
+\caption{Relationship between detector pair distance and coincidence rate\cite{muonpi}}
 \label{fig:pair-count-rate}
 \end{figure}
+\todo{Fix citation for distance plot}
 
 
 \section{Real-time analysis}
