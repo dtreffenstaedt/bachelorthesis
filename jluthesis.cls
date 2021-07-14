@@ -276,7 +276,6 @@
 	\fi
 	
 	\ifdefined\@lotl
-	\clearpage
 	\listoftodolist
 	\fi
 }

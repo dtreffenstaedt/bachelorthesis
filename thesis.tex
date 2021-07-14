@@ -9,7 +9,7 @@
 
 \usepackage{caption}
 \usepackage{subcaption}
-\renewcommand\thesubfigure{\thefigure-\arabic{subfigure}}
+\renewcommand\thesubfigure{-\arabic{subfigure}}
 
 
 \usepackage{pdfpages}
@@ -125,7 +125,6 @@ In the case of a charged pion $\pi^\pm$, The most likely decay with a probabilit
 	\caption{Components of a cosmic air shower}
 	\label{fig:shower-components}
 \end{figure}
-\todo{further specify EAS}
 The figure does not show all interactions, nor does it show the Neutrinos produced through the different interactions.
 The shower impact is dependent on the type of primary particle and its energy. In the case of \acrshort{uhecr}, the showers are classified as \acrfull{eas}.
 
@@ -572,9 +571,12 @@ It can be seen that the curves overlap in the bottom half of the plot, indicatin
 
 Though due to the fact that the space of possible origin points is a rotational body, the cross section between both curves is a region in 3D space.
 \section{Program layout}
-The analysis program uses a data driven pipeline design for efficient execution. It supervises itself and periodically stores runtime data like CPU and memory usage in a database in order to be able to later review resource usage. This is useful in extrapolating the runtime impact for larger number of detector stations in the future.
-An overview of the program layout for the real-time analysis is shown in Figure \ref{fig:programlayout}, the parts marked with section numbers are described in detail in their respective sections. \todo{better description of program structure}
-\begin{figure}[H]
+The analysis program uses a data driven pipeline design for efficient execution. This is an approach where the processing units in the software do not continuously poll for data but only get called once data is available. Though for time critical applications, a maximum waiting time is defined after which the processing unit is invoked.
+
+Apart from processing all events, it takes over the task of supervision of itself and all detector stations. For the purpose of keeping track of internal changes and changes in detector station status, a trigger system is employed in order to receive status updates outside of the application.
+Periodically it stores runtime information and detector states in a database.
+An overview of the program layout for the real-time analysis is shown in Figure \ref{fig:programlayout}, the parts marked with section numbers are described in detail in their respective sections.
+\begin{figure}[h!]
 	\centering
 	\begin{tikzpicture}[->]
 		\node (source) [draw, terminal,minimum height=1cm] {Event source};
@@ -599,11 +601,13 @@ An overview of the program layout for the real-time analysis is shown in Figure 
 	\end{tikzpicture}
 	\caption{Program layout}
 	\label{fig:programlayout}
-\end{figure}
+\end{figure} \\
+
+The station log source and event source are abstract classes which can be implemented through multiple different protocols, though at the moment only a \acrshort{mqtt} implementation is used. The same is true for the Even Sink class, though there are three distinct implementations available. The first is a sink for use with an influxDB database which is used per default. Additionally there is a debugging sink which uses text output onto the console and the third is a sink to \acrshort{mqtt} which can be used if the application should be used as an instance for a local arrangement for a few detectors. This local instance then sends the processed data along to the next instance, effectively performing a preprocessing step for dense local arrangements.
 \subsection{Station supervision}\label{subsec:station-s}
 The station supervision tracks all currently active detector stations and classifies them according to reliable and unreliable data states.
 Additionally it augments each event with the location and user data which is not provided with the default event messages.
-\begin{figure}[H]
+\begin{figure}[h!]
 	\centering
 	\begin{tikzpicture}[->]
 		\node (start) at (0,0) {};
@@ -716,6 +720,7 @@ The time-base supervisor determines a baseline waiting interval by observing the
 where $r$ is the current event rate, $\mu_{r}$ the mean rate and $\sigma_{r}$ the standard deviation of the rate over a long sample time. This factor is then relative to the expected event rate of the detector station and is always greater or equal to 1. This is calculated for all detector stations and the maximum value is used as a scaling factor for the previously described time-base.
 
 The resulting time value can then be used by the coincidence filter as a timeout value for the construction of coincidence events.
+\clearpage
 \subsection{Coincidence filter}\label{subsec:coincidence-f}
 The coincidence filter inspects each event in order to find all possible coincidences. It does so by creating so-called event constructors which hold the event and information about the creation time and the specific per-constructor timeout period. The timeout is taken from the timebase supervisor described in section \ref{subsec:timebase-s}. It is updated each time a more recent and higher value is received. When the timeout is passed, the constructor is committed in order to send the constructed event off for further processing. The flow of an event through the coincidence filter is shown in figure \ref{fig:coincidence-flow}.
 \begin{figure}[ht!]
