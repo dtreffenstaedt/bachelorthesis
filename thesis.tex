@@ -415,7 +415,7 @@ With this distance, the time of flight for the speed of light is calculated in o
 
 Since there is a constant timing offset of a few nanoseconds for each detector pair which arises through the specific hardware setup, a minimum coincidence window must be defined in order to capture coincidences even for pairs with a large offset. A practical value of $150\,\text{ns}$ has been chosen.
 It is also necessary to define an upper window, since the range of muons in air is limited and detector pairs with extremely large distances would create an abnormal and unphysical number of coincidences if left unconstrained. In order to find a useful upper limit for the coincidence window, the maximum possible flight distance for atmospheric muons has to be detemined. For that, the expected maximum range of muons in air is calculated. In order to do that, first a maximum expected energy is determined through the muon energy spectrum at sea level. Figure \ref{fig:muon-energy-spectrum} shows the muon energy spectrum at sea level for two different inclinations. A cutoff value of $10\,\text{TeV}$ is selected to calculate the maximum expected distance in air. Assuming the \acrfull{csda} range for a $10\,\text{TeV}$ muon taken from \cite{muon-range} of $7.634\cdot10^5\,\frac{\text{g}}{\text{cm}^2}$ and assuming standard condition air density of $1.225\,\frac{\text{kg}}{\text{m}^3}$, the maximum expected range of muons at sea level is $62.3\,\text{km}$. That equates to a time of flight of $207.87\,\mu\text{s}$ and thus a coincidence window of larger than that is not useful.
-\subsection{Coincidence and plausability determination}
+\subsection{Coincidence and plausability determination}\label{sec:coinc-calc}
 In order to determine coincidences, each event needs to be checked against all other events which are currently in the event buffer. To determine whether two events contain a coincidence, it is beneficial to calculate a score for each pair as follows:
 \begin{equation}\label{eq:coinc_score}
 	c = 1 - \frac{|t_1 - t_2|}{t_{tof}}
@@ -722,30 +722,36 @@ where $r$ is the current event rate, $\mu_{r}$ the mean rate and $\sigma_{r}$ th
 The resulting time value can then be used by the coincidence filter as a timeout value for the construction of coincidence events.
 \clearpage
 \subsection{Coincidence filter}\label{subsec:coincidence-f}
-The coincidence filter inspects each event in order to find all possible coincidences. It does so by creating so-called event constructors which hold the event and information about the creation time and the specific per-constructor timeout period. The timeout is taken from the timebase supervisor described in section \ref{subsec:timebase-s}. It is updated each time a more recent and higher value is received. When the timeout is passed, the constructor is committed in order to send the constructed event off for further processing. The flow of an event through the coincidence filter is shown in figure \ref{fig:coincidence-flow}.
+In order to create the coincidence, the coincidence filter analyses each event and calculates the time differences to all other events currently in the local event buffer. It does so by utilising various coincidence criteria. One of them uses the distance based approach as described in section \ref{sec:coinc-calc}.
+
+The local event buffer uses so called event constructors. Those are objects which have the sole purpose of keeping the event information, holding the currently valid timeout period and the timestamp of when they were created. The flowchart in figure \ref{fig:coincidence-flow} shows the process when a new event arrives in the coincidence filter. All currently known event constructors are iterated through and 
 \begin{figure}[ht!]
 	\centering
 	\begin{tikzpicture}[->]
 		\node (terminal1) at (0,0) [draw, terminal] {START};
 		\node (decide1) [below=of terminal1, draw, decision] {constructor available};
-		\node (predproc1) [below=of decide1, draw, process, align=left] {select next constructor};
-		\node (decide2) [below=of predproc1, draw, decision] {criterium met};
-		\node (predproc3) [right=of decide2, draw, predproc] {create new constructor};
-		\node (predproc2) [below=of decide2, draw, predproc] {add event to constructor};
-		\node (terminal2) [below=of predproc2, draw, terminal] {END};
+		\node (process1) [below=of decide1, draw, process, align=left] {select next constructor};
+		\node (decide2) [below=of process1, draw, decision] {criterium met};
+		\node (decide3) [right=of process1, draw, decision] {queue empty};
+		\node (process2) [below left=of decide2, draw, process] {add constructor to queue};
+		\node (terminal2) [below=of decide2, draw, terminal] {END};
+		\node (process3) [below right=of decide3, draw, process] {create new constructor};
+		\node (process4) [below=of decide3, draw, process] {add event to constructor};
 		
 		\node (decide1r) [right=of decide1] {no};
 		\node (decide2l) [left=of decide2] {no};
+		\path (decide2l) ++(-1,0) coordinate (decide2ll);
 		
 		
 		\draw (terminal1) -- (decide1);
-		\draw (decide1) -- (predproc1);
-		\draw (predproc1) -- (decide2);
-		\draw (decide2) -- (predproc2);
-		\draw (predproc2) -- (terminal2);
+		\draw (decide1) -- (process1);
+		\draw (process1) -- (decide2);
+		\draw (decide2) |- (process2);
+		\draw (process2) -- (terminal2);
+		\draw (process2) -| (decide2ll) |- (decide1);
 		\draw (decide2) -- (decide2l) |- (decide1);
-		\draw (decide1) -- (decide1r) -| (predproc3);
-		\draw (predproc3) |- (terminal2);
+		\draw (decide1) -- (decide1r) -| (decide3);
+		\draw (process3) |- (terminal2);
 	\end{tikzpicture}
 	\caption{Flow of an event through the coincidence filter}
 	\label{fig:coincidence-flow}
