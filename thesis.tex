@@ -9,6 +9,7 @@
 
 \usepackage{caption}
 \usepackage{subcaption}
+\renewcommand\thesubfigure{\thefigure-\arabic{subfigure}}
 
 
 \usepackage{pdfpages}
@@ -91,7 +92,7 @@ As seen in this figure, neutral Pions $\pi^0$ can decay to two photons $\gamma$ 
 	\end{aligned}
 \end{equation}
 The produced photons can then undergo pair production through which a lepton - anti lepton pair is produced. For this to occur, the photon needs to have an energy higher than twice the rest mass of the lepton. In the case of an electron positron pair, the rest energy is $511\,\text{keV}$ resulting in a minimum photon energy of $1022\,\text{keV}$. Any energy above this limit gets distributed evenly across both resulting particles as kinetic energy. In the \acrfull{com} system due to conservation of impulse, the pair travels in opposite directions to each other in a 90 degree angle to the original photon. In the laboratory system however, the resulting particles continue along the original trajectory.
-\todo{sources for decay probabilities}
+
 Should the photon not have enough energy to produce a pair, it can be absorbed in an atom by raising the energy level of an electron in the shell or loose energy through Compton scattering.\\
 In the case of a charged pion $\pi^\pm$, The most likely decay with a probability of $99.9\,\%$ is to a muon $\mu^\pm$ and a muon-neutrino $\nu_\mu$. The interaction is shown in equation \ref{eq:piondecay}.
 \begin{equation}\label{eq:piondecay}
@@ -272,6 +273,10 @@ The detector software collects various information in addition to the timestamp 
 		\hline
 		\textbf{Identifier} & \textbf{Description} \\
 		\hline
+		\verb*|geoLongitude| & Longitude of the detector station \\
+		\hline
+		\verb*|geoLatitude| & Latitude of the detector station \\
+		\hline
 		\verb*|geoHeightMSL| & Vertical height above the reference ellipsoid surface \\
 		\hline
 		\verb*|geoHorAccuracy| & Horizontal accuracy of the GNSS signal \\
@@ -291,7 +296,7 @@ The detector software collects various information in addition to the timestamp 
 	\label{tab:station_logs}
 \end{table}
 \footnotetext{\acrfull{dop}: Numerical value for the statistical dispersion of GNSS measurements}
-The 
+Since the detector network is not at known locations but distributed across multiple cities and countries at different users locations, in order to be able to make attempts at particle reconstruction, the location information is one of the more important information from the log messages. Additionally to this, the accuracy measurement values are used to determine in what state the detector station is in order to be able to judge the data integrity.
 \clearpage
 \subsection{Network}
 All detector stations are part of a larger network of detectors with a central data processor which analyses all incoming event data for possible coincidences. The entire analysis stack is shown in Figure \ref{fig:network-stack}.
@@ -327,10 +332,9 @@ A current overview of active and future stations in Europe can be seen in figure
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\linewidth]{data/detector-stations}
-	\caption[Current overview of detector stations]{Current overview of detector stations\cite{muonpi}. Red are future stations, green active stations.}
+	\caption[Current overview of detector stations]{Current overview of detector stations\cite{muonpi}.\\Red: future stations\\Green: active stations}
 	\label{fig:station-overview}
 \end{figure}
-Due to the 
 
 \subsection{Data}
 The shower front shape of a cosmic shower can initially be assumed to be a thick spherical cap with a thickness of $1\,\text{to}\,2\,\text{m}$\cite{grapes-3-2019}. This shape however fluctuates between shower events and measurements range from spherical cap shapes\cite{chitnis-2002} to conical shapes\cite{grapes-3-2019}. The thickness and deviation from the shape of a spherical cap introduce uncertainties in the calculations presented in this thesis in section \ref{sec:reconstruction}.
@@ -353,45 +357,49 @@ Comparing the timestamps of single detector hits can be used to correlate single
 \begin{figure}[H]
 	\centering
 	\begin{subfigure}{\linewidth}
+		\caption{Short detector distance}
+		\label{fig:histogram-data:close}
 		\begin{tikzpicture}
 			\begin{axis}[area style, xlabel={$\Delta{t}\,[\text{ns}]$},ylabel={$n$}, xmin=-600,xmax=600,width=\linewidth,height=0.2\textheight]% coordinates
 				\addplot+[ybar interval,mark=no] table {data/jluHBR16Lab105_1_jluHBR16Lab105_DoublePaddle.hist};
 			\end{axis}
 		\end{tikzpicture}
-		\caption{Short detector distance}
-		\label{fig:histogram-data:close}
 	\end{subfigure}
 	\begin{subfigure}{\linewidth}
+		\caption{Medium detector distance}
+		\label{fig:histogram-data:mid}
 		\begin{tikzpicture}
 			\begin{axis}[area style, xlabel={$\Delta{t}\,[\text{ns}]$},ylabel={$n$}, xmin=-600,xmax=600,width=\linewidth,height=0.2\textheight]]% coordinates
 				\addplot+[ybar interval,mark=no] table {data/CERN1_CERN3.hist};
 			\end{axis}
 		\end{tikzpicture}
-	\caption{Medium detector distance}
-		\label{fig:histogram-data:mid}
 	\end{subfigure}
 	\begin{subfigure}{\linewidth}
+		\caption{Large detector distance}
+		\label{fig:histogram-data:far}
 		\begin{tikzpicture}
 			\begin{axis}[area style, xlabel={$\Delta{t}\,[\text{ns}]$},ylabel={$n$}, xmin=-100000,xmax=100000,width=\linewidth,height=0.2\textheight]]% coordinates
 				\addplot+[ybar interval,mark=no] table {data/simonglm0_mw1cfn0.hist};
 			\end{axis}
 		\end{tikzpicture}
-		\caption{Large detector distance}
-		\label{fig:histogram-data:far}
 	\end{subfigure}
 	\caption{Coincidence time histograms for various distances}
 	\label{fig:histogram-data}
 \end{figure}
-\todo{Fix subfigure numbering}
-When recording all coincidence times of one detector pair the different times can be plotted in a histogram. Figure \ref{fig:histogram-data}. Due to the close distance between both detectors, a large peak with Gaussian distribution can be seen which is significantly higher than the background which comprises of random coincidences due to noise in the \acrshort{sipm}. In the figure an offset can be observed which is due to hardware limitations in the detector setup.
-Comparing this plot to one where both detectors are much further apart as in the case of figure \ref{fig:histogram-data} with $131\,\text{m}$, a few things are noteworthy.
-For one the total number of detected events is much lower. \todo{explanation for lower coincidence number in distance}
-Secondly, \todo{plot for coincidence rate with distance}
+When recording all coincidence times of one detector pair the different times can be plotted in a histogram. Figure \ref{fig:histogram-data} shows histograms for three different detector pairs with different distances. The plot \ref{fig:histogram-data:close} shows the closest distance of a few meters, plot \ref{fig:histogram-data:mid} a medium distance of roughly $130\,\text{m}$ and plot \ref{fig:histogram-data:far} a distance of $950\,\text{km}$.
+
+The closest distance shows the clearest signal and largest signal-to-noise ratio. However due to the location of both detectors, the GNSS signal is often weak which leads to a broad distribution due to low time resolution.
+
+In the medium distance plot, a still significant signal is visible, though the signal-to-noise ratio is much worse. The lower number of entries is due to the shorter total runtime of this particular detector pair.
+
+The furthest distance plot shows no signal over the random background.
+
+This highlights the relationship between coincidence rate and detector distance as shown in figure \ref{fig:pair-count-rate}. There, a number of experiments have been performed in order to determine the coincidence rates for different distances. A linear fit has been applied to the experimental data.
 \begin{figure}[H]
-\centering
-\includegraphics[width=0.7\linewidth]{data/pair-count-rate}
-\caption{Relationship between detector pair distance and coincidence rate\cite{muonpi}}
-\label{fig:pair-count-rate}
+	\centering
+	\includegraphics[width=0.7\linewidth]{data/pair-count-rate}
+	\caption{Relationship between detector pair distance and coincidence rate\cite{muonpi}}
+	\label{fig:pair-count-rate}
 \end{figure}
 \todo{Fix citation for distance plot}
 
