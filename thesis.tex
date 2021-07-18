@@ -400,7 +400,6 @@ This highlights the relationship between coincidence rate and detector distance 
 	\caption{Relationship between detector pair distance and coincidence rate\cite{muonpi}}
 	\label{fig:pair-count-rate}
 \end{figure}
-\todo{Fix citation for distance plot}
 
 
 \section{Real-time analysis}
@@ -720,12 +719,18 @@ The time-base supervisor determines a baseline waiting interval by observing the
 where $r$ is the current event rate, $\mu_{r}$ the mean rate and $\sigma_{r}$ the standard deviation of the rate over a long sample time. This factor is then relative to the expected event rate of the detector station and is always greater or equal to 1. This is calculated for all detector stations and the maximum value is used as a scaling factor for the previously described time-base.
 
 The resulting time value can then be used by the coincidence filter as a timeout value for the construction of coincidence events.
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=\linewidth]{data/dnp_timeout}
+	\caption{Example of timebase and timeout factor over $6\,\text{hour}$ period}
+	\label{fig:timeout-example}
+\end{figure}
+In figure \ref{fig:timeout-example} the timeout can be seen over a period over $6\,\text{hours}$. In orange is the timebase, in green the timeout with applied factor. Especially notable is the spike in timebase between $10:30$ and $10:40$.
 \clearpage
 \subsection{Coincidence filter}\label{subsec:coincidence-f}
 In order to create the coincidence, the coincidence filter analyses each event and calculates the time differences to all other events currently in the local event buffer. It does so by utilising various coincidence criteria. One of them uses the distance based approach as described in section \ref{sec:coinc-calc}.
-
-The local event buffer uses so called event constructors. Those are objects which have the sole purpose of keeping the event information, holding the currently valid timeout period and the timestamp of when they were created. The flowchart in figure \ref{fig:coincidence-flow} shows the process when a new event arrives in the coincidence filter. All currently known event constructors are iterated through and 
-\begin{figure}[ht!]
+\begin{figure}[H]
 	\centering
 	\begin{tikzpicture}[->]
 		\node (terminal1) at (0,0) [draw, terminal] {START};
@@ -734,29 +739,36 @@ The local event buffer uses so called event constructors. Those are objects whic
 		\node (decide2) [below=of process1, draw, decision] {criterium met};
 		\node (decide3) [right=of process1, draw, decision] {queue empty};
 		\node (process2) [below left=of decide2, draw, process] {add constructor to queue};
-		\node (terminal2) [below=of decide2, draw, terminal] {END};
 		\node (process3) [below right=of decide3, draw, process] {create new constructor};
 		\node (process4) [below=of decide3, draw, process] {add event to constructor};
 		
+		\node (terminal2) [below=of process4, draw, terminal] {END};
+		
 		\node (decide1r) [right=of decide1] {no};
 		\node (decide2l) [left=of decide2] {no};
-		\path (decide2l) ++(-1,0) coordinate (decide2ll);
+		\node (decide3r) [right=of decide3] {yes};
 		
 		
 		\draw (terminal1) -- (decide1);
 		\draw (decide1) -- (process1);
 		\draw (process1) -- (decide2);
 		\draw (decide2) |- (process2);
-		\draw (process2) -- (terminal2);
-		\draw (process2) -| (decide2ll) |- (decide1);
+		\draw (process2) |- (decide1);
 		\draw (decide2) -- (decide2l) |- (decide1);
 		\draw (decide1) -- (decide1r) -| (decide3);
+		
+		\draw (decide3) -- (decide3r) -| (process3);
+		
+		\draw (decide3) -- (process4);
 		\draw (process3) |- (terminal2);
+		\draw (process4) -- (terminal2);
 	\end{tikzpicture}
 	\caption{Flow of an event through the coincidence filter}
 	\label{fig:coincidence-flow}
 \end{figure}
-\begin{figure}[ht!]
+The local event buffer uses so called event constructors. Those are objects which have the sole purpose of keeping the event information, holding the currently valid timeout period and the timestamp of when they were created. The flowchart in figure \ref{fig:coincidence-flow} shows the process when a new event arrives in the coincidence filter. All currently known event constructors are iterated through and checked for a positive fit with the current event. In the case of a positive match, the constructor is added to a queue and the loop continues until it doesn't have any more constructors to check. \\
+After the last constructor has been passed, all constructors in the queue are combined to one joined constructor. This happens if the event bridges multiple unrelated constructors and thus the result is automatically classified as a conflicting coincidence. In the case that the queue is empty, the event does not match any constructors and so a new one is created for the single event.
+\begin{figure}[H]
 	\centering
 	\begin{tikzpicture}[->]
 		\node (terminal1) at (0,0) [draw, terminal] {START};
@@ -782,11 +794,32 @@ The local event buffer uses so called event constructors. Those are objects whic
 		\draw (decide2) -- (decide2l) |- (decide1);
 	\end{tikzpicture}
 	\caption{Timeout update and committing of event constructors}
-	 \label{fig:event-constructors}
+	\label{fig:event-constructors}
 \end{figure}
+After a certain time, the constructors need to be send off to the next station. This is done regularly by checking all constructors if their timeout has been reached. The flow chart in figure \ref{fig:event-constructors} shows how this is done. In the same process, each constructor is also updated with the latest timeout value.
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=\linewidth]{data/dnp_rates}
+\caption{Example of incoming and outgoing event rate over $6\,\text{hour}$ period}
+\label{fig:rates-example}
+\end{figure}
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=\linewidth]{data/dnp_buffer}
+\caption{Example of event buffer size over $6\,\text{hour}$ period}
+\label{fig:rates-buffer}
+\end{figure}
+Figures \ref{fig:rates-example} and \ref{fig:rates-buffer} show the result of an increased timeout value as shown in the example in figure \ref{fig:timeout-example}. Figure \ref{fig:rates-buffer} shows the buffer size rise in direct relation to the increased timeout value just after $10:30$. This in turn causes a drop immediately followed by an increase in outgoing coincidence events as visible in the orange line in figure \ref{fig:rates-example}. Though due to the inherent statistical nature of the number of coincidences, the outgoing rate plot is much less clear than the other plots.
+\clearpage
 \subsection{Coincidence analysis}\label{subsec:coincidence-s}
-The coincidence analysis creates a graph with data for all detector station combinations. It records a histogram of the coincidences between each station pair as well as joined uptime and total number of coincidences.
-The histograms use a bin size which is calculated per detector pair depending on their distance so that the interesting data is properly resolved with a total number of 2000 bins.
+The coincidence analysis is used to collect useful statistics mainly about detector station pair coincidence rates and histograms. It receives all coincidence events and has knowledge of all current detector stations. \\
+With this information it creates a graph of all detector pairs where it tracks the event times and numbers for each pair. Though due to the large number of possible pairs in the number of detector stations, this needs to be done carefully in order to not use too much system memory. The number of pairs out of $n$ detectors can be calculated through the binomial coefficient which in the specific case for $k = 2$ can be calculated with
+\begin{equation}
+	{n \choose k} = \frac{n!}{k!\cdot\left(n - k\right)!} = \frac{1}{2}\left(n^2 - n\right) = \Delta_{n-1}.
+\end{equation}
+Which is the same definition for the number of edges in a complete graph. In memory, this construct can be stored as an upper triangular matrix with no diagonal entries.
+
+Each edge in the then graph represents the number of coincidences of the associated detector pair and contains a histogram over a sample interval of $24\,\text{hours}$. After the sample interval is elapsed, all current histograms are stored to the disk and the structure in memory is reset.
 \clearpage
 \section{Conclusion and outlook}
 An approach to analyse real-time data for a network of low-cost scintillation detectors is presented and implementation details are discussed.
