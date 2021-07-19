@@ -1,16 +1,20 @@
 % !TeX spellcheck = en_GB
 \documentclass[abstract,toc,los,lof,english,10pt,glossary,acronyms]{jluthesis}
 
+\usepackage{gnuplottex}
+\usepackage{gnuplot-lua-tikz}
 \usepackage{listings}
 \usepackage{float}
 \newfloat{lstfloat}{tb}{lop}
 \floatname{lstfloat}{Listing}
 
-
+\usepackage{textgreek}
 \usepackage{caption}
 \usepackage{subcaption}
 \renewcommand\thesubfigure{-\arabic{subfigure}}
 
+
+\usepgfplotslibrary{fillbetween}
 
 \usepackage{pdfpages}
 \input{data/glossaries.tex}
@@ -738,22 +742,16 @@ The time-base supervisor determines a baseline waiting interval by observing the
 	f = max(1, \frac{\mu_{r} - r}{\sigma_{r}})
 \end{equation*}
 where $r$ is the current event rate, $\mu_{r}$ the mean rate and $\sigma_{r}$ the standard deviation of the rate over a long sample time. This factor is then relative to the expected event rate of the detector station and is always greater or equal to 1. This is calculated for all detector stations and the maximum value is used as a scaling factor for the previously described time-base.
-
+\clearpage
 The resulting time value can then be used by the coincidence filter as a timeout value for the construction of coincidence events.
 
 \begin{figure}[ht!]
 	\centering
-	\begin{tikzpicture}
-		\begin{axis}[area style, xlabel={$\Delta{t}\,[\text{ns}]$},ylabel={$n$},width=\linewidth,height=0.4\textheight,ymode=log]
-			\addplot+[y=2,x=1,x filter/.code={\pgfmathparse{#1 - 1626681240}\pgfmathresult}] table {data/timeout.csv};
-			\addplot+[y=3,x=1,x filter/.code={\pgfmathparse{#1 - 1626681240}\pgfmathresult}] table {data/timeout.csv};
-		\end{axis}
-	\end{tikzpicture}
-%	\includegraphics[width=\linewidth]{data/dnp_timeout}
-	\caption{Example of timebase and timeout factor over $6\,\text{hour}$ period}
+	\input{data/timeout.tikz}
+	\caption{Example of timebase and timeout factor over $4\,\text{hour}$ period}
 	\label{fig:timeout-example}
 \end{figure}
-In figure \ref{fig:timeout-example} the timeout can be seen over a period over $6\,\text{hours}$. In orange is the timebase, in green the timeout with applied factor. Especially notable is the spike in timebase between $10:30$ and $10:40$.
+In figure \ref{fig:timeout-example} the timeout can be seen over a period over $4\,\text{hours}$. In green is the timebase, in pink and dashed the timeout with applied factor. Especially notable is the spike in timebase around $10$. This is due to at least one detector having a temporary network outage and sending its events with a substantial delay. The spikes in the timeout factor are different detector stations experiencing slight network problems and thus reporting a quickly dropping rate.
 \clearpage
 \subsection{Coincidence filter}\label{subsec:coincidence-f}
 In order to create the coincidence, the coincidence filter analyses each event and calculates the time differences to all other events currently in the local event buffer. It does so by utilising various coincidence criteria. One of them uses the distance based approach as described in section \ref{sec:coinc-calc}.
@@ -824,19 +822,21 @@ After the last constructor has been passed, all constructors in the queue are co
 	\label{fig:event-constructors}
 \end{figure}
 After a certain time, the constructors need to be send off to the next station. This is done regularly by checking all constructors if their timeout has been reached. The flow chart in figure \ref{fig:event-constructors} shows how this is done. In the same process, each constructor is also updated with the latest timeout value.
+\clearpage
 \begin{figure}[ht!]
 \centering
-\includegraphics[width=\linewidth]{data/dnp_rates}
-\caption{Example of incoming and outgoing event rate over $6\,\text{hour}$ period}
+\input{data/events.tikz}
+\caption{Example of incoming and outgoing event rate over $4\,\text{hour}$ period}
 \label{fig:rates-example}
 \end{figure}
+
 \begin{figure}[ht!]
-\centering
-\includegraphics[width=\linewidth]{data/dnp_buffer}
-\caption{Example of event buffer size over $6\,\text{hour}$ period}
-\label{fig:rates-buffer}
+	\centering
+	\input{data/buffer.tikz}
+	\caption{Example of event buffer size over $4\,\text{hour}$ period}
+	\label{fig:buffer-example}
 \end{figure}
-Figures \ref{fig:rates-example} and \ref{fig:rates-buffer} show the result of an increased timeout value as shown in the example in figure \ref{fig:timeout-example}. Figure \ref{fig:rates-buffer} shows the buffer size rise in direct relation to the increased timeout value just after $10:30$. This in turn causes a drop immediately followed by an increase in outgoing coincidence events as visible in the orange line in figure \ref{fig:rates-example}. Though due to the inherent statistical nature of the number of coincidences, the outgoing rate plot is much less clear than the other plots.
+Figures \ref{fig:rates-example} and \ref{fig:buffer-example} show the result of an increased timeout value as shown in the example in figure \ref{fig:timeout-example}. Figure \ref{fig:buffer-example} shows the buffer size rise in direct relation to the increased timeout value just after $10:30$. This in turn causes a drop immediately followed by an increase in outgoing coincidence events as visible in the orange line in figure \ref{fig:rates-example}. Though due to the inherent statistical nature of the number of coincidences, the outgoing rate plot is much less clear than the other plots.
 \clearpage
 \subsection{Coincidence analysis}\label{subsec:coincidence-s}
 The coincidence analysis is used to collect useful statistics mainly about detector station pair coincidence rates and histograms. It receives all coincidence events and has knowledge of all current detector stations. \\

@@ -7,3 +7,5 @@
 !jluthesis.cls
 !data
 !data/*
+!data/plotting
+!data/plotting/*
