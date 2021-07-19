@@ -1,6 +1,6 @@
 \begin{tikzpicture}[gnuplot]
 %% generated with GNUPLOT 5.4p1 (Lua 5.4; terminal rev. Jun 2020, script rev. 114)
-%% Mon 19 Jul 2021 16:30:23
+%% Mon 19 Jul 2021 16:36:18
 \path (0.000,0.000) rectangle (15.000,7.000);
 \gpcolor{color=gp lt color border}
 \gpsetlinetype{gp lt border}

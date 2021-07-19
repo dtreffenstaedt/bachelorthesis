@@ -836,8 +836,7 @@ After a certain time, the constructors need to be send off to the next station. 
 	\caption{Example of event buffer size over $4\,\text{hour}$ period}
 	\label{fig:buffer-example}
 \end{figure}
-Figures \ref{fig:rates-example} and \ref{fig:buffer-example} show the result of an increased timeout value as shown in the example in figure \ref{fig:timeout-example}. Figure \ref{fig:buffer-example} shows the buffer size rise in direct relation to the increased timeout value just after $10:30$. This in turn causes a drop immediately followed by an increase in outgoing coincidence events as visible in the orange line in figure \ref{fig:rates-example}. Though due to the inherent statistical nature of the number of coincidences, the outgoing rate plot is much less clear than the other plots.
-\clearpage
+Figures \ref{fig:rates-example} and \ref{fig:buffer-example} show the result of an increased timeout value as shown in the example in figure \ref{fig:timeout-example}. Figure \ref{fig:buffer-example} shows the buffer size rise in direct relation to the increased timeout value just after $10$. This in turn causes a drop immediately followed by an increase in outgoing coincidence events as visible in the green and dashed line in figure \ref{fig:rates-example}. In the same plot, the pink line shows the cumulative incoming events between all detector stations. It is important to note though that the event number is not the event rate but the total number of events in the sample interval.
 \subsection{Coincidence analysis}\label{subsec:coincidence-s}
 The coincidence analysis is used to collect useful statistics mainly about detector station pair coincidence rates and histograms. It receives all coincidence events and has knowledge of all current detector stations. \\
 With this information it creates a graph of all detector pairs where it tracks the event times and numbers for each pair. Though due to the large number of possible pairs in the number of detector stations, this needs to be done carefully in order to not use too much system memory. The number of pairs out of $n$ detectors can be calculated through the binomial coefficient which in the specific case for $k = 2$ can be calculated with
@@ -849,7 +848,7 @@ Which is the same definition for the number of edges in a complete graph. In mem
 Each edge in the then graph represents the number of coincidences of the associated detector pair and contains a histogram over a sample interval of $24\,\text{hours}$. After the sample interval is elapsed, all current histograms are stored to the disk and the structure in memory is reset.
 \clearpage
 \section{Conclusion and outlook}
-This thesis described the possibility and implementation of a real-time system to analyse data from a loose network of scintillator detectors. A real-time system is preferable to post-analysis due to the large amount of data to be processed.
+This thesis described the possibility and implementation of a real-time system to analyse data from a loose network of low-cost scintillator detectors. This approach offers the benefit of being able to pre-filter all incoming data for a first plausibility determination. With this, not every data point needs to be saved and the infrastructure has a lower total load. 
 \clearpage
 
 \makeback

@@ -8,4 +8,5 @@ set ylabel "timeout [µs]"
 set key left
 set xtic 1800
 set xrange [1626681600:1626696000]
+set logscale y
 plot 'timeout.csv' using 1:2 with lines title "timeout" dt 5, 'timeout.csv' using 1:3 with lines title "timebase"
