@@ -743,7 +743,13 @@ The resulting time value can then be used by the coincidence filter as a timeout
 
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=\linewidth]{data/dnp_timeout}
+	\begin{tikzpicture}
+		\begin{axis}[area style, xlabel={$\Delta{t}\,[\text{ns}]$},ylabel={$n$},width=\linewidth,height=0.4\textheight,ymode=log]
+			\addplot+[y=2,x=1,x filter/.code={\pgfmathparse{#1 - 1626681240}\pgfmathresult}] table {data/timeout.csv};
+			\addplot+[y=3,x=1,x filter/.code={\pgfmathparse{#1 - 1626681240}\pgfmathresult}] table {data/timeout.csv};
+		\end{axis}
+	\end{tikzpicture}
+%	\includegraphics[width=\linewidth]{data/dnp_timeout}
 	\caption{Example of timebase and timeout factor over $6\,\text{hour}$ period}
 	\label{fig:timeout-example}
 \end{figure}
