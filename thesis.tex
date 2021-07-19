@@ -42,37 +42,42 @@
 \section{Introduction}
 \subsection{Cosmic Radiation}
 \acrfull{uhecr} is cosmic radiation with energy in the range of $10^{18}$\,eV to $10^{20}$\,eV.\footnote{The energy unit eV(Electron-Volt) describes the kinetic energy a unit charge holds after being accelerated through an electric field for 1V. It is equivalent to $1.602176634\cdot10^{-19}\,\text{J}$.}
-Cosmic radiation has been discovered in 1912 by Viktor Hess by performing measurements with three electrometers in a balloon flight. He measured the energy flux in the atmosphere and showed that it increased with altitude. This is explained by secondary particles which are produced through the interaction of primary cosmic radiation with the atmosphere. The cosmic radiation is produced by many different sources, one of which is our sun. The sun however only produces cosmic radiation up to a few hundred MeV of energy through coronal mass ejections and other processes and so is not contributing to \acrshort{uhecr}. Higher energy sources include other stars, supernovae and also black holes. \\
+Cosmic radiation has been discovered in 1912 by Viktor Hess by performing measurements with three electrometers in a balloon flight. He measured the energy flux in the atmosphere and showed that it increased with altitude. This is explained by secondary particles which are produced through the interaction of primary cosmic radiation with the atmosphere. The cosmic radiation is produced by many different sources, one of which is our sun. The sun however only produces cosmic radiation up to a few hundred MeV of energy through coronal mass ejections and other processes and so is not contributing to \acrshort{uhecr}. Higher energy sources include other stars, supernovae and also accretion disks around black holes. Though the production mechanism for the highest energy sources are still not fully understood and no sources have been identified definitively. Research at the Pierre-Auger observatory though shows an anisotropy in the arrival directions and suggests various sources \cite{fargion2018ultra}.
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=0.5\linewidth]{data/uhecr-sm-bh}
-	\caption{Trajectory of neutral particle around supermassive black hole \cite{Tursunov_2020}}
-	\label{fig:uhecr-sm-bh}
-\end{figure}\\
-The production mechanisms for \acrshort{uhecr} are unknown and an area of active research, though some sources have been speculated. One such proposed mechanism is a spinning supermassive hole with a neutral particle in its accretion disk. The Orbit of this particle decays until it is close enough to the black hole so that the effective electric charge dominates and ionises the particle which causes a large acceleration\cite{Tursunov_2020}. The trajectory of the particle is shown in figure \ref{fig:uhecr-sm-bh}.\\
-\begin{figure}[ht!]
-	\centering
-	\includegraphics[width=0.4\linewidth]{data/trajectory-binary-bh}
-	\caption{Possible trajectory of UHECR in Binary Black hole system \cite{Zhang2020}}
-	\label{fig:trajectory-binary-bh}
+	\includegraphics[width=0.5\linewidth]{data/uhecr-sources}
+	\caption{Possible souces of \acrshort{uhecr} \cite{fargion2018ultra}}
+	\label{fig:uhecr-sources}
 \end{figure} \\
-Already high energy particles can be accelerated to the ultra high energy regime. One possible acceleration mechanism relies on a pair of binary black holes which move at relativistic speeds. In such a scenario the particle can experience a series of gravitational slingshots \cite{Zhang2020} around the binary system and finally be accelerated so much it reaches the necessary energy region to be classified as an \acrshort{uhecr}. One possible trajectory of a particle that lead to an \acrshort{uhecr} which has been simulated is shown in figure \ref{fig:trajectory-binary-bh}. \\
+The spectrum of this cosmic radiation is shown in figure \ref{fig:cr_spectrum}.
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.75\linewidth]{data/cr_spectrum}
 	\caption{Spectrum of cosmic radiation \cite{evoli_carmelo_2020_4396125}}
 	\label{fig:cr_spectrum}
 \end{figure} \\
-The spectrum of this cosmic radiation is shown in figure \ref{fig:cr_spectrum}. There, measurements from different experiments are shown. The y axis shows the energy flux of cosmic rays in units of energy per second per square meter per solid angle $\frac{\text{GeV}}{\text{m}^2\cdot\text{s}\cdot\text{sr}}$. The x axis shows the primary energy of the cosmic rays, for comparison the upper axis shows the energy in units of Joule, the lower axis shows it in units of electron-Volt. Notable here is the much higher number of protons as compared to all other particles by two orders of magnitude. This allows one to make the reasonable assumption that most cosmic rays are protons. Prominent features of the proton spectrum are two anomalies labeled as Knee and Ankle. \\
-One interesting observation is that the proton spectrum does not have a solid cutoff at $5\cdot10^{19}$\,eV of energy, rather it extends beyond it. This value is significant because it is calculated to be the \acrfull{gzkl}\cite{2021APh...12602526B}. This limit stems from high energy protons interacting with the microwave background radiation and being lifted into an excited state.
+There, measurements from different experiments are shown. The y axis shows the energy flux of cosmic rays in units of energy per second per square meter per solid angle $\frac{\text{GeV}}{\text{m}^2\cdot\text{s}\cdot\text{sr}}$. The x axis shows the primary energy of the cosmic rays, for comparison the upper axis shows the energy in units of Joule, the lower axis shows it in units of electron-Volt. Notable here is the much higher number of protons as compared to all other particles by two orders of magnitude. This allows one to make the reasonable assumption that most cosmic rays are protons. Energies above the labelled knee originate almost exclusively from extragalactic sources.
+
+
+One interesting observation is that the proton spectrum does not have a solid cutoff at $5\cdot10^{19}$\,eV of energy, rather it extends beyond it. This value is significant because it is calculated to be the \acrfull{gzkl}\cite{2021APh...12602526B}. This limit stems from high energy protons interacting with the microwave background radiation thus being lifted into an excited state which can decay.
 \begin{equation}\label{eq:gzkl}
 	\begin{aligned}
 		\gamma + p &\rightarrow \Delta^+ &\rightarrow p + \pi^0 \\
 		\gamma + p &\rightarrow \Delta^+ &\rightarrow n + \pi^+
 	\end{aligned}
 \end{equation}
-Equation \ref{eq:gzkl} descibes the possible interaction between the microwave background photons and protons. In both cases, the proton gets excited to a $\Delta^+$ resonance state, which can decay to a hadron and a pi meson. One possible decay product is a proton and a $\pi^0$, the other one a neutron and a $\pi^+$. In this process, the proton loses roughly $20\,\%$ of its energy, since the energy prior to the interaction gets transferred to both resulting particles according to their relative masses. Should the proton then remain above the limit, the same interaction can take place again. It is unlikely that any proton at these energies can travel more than $100\,\cdot10^6\,\text{ly}$ without undergoing this interaction. Since most particles above the ankle in the proton specturm shown in figure \ref{fig:cr_spectrum} are of extragalactic origin, this means that virtually all protons with these high energies must have undergone this interaction, dropping them below the \acrshort{gzkl}.
+Equation \ref{eq:gzkl} descibes the possible interaction between the microwave background photons and protons. In both cases, the proton gets excited to a $\Delta^+$ resonance state, which can decay to a hadron and a pi meson. One possible decay product is a proton and a $\pi^0$, the other one a neutron and a $\pi^+$. Though this process, the proton loses roughly $20\,\%$ of its energy, since the energy prior to the interaction gets transferred to both resulting particles according to their relative masses. Should the proton then remain above the limit, the same interaction can take place again. It is unlikely that any proton at these energies can travel more than $100\,\cdot10^6\,\text{ly}$ without undergoing this interaction. Since most particles above the ankle in the proton specturm shown in figure \ref{fig:cr_spectrum} are of extragalactic origin, this means that virtually all protons with these high energies must have undergone this interaction, dropping them below the \acrshort{gzkl}.
 The violation of this limit could be explained with a proposition by the Pierre Auger Observatory that most \acrshort{uhecr} are in fact heavier nuclei than single protons \cite{thepierreaugercollaboration2017inferences}.
+
+
+The production mechanisms are not yet fully understood, though one possible mechanism involves active galaxy cores.
+These are super massive black holes at the centre of galaxies which feature an accretion disk. In the case of such a disk, a neutral particle can be on a decaying orbit which ends close to the Schwarzschild radius. At that point the effective electric charge due to the rotation of the black hole and its magnetic fields dominates and ionises the particle. The now positively charged particle gets accelerated to the highest energies and follows a spiral trajectory along the spin axis of the black hole.\cite{Tursunov_2020}
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.5\linewidth]{data/uhecr-sm-bh}
+	\caption{Trajectory of neutral particle around supermassive black hole \cite{Tursunov_2020}}
+	\label{fig:uhecr-sm-bh}
+\end{figure}\\
 
 \subsection{Cosmic Air Showers}\label{subsec:airshowers}
 When a cosmic ray hits the atmosphere, it interacts with the nucleons of the different molecules in air. Due to the relative abundance, it is most likely that the first interaction takes place between the primary particle and a Neutrogen nucleus. This causes interactions described by Quantum Chromo dynamics which is beyond the scope of this thesis. This interaction leaves nucelar fragments and $\pi$ mesons behind which can then interact with other air molecules again or - in the case of pions - decay. This creates a cascade of particles which continue along the trajectory towards the surface of earth. A picture of an air shower produced by a primary proton is shown in figure \ref{fig:proton-shower}. This image is produced at the KIT with the simulation toolkit CORSIKA.
@@ -127,8 +132,23 @@ In the case of a charged pion $\pi^\pm$, The most likely decay with a probabilit
 \end{figure}
 The figure does not show all interactions, nor does it show the Neutrinos produced through the different interactions.
 The shower impact is dependent on the type of primary particle and its energy. In the case of \acrshort{uhecr}, the showers are classified as \acrfull{eas}.
+\clearpage
+A different interaction of \acrshort{uhecr} with the atmosphere is the Cherenkov radiation. Due to the highly relativistic energies of the particles they travel faster than the local speed of light. In order to calculate the velocity of the particle, the relationship in Equation \ref{eq:lorentz-betagamma} can be used and solved for $\beta=\frac{v}{c_0}$.
+\begin{equation} \label{eq:lorentz-betagamma}
+	\beta\frac{1}{\sqrt{1 - \beta^2}} = \beta\gamma = \frac{E_{kin}}{E_{rest}}
+\end{equation}
+\begin{equation}
+	\beta=\frac{1}{\sqrt{1 + \left(\frac{E_{rest}}{E_{kin}}\right)^2}}
+\end{equation}
 
-Additionally to cosmic air showers, the primary particles produce Cherenkov radiation. This is light in the UV spectrum which results from the particles traveling faster than the local speed of light. This is an effect comparable to the sonic cone for objects traveling faster than the speed of sound in a medium like air.
+In the example of the Oh-My-God particle with an energy of $3.2\cdot10^{20}\,\text{eV}$ which is assumed to have been a proton with a rest energy of $\approx938.272\,\text{MeV}$, this calculates to
+\begin{equation}
+	\frac{E_{kin}}{E_{rest}} = \frac{3.2\cdot10^{20}\,\text{eV}}{938.27208816\,\text{MeV}}
+\end{equation}
+\begin{equation}
+	\beta=\frac{1}{\sqrt{1 + 8.597212025587174\cdot10^{-24}}}\approx1.
+\end{equation}
+Given the refractive index of Air of $n\approx1.00028$ for visible light, the particle travels faster than the local speed of light. This causes light in the UV spectrum to be emitted comparable to a Mach cone in situations where an object travels faster than the speed of sound in a medium.
 \begin{figure}[ht!]
 	\centering
 	\begin{tikzpicture}
@@ -136,27 +156,28 @@ Additionally to cosmic air showers, the primary particles produce Cherenkov radi
 		\draw (0,0) -- ++(7,0) coordinate (tip);
 		
 		\draw (tip) -- ++(135:4) -- ++(-135:2) coordinate(top) -- ++(-135:2);
-		\draw[dashed, ->] (tip) ++(135:1.0) -- ++(45:1);
-		\draw[dashed, ->] (tip) ++(135:1.5) -- ++(45:1);
-		\draw[dashed, ->] (tip) ++(135:2.0) -- ++(45:1);
-		\draw[dashed, ->] (tip) ++(135:2.5) -- ++(45:1);
-		\draw[dashed, ->] (tip) ++(135:3.0) -- ++(45:1);
-		\draw[dashed, ->] (tip) ++(135:3.5) -- ++(45:1);
+		\draw[->,decorate, decoration=snake] (tip) ++(135:1.0) -- ++(45:1);
+		\draw[->,decorate, decoration=snake] (tip) ++(135:1.5) -- ++(45:1);
+		\draw[->,decorate, decoration=snake] (tip) ++(135:2.0) -- ++(45:1);
+		\draw[->,decorate, decoration=snake] (tip) ++(135:2.5) -- ++(45:1);
+		\draw[->,decorate, decoration=snake] (tip) ++(135:3.0) -- ++(45:1);
+		\draw[->,decorate, decoration=snake] (tip) ++(135:3.5) -- ++(45:1);
 		
 		\draw (tip) -- ++(-135:4) -- ++(135:4);
-		\draw[dashed, ->] (tip) ++(-135:1.0) -- ++(-45:1);
-		\draw[dashed, ->] (tip) ++(-135:1.5) -- ++(-45:1);
-		\draw[dashed, ->] (tip) ++(-135:2.0) -- ++(-45:1);
-		\draw[dashed, ->] (tip) ++(-135:2.5) -- ++(-45:1);
-		\draw[dashed, ->] (tip) ++(-135:3.0) -- ++(-45:1);
-		\draw[dashed, ->] (tip) ++(-135:3.5) -- ++(-45:1);
+		\draw[->,decorate, decoration=snake] (tip) ++(-135:1.0) -- ++(-45:1);
+		\draw[->,decorate, decoration=snake] (tip) ++(-135:1.5) -- ++(-45:1);
+		\draw[->,decorate, decoration=snake] (tip) ++(-135:2.0) -- ++(-45:1);
+		\draw[->,decorate, decoration=snake] (tip) ++(-135:2.5) -- ++(-45:1);
+		\draw[->,decorate, decoration=snake] (tip) ++(-135:3.0) -- ++(-45:1);
+		\draw[->,decorate, decoration=snake] (tip) ++(-135:3.5) -- ++(-45:1);
 		
 		\draw[<->] (top) arc(45:22.5:2) coordinate(theta) arc(22.5:0:2);
 		\node[below left] at (theta) {$\theta$};
 	\end{tikzpicture}
-	\caption{Geometry of cherenkov radiation. Dashed are the UV photons, the angle $\theta$ is dependent on the incident particle velocity $v$ and the refractive index $n$ of the medium.}
+	\caption{Geometry of cherenkov radiation.}
 	\label{fig:cherenkov}
-\end{figure}
+\end{figure}\\
+The angle $\theta$ can be calculated through the relation $\cos\left(\theta\right)=\frac{1}{n\beta}$
 \clearpage
 \subsection{Detection methods}
 
@@ -822,7 +843,8 @@ Which is the same definition for the number of edges in a complete graph. In mem
 Each edge in the then graph represents the number of coincidences of the associated detector pair and contains a histogram over a sample interval of $24\,\text{hours}$. After the sample interval is elapsed, all current histograms are stored to the disk and the structure in memory is reset.
 \clearpage
 \section{Conclusion and outlook}
-An approach to analyse real-time data for a network of low-cost scintillation detectors is presented and implementation details are discussed.
+This thesis described the possibility and implementation of a real-time system to analyse data from a loose network of scintillator detectors. A real-time system is preferable to post-analysis due to the large amount of data to be processed.
+
 \todo{write conclusion}
 \clearpage
 
