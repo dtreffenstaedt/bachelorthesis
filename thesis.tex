@@ -434,7 +434,7 @@ This highlights the relationship between coincidence rate and detector distance 
 \end{figure}
 
 
-\section{Real-time analysis}
+\section{Real-time analysis}\label{sec:analysis}
 In order to detect coincidences from all incoming single data points, each data point has to be compared with all others in order to find all possible combinations. In order to do this, a useful criterium for a coincidence has to be found. A simple approach is to select a fixed maximum time difference which two events can have in order to be counted towards a coincidence. This however is inefficient and leads to large numbers of false positives, since a fixed interval can not perform well for detector combinations with large and short distances at the same time. Due to this a variable distance based criterium is used. For this purpose, the geodetic coordinates of both detector stations are taken and the straight line distance is calculated through \acrfull{enu} coordinates with the WGS84 model. The \acrshort{enu} coordinate system is a right handed local tangent plane carthesian coordinate system $\left(\hat{e}_{East},\hat{e}_{North},\hat{e}_{Up}\right)$ which is used to set different coordinates in relation to each other. The WGS84 model describes the shape of earth as an ellipsoid and provides reference measurements for this shape.
 \begin{figure}[ht!]
 	\centering
@@ -855,7 +855,18 @@ Which is the same definition for the number of edges in a complete graph. In mem
 Each edge in the then graph represents the number of coincidences of the associated detector pair and contains a histogram over a sample interval of $24\,\text{hours}$. After the sample interval is elapsed, all current histograms are stored to the disk and the structure in memory is reset.
 \clearpage
 \section{Conclusion and outlook}
-This thesis described the possibility and implementation of a real-time system to analyse data from a loose network of low-cost scintillator detectors. This approach offers the benefit of being able to pre-filter all incoming data for a first plausibility determination. With this, not every data point needs to be saved and the infrastructure has a lower total load. 
+This thesis described the possibility and implementation of a real-time system to analyse data from a loose network of low-cost scintillator detectors. This approach offers the benefit of being able to pre-filter all incoming data for a first plausibility determination. With this, not every data point needs to be saved and the infrastructure has a lower total load.
+
+At this point in time the application only does the filtering step and discards the raw data. A comparison with simultaneously running post-processing analysis software has shown that the real-time application runs reliable and finds all coincidences. In fact the reverse effect can be observed since the post-processing analysis needs to read and write large amounts to and from a database on execution it creates a substantial load on the system. This leads to data being lost during that time interval since the system cannot handle those loads. The real-time system has no large load spikes so does not loose data the same way. As a backup the raw data is still stored through other means however those have never been used or necessary thus far.
+
+Additional benefits of a real-time system are of visual nature. It allows the real-time visualisation of found coincidences on a map through a website and so can give a visual aid as to the validity of recorded data.
+
+
+The system functions at a good base level already, though further functionality is planned.
+Among the planned improvements is an introspection system with which the application can be monitored in real-time and offer runtime configuration options.
+
+The methods described in \ref{sec:analysis} need to be tested rigorously. They have undergone a basic analysis and have shown to work on a basic level though the reliability is not clear as of yet.
+
 \clearpage
 
 \makeback
