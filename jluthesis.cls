@@ -7,6 +7,8 @@
 \RequirePackage[english,ngerman]{babel} % languages
 
 \RequirePackage{siunitx}
+\RequirePackage{commath}
+\RequirePackage[version=4]{mhchem}
 \RequirePackage{tocloft}
 \RequirePackage{graphicx}
 \RequirePackage{makeidx}

@@ -34,7 +34,7 @@
 
 	
 \makebeginning{
-	Extensive Air Showers produced by ultra high energy cosmic radiation is still an active area of research. Due to the low number of such events collecting statistics is not a simple task. There are many approaches to collecting enough data about these air showers. One such approach is the usage of a distributed network of low-cost particle detectors which can be operated by persons outside the university environment.
+	Extensive Air Showers produced by ultra high energy cosmic radiation are still an active area of research. Due to the low number of such events collecting statistics requires a lot of time. Different approaches to collecting data about these events can be taken, one approach is the usage of a distributed network of low-cost particle detectors which can be operated by persons outside the university environment to cover a maximum area without the need for large investments.
 	
 	In this thesis, a method is developed to perform real-time analysis for a network of low-cost plastic scintillator detectors. This network consists of small scintillator detectors with silicon Photomultiplier units which are attached to a Raspberry-Pi computer. Those detection units are located throughout Germany and send their data to a server where it is continuously monitored for coincidences.
 	
@@ -46,7 +46,9 @@
 \section{Introduction}
 \subsection{Cosmic Radiation}
 \acrfull{uhecr} is cosmic radiation with energy in the range of $10^{18}$\,eV to $10^{20}$\,eV.\footnote{The energy unit eV(Electron-Volt) describes the kinetic energy a unit charge holds after being accelerated through an electric field for 1V. It is equivalent to $1.602176634\cdot10^{-19}\,\text{J}$.}
-Cosmic radiation has been discovered in 1912 by Viktor Hess by performing measurements with three electrometers in a balloon flight. He measured the energy flux in the atmosphere and showed that it increased with altitude. This is explained by secondary particles which are produced through the interaction of primary cosmic radiation with the atmosphere. The cosmic radiation is produced by many different sources, one of which is our sun. The sun however only produces cosmic radiation up to a few hundred MeV of energy through coronal mass ejections and other processes and so is not contributing to \acrshort{uhecr}. Higher energy sources include other stars, supernovae and also accretion disks around black holes. Though the production mechanism for the highest energy sources are still not fully understood and no sources have been identified definitively. Research at the Pierre-Auger observatory though shows an anisotropy in the arrival directions and suggests various sources \cite{fargion2018ultra}.
+Cosmic radiation has been discovered in 1912 by Viktor Hess by performing measurements with three electrometers in a balloon flight. He measured the energy flux in the atmosphere and showed that it increased with altitude. This is explained by secondary particles which are produced through the interaction of primary cosmic radiation with the atmosphere. The cosmic radiation is produced by many different sources, one of which is our sun. The sun however only produces cosmic radiation up to a few hundred MeV of energy through coronal mass ejections and other processes and so is not contributing to \acrshort{uhecr}.
+
+Higher energy sources include other stars, supernovae or accretion disks around black holes. Though the production mechanism for the highest energy sources are still not fully understood and no sources have been identified definitively. Current research at the Pierre-Auger observatory shows an anisotropy in the arrival directions and suggests various sources \cite{fargion2018ultra}.
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.5\linewidth]{data/uhecr-sources}
@@ -60,22 +62,22 @@ The spectrum of this cosmic radiation is shown in figure \ref{fig:cr_spectrum}.
 	\caption{Spectrum of cosmic radiation \cite{evoli_carmelo_2020_4396125}}
 	\label{fig:cr_spectrum}
 \end{figure} \\
-There, measurements from different experiments are shown. The y axis shows the energy flux of cosmic rays in units of energy per second per square meter per solid angle $\frac{\text{GeV}}{\text{m}^2\cdot\text{s}\cdot\text{sr}}$. The x axis shows the primary energy of the cosmic rays, for comparison the upper axis shows the energy in units of Joule, the lower axis shows it in units of electron-Volt. Notable here is the much higher number of protons as compared to all other particles by two orders of magnitude. This allows one to make the reasonable assumption that most cosmic rays are protons. Energies above the labelled knee originate almost exclusively from extragalactic sources.
+There, measurements from different experiments are shown. The y axis shows the energy flux of cosmic rays in units of energy per second per square meter per solid angle $\frac{\text{GeV}}{\text{m}^2\cdot\text{s}\cdot\text{sr}}$. The x axis shows the primary energy of the cosmic rays, for comparison the upper axis shows the energy in units of Joule, the lower axis shows it in units of electron-Volt. Notable here is the much higher number of protons as compared to all other particles by two orders of magnitude. This allows one to make the reasonable assumption that most cosmic rays are protons or heavier nuclei. Energies above the labelled ankle originate almost exclusively from extragalactic sources.
 
 
-One interesting observation is that the proton spectrum does not have a solid cutoff at $5\cdot10^{19}$\,eV of energy, rather it extends beyond it. This value is significant because it is calculated to be the \acrfull{gzkl}\cite{2021APh...12602526B}. This limit stems from high energy protons interacting with the microwave background radiation thus being lifted into an excited state which can decay.
+One interesting observation is that the proton spectrum does not have a solid cutoff at $5\cdot10^{19}$\,eV of energy, rather it extends beyond it. This value is significant because it is calculated to be the \acrfull{gzkl}\cite{2021APh...12602526B}. This limit stems from high energy protons interacting with the microwave background radiation thus being lifted into an excited state which can decay through the interaction shown in equation \ref{eq:gzkl}.
 \begin{equation}\label{eq:gzkl}
 	\begin{aligned}
-		\gamma + p &\rightarrow \Delta^+ &\rightarrow p + \pi^0 \\
-		\gamma + p &\rightarrow \Delta^+ &\rightarrow n + \pi^+
+		\ce{\gamma + p &-> \Delta^+ &-> p + \pi^0} \\
+		\ce{\gamma + p &-> \Delta^+ &-> n + \pi^+}
 	\end{aligned}
 \end{equation}
-Equation \ref{eq:gzkl} descibes the possible interaction between the microwave background photons and protons. In both cases, the proton gets excited to a $\Delta^+$ resonance state, which can decay to a hadron and a pi meson. One possible decay product is a proton and a $\pi^0$, the other one a neutron and a $\pi^+$. Though this process, the proton loses roughly $20\,\%$ of its energy, since the energy prior to the interaction gets transferred to both resulting particles according to their relative masses. Should the proton then remain above the limit, the same interaction can take place again. It is unlikely that any proton at these energies can travel more than $100\,\cdot10^6\,\text{ly}$ without undergoing this interaction. Since most particles above the ankle in the proton specturm shown in figure \ref{fig:cr_spectrum} are of extragalactic origin, this means that virtually all protons with these high energies must have undergone this interaction, dropping them below the \acrshort{gzkl}.
+In both cases, the proton gets excited to a $\Delta^+$ resonance state, which can decay to a hadron and a pi meson. One possible decay product is a proton and a $\pi^0$, the other one a neutron and a $\pi^+$. Though this process, the proton loses roughly $20\,\%$ of its energy, since the energy prior to the interaction gets transferred to both resulting particles according to their relative masses. Should the proton then remain above the limit, the same interaction can take place again. It is unlikely that any proton at these energies can travel more than $100\,\cdot10^6\,\text{ly}$ without undergoing this interaction. Since most particles above the ankle in the proton specturm shown in figure \ref{fig:cr_spectrum} are of extragalactic origin, this means that virtually all protons with these high energies must have undergone this interaction, dropping them below the \acrshort{gzkl}.
 The violation of this limit could be explained with a proposition by the Pierre Auger Observatory that most \acrshort{uhecr} are in fact heavier nuclei than single protons \cite{thepierreaugercollaboration2017inferences}.
 
 
 The production mechanisms are not yet fully understood, though one possible mechanism involves active galaxy cores.
-These are super massive black holes at the centre of galaxies which feature an accretion disk. In the case of such a disk, a neutral particle can be on a decaying orbit which ends close to the Schwarzschild radius. At that point the effective electric charge due to the rotation of the black hole and its magnetic fields dominates and ionises the particle. The now positively charged particle gets accelerated to the highest energies and follows a spiral trajectory along the spin axis of the black hole.\cite{Tursunov_2020}
+These are supermassive black holes at the centre of galaxies which feature an accretion disk. In the case of such a disk, a neutral particle can be on a decaying orbit which ends close to the Schwarzschild radius where they get ionised by the effective electric charge of the black hole which gets induced by the magnetic fields and spin of the black hole. The now positively charged particle gets accelerated to the highest energies and follows a spiral trajectory along the spin axis while the negative particle continues on the decaying trajectory.\cite{Tursunov_2020}
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.5\linewidth]{data/uhecr-sm-bh}
@@ -84,7 +86,7 @@ These are super massive black holes at the centre of galaxies which feature an a
 \end{figure}\\
 
 \subsection{Cosmic Air Showers}\label{subsec:airshowers}
-When a cosmic ray hits the atmosphere, it interacts with the nucleons of the different molecules in air. Due to the relative abundance, it is most likely that the first interaction takes place between the primary particle and a Neutrogen nucleus. This causes interactions described by Quantum Chromo dynamics which is beyond the scope of this thesis. This interaction leaves nucelar fragments and $\pi$ mesons behind which can then interact with other air molecules again or - in the case of pions - decay. This creates a cascade of particles which continue along the trajectory towards the surface of earth. A picture of an air shower produced by a primary proton is shown in figure \ref{fig:proton-shower}. This image is produced at the KIT with the simulation toolkit CORSIKA.
+When a cosmic ray hits the atmosphere, it interacts with the nucleons of the different molecules in air. Due to the relative abundance, it is most likely that the first interaction takes place between the primary particle and a Neutrogen nucleus. This interaction leaves nuclear fragments and $\pi$ mesons behind which can then interact with other air molecules again or - in the case of pions - decay. This creates a cascade of particles which continue along the trajectory towards the surface of earth. A picture of an air shower produced by a primary proton is shown in figure \ref{fig:proton-shower}. This image is produced at the KIT with the simulation toolkit CORSIKA.
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.8\linewidth]{data/shower-45}
@@ -100,7 +102,7 @@ Neutral Pions $\pi^0$ have two main decay modes. One is to two photons $\gamma$,
 		\pi^0 &\rightarrow e^+ + e^- + \gamma \\
 	\end{aligned}
 \end{equation}
-The produced photons can then undergo pair production through which a lepton - anti lepton pair is produced. For this to occur, the photon needs to have an energy higher than twice the rest mass of the lepton. In the case of an electron positron pair, the rest energy is $511\,\text{keV}$ resulting in a minimum photon energy of $1022\,\text{keV}$. Any energy above this limit gets distributed evenly across both resulting particles as kinetic energy. In the \acrfull{com} system due to conservation of impulse, the pair travels in opposite directions to each other in a 90 degree angle to the original photon. In the laboratory system however, the resulting particles continue along the original trajectory.
+The produced photons can then undergo pair production through which a lepton - anti lepton pair is produced. For this to occur, the photon needs to have an energy higher than twice the rest mass of the lepton. In the case of an electron positron pair, the rest energy is $511\,\text{keV}$ resulting in a minimum photon energy of $1022\,\text{keV}$. Any energy above this limit gets distributed evenly across both resulting particles as kinetic energy. In the \acrfull{com} system due to conservation of impulse, the pair travels in opposite directions to each other in a 90 degree angle to the original photon. In the laboratory system however, the resulting particles continue along the original trajectory with an angle between them.
 
 Should the photon not have enough energy to produce a pair, it can be absorbed in an atom by raising the energy level of an electron in the shell or loose energy through Compton scattering.\\
 In the case of a charged pion $\pi^\pm$, The by far most likely decay mode with a probability of $99.9877\,\%$ is to a muon $\mu^\pm$ and a muon-neutrino $\nu_\mu$.\cite[1211]{10.1093/ptep/ptaa104} The interaction is shown in equation \ref{eq:piondecay}.
@@ -135,7 +137,7 @@ In the case of a charged pion $\pi^\pm$, The by far most likely decay mode with 
 	\label{fig:shower-components}
 \end{figure}
 The figure does not show all interactions, nor does it show the Neutrinos produced through the different interactions.
-The shower impact is dependent on the type of primary particle and its energy. In the case of \acrshort{uhecr}, the showers are classified as \acrfull{eas}.
+The shower impact is dependent on the type of primary particle and its energy. In the case of \acrshort{uhecr}, the showers are classified as \acrfull{eas} which feature a larger footprint area and higher particle multiplicity on earth.
 \clearpage
 A different interaction of \acrshort{uhecr} with the atmosphere is the Cherenkov radiation. Due to the highly relativistic energies of the particles they travel faster than the local speed of light. In order to calculate the velocity of the particle, the relationship in Equation \ref{eq:lorentz-betagamma} can be used and solved for $\beta=\frac{v}{c_0}$.
 \begin{equation} \label{eq:lorentz-betagamma}
@@ -186,8 +188,7 @@ The angle $\theta$ can be calculated through the relation $\cos\left(\theta\righ
 \subsection{Detection methods}
 
 The detection of \acrshort{uhecr} can be done through three main methods.\\
-Two depend on the cosmic air showers described in the section \ref{subsec:airshowers}, namely the muonic and the electromagnetic component. The other method depends on the Cherenkov radiation.
-In the case of Cherenkov radiation, UV telescopes can be used to detect the UV light directly. By observing the same source through multiple locations, the origin can be reconstructed. 
+Two depend on the cosmic air showers described in the section \ref{subsec:airshowers}, namely the muonic and the electromagnetic component. The other method depends on the Cherenkov radiation where UV telescopes can be used to detect the UV light directly. By observing the same source through multiple locations, the origin can be reconstructed.
 A popular example of a particle being detected through these means is the so called Oh-My-God particle, likely a proton or heavier nucleus with an energy of  $3.2\pm0.9\cdot10^{20}\,\text{eV}$ of energy. This particular particle is interesting since it was the first particle to exceed the \acrshort{gzkl}. It has been detected by the HiRes detector in Utah.
 
 A method using the electromagnetic component of a cosmic air shower exploits the fact that the frequencies lie in the radio range\cite{NELLES201513} and can be detected through normal radio Antennae\cite{SCHRODER20171}. Due to the polarisation of the radio signal, often multiple antennae with different polarisation characteristics are used.
@@ -220,7 +221,13 @@ A method using the electromagnetic component of a cosmic air shower exploits the
 	\caption{Mechanism for crystal scintillators}
 	\label{fig:scintillator}
 \end{figure}
-Another method is to detect the muonic component, this can be done through Scintillator detectors. Due to the muon being a charged particle, it interacts with matter and deposits energy. Certain materials can give off this energy via photons, a process which is known as scintillation. Figure \ref{fig:scintillator} shows the mechanism through which scintillation occurs. First, an electron is excited from the valence band into the conduction band through energy deposit from an incident particle. This electron then is transported through the conduction band where it can drop back down to the valence band. Though if it dropped back directly, a photon would be emitted which could immediatly excit another electron in the valence band. What makes scintillators special is the existance of traps which reduce the energy of the emitted photons. Those photons then do not have enough energy to excite eletrons in the material so they can pass through it. With the use of a photmultiplier, the emitted photons can then be detected. One type of Photomultiplier is the \acrfull{sipm}, which is an array of single-photon avalanche diode which are photodiodes operating above the reverse-bias breakover voltage resulting in an avalanche upon interaction with even a single photon. The multiplicity of avalanches then is related to the number of photons interacting with the photomultiplier.
+Another method is to detect the muonic component, this can be done through Scintillator detectors. Due to the muon being a charged particle, it interacts with matter and deposits energy. The expected amount of deposited energy can be described by the Bethe-Bloch formalism.
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=\linewidth]{data/bethe-bloch}
+	\caption{Expected energy deposit $\left\langle-\od{E}{x}\right\rangle$}
+\end{figure}
+Certain materials can give off this energy via photons, a process which is known as scintillation. Figure \ref{fig:scintillator} shows the mechanism through which scintillation occurs. First, an electron is excited from the valence band into the conduction band through energy deposit from an incident particle. This electron then is transported through the conduction band where it can drop back down to the valence band. Though if it dropped back directly, a photon would be emitted which could immediatly excit another electron in the valence band. What makes scintillators special is the existance of traps which reduce the energy of the emitted photons. Those photons then do not have enough energy to excite eletrons in the material so they can pass through it. With the use of a photmultiplier, the emitted photons can then be detected. One type of Photomultiplier is the \acrfull{sipm}, which is an array of single-photon avalanche diode which are photodiodes operating above the reverse-bias breakover voltage resulting in an avalanche upon interaction with even a single photon. The multiplicity of avalanches then is related to the number of photons interacting with the photomultiplier.
 
 \section{Detectors}
 \subsection{Station}
