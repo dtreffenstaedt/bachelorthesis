@@ -98,8 +98,8 @@ The secondary particles can be divided into three different components, they are
 Neutral Pions $\pi^0$ have two main decay modes. One is to two photons $\gamma$, the other to an electron positron pair and a photon. The probabilities decay cross section for the two gamma production is much higher than that of the $e^\pm + \gamma$ production though, with probabilities of roughly $98.823$ and $1.174\,\%$.\cite[1213]{10.1093/ptep/ptaa104} The other decay modes have orders of magnitude lower probabilities.
 \begin{equation}
 	\begin{aligned}
-		\pi^0 &\rightarrow 2\gamma \\
-		\pi^0 &\rightarrow e^+ + e^- + \gamma \\
+		\ce{\pi^0 &-> 2\gamma} \\
+		\ce{\pi^0 &-> e^+ + e^- + \gamma} \\
 	\end{aligned}
 \end{equation}
 The produced photons can then undergo pair production through which a lepton - anti lepton pair is produced. For this to occur, the photon needs to have an energy higher than twice the rest mass of the lepton. In the case of an electron positron pair, the rest energy is $511\,\text{keV}$ resulting in a minimum photon energy of $1022\,\text{keV}$. Any energy above this limit gets distributed evenly across both resulting particles as kinetic energy. In the \acrfull{com} system due to conservation of impulse, the pair travels in opposite directions to each other in a 90 degree angle to the original photon. In the laboratory system however, the resulting particles continue along the original trajectory with an angle between them.
@@ -108,8 +108,8 @@ Should the photon not have enough energy to produce a pair, it can be absorbed i
 In the case of a charged pion $\pi^\pm$, The by far most likely decay mode with a probability of $99.9877\,\%$ is to a muon $\mu^\pm$ and a muon-neutrino $\nu_\mu$.\cite[1211]{10.1093/ptep/ptaa104} The interaction is shown in equation \ref{eq:piondecay}.
 \begin{equation}\label{eq:piondecay}
 	\begin{aligned}
-		\pi^+ &\rightarrow \mu^+ + \nu_\mu \\
-		\pi^- &\rightarrow \mu^- + \bar{\nu}_\mu
+		\ce{\pi^+ &-> \mu^+ + \nu_\mu} \\
+		\ce{\pi^- &-> \mu^- + \bar{\nu}_\mu}
 	\end{aligned}
 \end{equation}
 \begin{figure}[ht!]
@@ -193,7 +193,16 @@ A popular example of a particle being detected through these means is the so cal
 
 A method using the electromagnetic component of a cosmic air shower exploits the fact that the frequencies lie in the radio range\cite{NELLES201513} and can be detected through normal radio Antennae\cite{SCHRODER20171}. Due to the polarisation of the radio signal, often multiple antennae with different polarisation characteristics are used.
 
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=\linewidth]{data/bethe-bloch}
+	\caption{Expected energy deposit $\left\langle-\od{E}{x}\right\rangle$ of $\mu^+$ in copper \cite[536]{10.1093/ptep/ptaa104}}
+	\label{fig:bethe-bloch}
+\end{figure}
+Another method is to detect the muonic component, this can be done through Scintillator detectors. Due to the muon being a charged particle, it interacts with matter and deposits energy. The expected amount of deposited energy for a charged particle in matter can be described by the Bethe-Bloch formalism for $0.1\leq\beta\gamma\leq10^3$. Notable is that the deposited energy mainly depends on the relativistic speed of the particle described by $\beta\gamma$ where $\beta$ is the ratio of the velocity and speed of light and $\gamma$ the Lorentz factor. This is especially useful since it also equals the ratio between kinetic and rest energy. Figure \ref{fig:bethe-bloch} shows the mass stopping power of positive muons in copper. 
 
+
+Certain materials can give off this energy via photons, a process which is known as scintillation. Figure \ref{fig:scintillator} shows the mechanism through which scintillation occurs.
 \begin{figure}[ht!]
 	\centering
 	\begin{tikzpicture}[->]
@@ -221,13 +230,7 @@ A method using the electromagnetic component of a cosmic air shower exploits the
 	\caption{Mechanism for crystal scintillators}
 	\label{fig:scintillator}
 \end{figure}
-Another method is to detect the muonic component, this can be done through Scintillator detectors. Due to the muon being a charged particle, it interacts with matter and deposits energy. The expected amount of deposited energy can be described by the Bethe-Bloch formalism.
-\begin{figure}[ht!]
-	\centering
-	\includegraphics[width=\linewidth]{data/bethe-bloch}
-	\caption{Expected energy deposit $\left\langle-\od{E}{x}\right\rangle$}
-\end{figure}
-Certain materials can give off this energy via photons, a process which is known as scintillation. Figure \ref{fig:scintillator} shows the mechanism through which scintillation occurs. First, an electron is excited from the valence band into the conduction band through energy deposit from an incident particle. This electron then is transported through the conduction band where it can drop back down to the valence band. Though if it dropped back directly, a photon would be emitted which could immediatly excit another electron in the valence band. What makes scintillators special is the existance of traps which reduce the energy of the emitted photons. Those photons then do not have enough energy to excite eletrons in the material so they can pass through it. With the use of a photmultiplier, the emitted photons can then be detected. One type of Photomultiplier is the \acrfull{sipm}, which is an array of single-photon avalanche diode which are photodiodes operating above the reverse-bias breakover voltage resulting in an avalanche upon interaction with even a single photon. The multiplicity of avalanches then is related to the number of photons interacting with the photomultiplier.
+First, an electron is excited from the valence band into the conduction band through energy deposit from an incident particle. This electron then is transported through the conduction band where it can drop back down to the valence band. Though if it dropped back directly, a photon would be emitted which could immediatly excit another electron in the valence band. What makes scintillators special is the existance of traps which reduce the energy of the emitted photons. Those photons then do not have enough energy to excite eletrons in the material so they can pass through it. With the use of a photmultiplier, the emitted photons can then be detected. One type of Photomultiplier is the \acrfull{sipm}, which is an array of single-photon avalanche diode which are photodiodes operating above the reverse-bias breakover voltage resulting in an avalanche upon interaction with even a single photon. The multiplicity of avalanches then is related to the number of photons interacting with the photomultiplier.
 
 \section{Detectors}
 \subsection{Station}
