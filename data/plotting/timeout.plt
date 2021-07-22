@@ -4,7 +4,7 @@ set xlabel "time of day"
 set timefmt "%s"
 set format x "%H:%M"
 set xdata time
-set ylabel "timeout [µs]"
+set ylabel "timeout [ms]"
 set key left
 set xtic 1800
 set xrange [1626681600:1626696000]

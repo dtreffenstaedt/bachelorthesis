@@ -1,6 +1,6 @@
 \begin{tikzpicture}[gnuplot]
 %% generated with GNUPLOT 5.4p1 (Lua 5.4; terminal rev. Jun 2020, script rev. 114)
-%% Mon 19 Jul 2021 16:37:01
+%% Do 22 Jul 2021 13:33:50 CEST
 \path (0.000,0.000) rectangle (15.000,7.000);
 \gpcolor{color=gp lt color border}
 \gpsetlinetype{gp lt border}
@@ -139,7 +139,7 @@
 \draw[gp path] (14.447,6.691)--(14.447,6.511);
 \node[gp node center] at (14.447,0.677) {12:00};
 \draw[gp path] (1.872,6.691)--(1.872,0.985)--(14.447,0.985)--(14.447,6.691)--cycle;
-\node[gp node center,rotate=-270] at (0.292,3.838) {timeout [µs]};
+\node[gp node center,rotate=-270] at (0.292,3.838) {timeout [ms]};
 \node[gp node center] at (8.159,0.215) {time of day};
 \node[gp node right] at (3.528,6.357) {timeout};
 \gpcolor{rgb color={0.580,0.000,0.827}}
