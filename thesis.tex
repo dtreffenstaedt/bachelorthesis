@@ -1,5 +1,5 @@
 % !TeX spellcheck = en_GB
-\documentclass[abstract,toc,los,lof,english,10pt,glossary,acronyms]{jluthesis}
+\documentclass[abstract,toc,los,lof,english,glossary,acronyms]{jluthesis}
 
 \usepackage{gnuplottex}
 \usepackage{gnuplot-lua-tikz}
@@ -22,9 +22,9 @@
 
 \topic{Real-time data analysis of a distributed muon detector network for cosmic shower detection and reconstruction}
 \title[Bachelor Thesis]{Bachelor Thesis}
-\author[Daniel Treffenstädt]{Daniel J.S. Treffenstädt}
+\author[Daniel Treffenstädt]{Daniel Treffenstädt}
 \matnr{6067797}
-\reviewer{Prof. Dr. Kai-Thomas Brinkmann\\apl. Prof. Dr. Sören Lange}
+\reviewer{Prof. Dr. Kai-Thomas Brinkmann\\Prof. Dr. Sören Lange}
 \supervisor{Dr. Hans-Georg Zaunick}
 
 
@@ -34,9 +34,9 @@
 
 	
 \makebeginning{
-	Extensive Air Showers produced by ultra high energy cosmic radiation are still an active area of research. Due to the low number of such events collecting statistics requires a lot of time. Different approaches to collecting data about these events can be taken, one approach is the usage of a distributed network of low-cost particle detectors which can be operated by persons outside the university environment to cover a maximum area without the need for large investments.
+	Extensive Air Showers produced by ultra high energy cosmic radiation are still an active area of research. Due to the low number of such events collecting statistics requires a lot of time. Different approaches to collecting data about these events can be taken, one approach is the usage of a distributed network of low-cost scintillation detectors which can be operated by persons outside the university environment to cover a maximum area without the need for large investments.
 	
-	In this thesis, a method is developed to perform real-time analysis for a network of low-cost plastic scintillator detectors. This network consists of small scintillator detectors with silicon Photomultiplier units which are attached to a Raspberry-Pi computer. Those detection units are located throughout Germany and send their data to a server where it is continuously monitored for coincidences.
+	In this thesis, a method is developed to perform real-time analysis for a network of low-cost plastic scintillator detectors. This network consists of small scintillator detectors with silicon Photomultiplier units which are attached to a Raspberry-Pi computer. Those detection units are distributed across multiple countries though the largest number is located throughout Germany. They send their data to a server where it is continuously monitored for coincidences.
 	
 	An approach to reconstructing the possible incident direction of the primary particle as well as an approximation for plausible energies is presented.
 }
@@ -46,9 +46,9 @@
 \section{Introduction}
 \subsection{Cosmic Radiation}
 \acrfull{uhecr} is cosmic radiation with energy in the range of $10^{18}$\,eV to $10^{20}$\,eV.\footnote{The energy unit eV(Electron-Volt) describes the kinetic energy a unit charge holds after being accelerated through an electric field for 1V. It is equivalent to $1.602176634\cdot10^{-19}\,\text{J}$.}
-Cosmic radiation has been discovered in 1912 by Viktor Hess by performing measurements with three electrometers in a balloon flight. He measured the energy flux in the atmosphere and showed that it increased with altitude. This is explained by secondary particles which are produced through the interaction of primary cosmic radiation with the atmosphere. The cosmic radiation is produced by many different sources, one of which is our sun. The sun however only produces cosmic radiation up to a few hundred MeV of energy through coronal mass ejections and other processes and so is not contributing to \acrshort{uhecr}.
+Cosmic radiation was discovered in 1912 by Viktor Hess by performing measurements with three electrometers in a balloon flight. He measured the energy flux in the atmosphere and showed that it increased with altitude. This is explained by secondary particles which are produced through the interaction of primary cosmic radiation with the atmosphere. The cosmic radiation is produced by many different sources, one of which is our sun. The sun however only produces cosmic radiation up to a few hundred MeV of energy through coronal mass ejections and other processes and so is not contributing to \acrshort{uhecr}.
 
-Higher energy sources include other stars, supernovae or accretion disks around black holes. Though the production mechanism for the highest energy sources are still not fully understood and no sources have been identified definitively. Current research at the Pierre-Auger observatory shows an anisotropy in the arrival directions and suggests various sources \cite{fargion2018ultra}.
+Higher energy sources include other stars, supernovae or accretion disks around black holes. The production mechanisms for the highest energy sources are still not fully understood and no sources have been identified definitively, though current research at the Pierre-Auger Observatory shows an anisotropy in the arrival directions of cosmic radiation and suggests various sources \cite{fargion2018ultra}.
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.5\linewidth]{data/uhecr-sources}
@@ -68,16 +68,16 @@ There, measurements from different experiments are shown. The y axis shows the e
 One interesting observation is that the proton spectrum does not have a solid cutoff at $5\cdot10^{19}$\,eV of energy, rather it extends beyond it. This value is significant because it is calculated to be the \acrfull{gzkl}\cite{2021APh...12602526B}. This limit stems from high energy protons interacting with the microwave background radiation thus being lifted into an excited state which can decay through the interaction shown in equation \ref{eq:gzkl}.
 \begin{equation}\label{eq:gzkl}
 	\begin{aligned}
-		\ce{\gamma + p &-> \Delta^+ &-> p + \pi^0} \\
-		\ce{\gamma + p &-> \Delta^+ &-> n + \pi^+}
+		\ce{p + \gamma  &-> \Delta^+ &-> p + \pi^0} \\
+		\ce{p + \gamma &-> \Delta^+ &-> n + \pi^+}
 	\end{aligned}
 \end{equation}
-In both cases, the proton gets excited to a $\Delta^+$ resonance state, which can decay to a hadron and a pi meson. One possible decay product is a proton and a $\pi^0$, the other one a neutron and a $\pi^+$. Though this process, the proton loses roughly $20\,\%$ of its energy, since the energy prior to the interaction gets transferred to both resulting particles according to their relative masses. Should the proton then remain above the limit, the same interaction can take place again. It is unlikely that any proton at these energies can travel more than $100\,\cdot10^6\,\text{ly}$ without undergoing this interaction. Since most particles above the ankle in the proton specturm shown in figure \ref{fig:cr_spectrum} are of extragalactic origin, this means that virtually all protons with these high energies must have undergone this interaction, dropping them below the \acrshort{gzkl}.
-The violation of this limit could be explained with a proposition by the Pierre Auger Observatory that most \acrshort{uhecr} are in fact heavier nuclei than single protons \cite{thepierreaugercollaboration2017inferences}.
+In both cases, the proton gets excited to a $\Delta^+$ resonance state, which can decay to a hadron and a pi meson. One possible decay product is a proton and a $\pi^0$, the other one a neutron and a $\pi^+$. Through this process, the proton loses roughly $20\,\%$ of its energy, since the energy prior to the interaction gets transferred to both resulting particles according to their relative masses. Should the proton then remain above the limit, the same interaction can take place again. It is unlikely that any proton at these energies can travel more than $100\,\cdot10^6\,\text{ly}$ without undergoing this interaction. Since most particles above the ankle in the proton specturm shown in figure \ref{fig:cr_spectrum} are of extragalactic origin, this means that virtually all protons with these high energies must have undergone this interaction, dropping them below the \acrshort{gzkl}.
+The violation of this limit could be explained with a proposition by the Pierre-Auger Observatory that most \acrshort{uhecr} are in fact heavier nuclei than single protons \cite{thepierreaugercollaboration2017inferences}.
 
 
 The production mechanisms are not yet fully understood, though one possible mechanism involves active galaxy cores.
-These are supermassive black holes at the centre of galaxies which feature an accretion disk. In the case of such a disk, a neutral particle can be on a decaying orbit which ends close to the Schwarzschild radius where they get ionised by the effective electric charge of the black hole which gets induced by the magnetic fields and spin of the black hole. The now positively charged particle gets accelerated to the highest energies and follows a spiral trajectory along the spin axis while the negative particle continues on the decaying trajectory.\cite{Tursunov_2020}
+These are supermassive black holes at the centre of galaxies which feature an accretion disk. Within those disks, a neutral particle can be on a decaying orbit which ends close to the Schwarzschild radius where it is ionised by the effective electric charge of the black hole which in turn is induced by the magnetic fields and spin of the black hole. The now positively charged particle gets accelerated to the highest energies and follows a spiral trajectory along the spin axis while the negative particle continues on the decaying trajectory.\cite{Tursunov_2020}
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.5\linewidth]{data/uhecr-sm-bh}
@@ -86,16 +86,14 @@ These are supermassive black holes at the centre of galaxies which feature an ac
 \end{figure}\\
 \clearpage
 \subsection{Cosmic Air Showers}\label{subsec:airshowers}
-When a cosmic ray hits the atmosphere, it interacts with the nucleons of the different molecules in air. Due to the relative abundance, it is most likely that the first interaction takes place between the primary particle and a Neutrogen nucleus. This interaction leaves nuclear fragments and $\pi$ mesons behind which can then interact with other air molecules again or - in the case of pions - decay. This creates a cascade of particles which continue along the trajectory towards the surface of earth. A picture of an air shower produced by a primary proton is shown in figure \ref{fig:proton-shower}. This image was created at the \acrfull{kit} with the simulation toolkit CORSIKA.
+When a cosmic ray hits the atmosphere, it interacts with the nucleons of the different molecules in air. Due to its relative abundance, the most likely primary interaction partner is a Neutrogen nucleus. This interaction leaves $\pi$ mesons (Pion) and nuclear fragments behind which can then interact with other air molecules again or (in the case of pions) decay. This creates a cascade of particles which continue along the trajectory towards the surface of earth. A picture of an air shower produced by a primary proton is shown in figure \ref{fig:proton-shower}. This image was created at the \acrfull{kit} with the simulation toolkit CORSIKA.
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.8\linewidth]{data/shower-45}
 	\caption{Proton Air Shower \cite{corsika-images}}
 	\label{fig:proton-shower}
 \end{figure} \\
-
-The secondary particles can be divided into three different components, they are shown in figure \ref{fig:shower-components}.
-Neutral Pions $\pi^0$ have two main decay modes. One is to two photons $\gamma$, the other to an electron positron pair and a photon. The probabilities decay cross section for the two gamma production is much higher than that of the $e^\pm + \gamma$ production though, with probabilities of roughly $98.823$ and $1.174\,\%$.\cite[1213]{10.1093/ptep/ptaa104} The other decay modes have orders of magnitude lower probabilities.
+Neutral Pions $\pi^0$ have two main decay modes; one is to two photons $\gamma$, the other to an electron positron pair and a photon. With probabilities of roughly $98.823$ and $1.174\,\%$\cite[1213]{10.1093/ptep/ptaa104}, the decay cross section for the $2\gamma$ production is much higher than that of the $e^\pm + \gamma$ production. All other decay modes have orders of magnitude lower probabilities.
 \begin{equation}
 	\begin{aligned}
 		\ce{\pi^0 &-> 2\gamma} \\
@@ -112,6 +110,7 @@ In the case of a charged pion $\pi^\pm$, the by far most likely decay mode with 
 		\ce{\pi^- &-> \mu^- + \bar{\nu}_\mu}
 	\end{aligned}
 \end{equation}
+The resulting secondary particles in the shower can be divided into three different categories which are shown in figure \ref{fig:shower-components}. 
 \begin{figure}[ht!]
 	\centering
 	\begin{tikzpicture}
@@ -137,9 +136,9 @@ In the case of a charged pion $\pi^\pm$, the by far most likely decay mode with 
 	\label{fig:shower-components}
 \end{figure}
 The figure does not show all interactions, nor does it show the Neutrinos produced through the different interactions.
-The shower impact is dependent on the type of primary particle and its energy. In the case of \acrshort{uhecr}, the showers are classified as \acrfull{eas} which feature a larger footprint area and higher particle multiplicity on earth.
+The shower impact is dependent on the type of primary particle and its energy. Showers producted by \acrshort{uhecr} are classified as \acrfull{eas} and feature a larger footprint area as well as a higher particle multiplicity on earth.
 
-A different interaction of \acrshort{uhecr} with the atmosphere is the Cherenkov radiation. Due to the highly relativistic energies of the particles they travel faster than the local speed of light. In order to calculate the velocity of the particle, the relationship in Equation \ref{eq:lorentz-betagamma} can be used and solved for $\beta=\frac{v}{c_0}$.
+A different interaction of \acrshort{uhecr} with the atmosphere is the Cherenkov radiation. Due to the highly relativistic energies, the particles travel faster than the local speed of light. In order to calculate the velocity of the particle, the relationship in equation \ref{eq:lorentz-betagamma} can be used and solved for $\beta=\frac{v}{c_0}$.
 \begin{equation} \label{eq:lorentz-betagamma}
 	\beta\frac{1}{\sqrt{1 - \beta^2}} = \beta\gamma = \frac{E_{kin}}{E_{rest}}
 \end{equation}
@@ -187,8 +186,8 @@ The angle $\theta$ can be calculated through the relation $\cos\left(\theta\righ
 \clearpage
 \subsection{Detection methods}
 
-The detection of \acrshort{uhecr} can be done through three main methods.\\
-Two depend on the cosmic air showers described in the section \ref{subsec:airshowers}, namely the muonic and the electromagnetic component. The other method depends on the Cherenkov radiation where UV telescopes can be used to detect the UV light directly. By observing the same source through multiple locations, the origin can be reconstructed.
+\acrshort{uhecr} can be detected using three main methodologies.\\
+Two methods depend on the cosmic air showers described in the section \ref{subsec:airshowers}, namely the muonic and the electromagnetic component. The other method relies on the Cherenkov radiation where UV telescopes can be used to detect the UV light directly. By observing the same source through multiple locations, the origin can be reconstructed.
 A popular example of a particle being detected through these means is the so called Oh-My-God particle, likely a proton or heavier nucleus with an energy of  $3.2\pm0.9\cdot10^{20}\,\text{eV}$ of energy. This particular particle is interesting since it was the first particle to exceed the \acrshort{gzkl}. It has been detected by the HiRes detector in Utah.
 
 A method using the electromagnetic component of a cosmic air shower exploits the fact that the frequencies lie in the radio range\cite{NELLES201513} and can be detected through normal radio Antennae\cite{SCHRODER20171}. Due to the polarisation of the radio signal, often multiple antennae with different polarisation characteristics are used.
@@ -199,7 +198,7 @@ A method using the electromagnetic component of a cosmic air shower exploits the
 	\caption{Expected energy deposit $\left\langle-\od{E}{x}\right\rangle$ of $\mu^+$ in copper \cite[536]{10.1093/ptep/ptaa104}}
 	\label{fig:bethe-bloch}
 \end{figure}
-Another method is to detect the muonic component, this can be done through Scintillator detectors. Due to the muon being a charged particle, it interacts with matter and deposits energy according to figure \ref{fig:bethe-bloch}. The expected amount of deposited energy for a charged particle in matter can be described by the Bethe-Bloch formalism for $0.1\leq\beta\gamma\leq10^3$. Notable is that the deposited energy mainly depends on the relativistic speed of the particle described by $\beta\gamma$ where $\beta$ is the ratio of the velocity and speed of light and $\gamma$ the Lorentz factor. This is especially useful since it also equals the ratio between kinetic and rest energy. Figure \ref{fig:bethe-bloch} shows the mass stopping power of positive muons in copper with the Bethe-Bloch formalism describing the middle section.
+Another method is to detect the muonic component, this can be done through Scintillator detectors. Due to the muon being a charged particle, it interacts with matter and deposits energy according to figure \ref{fig:bethe-bloch}. The expected amount of deposited energy for a charged particle in matter can be described by the Bethe-Bloch formalism for $0.1\leq\beta\gamma\leq10^3$. Notably the deposited energy mainly depends on the relativistic speed of the particle described by $\beta\gamma$ where $\beta$ is the ratio of the velocity and speed of light and $\gamma$ the Lorentz factor. Using $\beta\gamma$ is especially useful since it can be easily calculated through the ratio between kinetic and rest energy. Figure \ref{fig:bethe-bloch} shows the mass stopping power of positive muons in copper with the Bethe-Bloch formalism describing the middle section.
 
 
 Certain materials can give off this energy via photons, a process which is known as scintillation. Figure \ref{fig:scintillator} shows the mechanism through which scintillation occurs.
@@ -230,7 +229,7 @@ Certain materials can give off this energy via photons, a process which is known
 	\caption{Mechanism for inorganic crystal scintillators}
 	\label{fig:scintillator}
 \end{figure}
-First, an electron is excited from the valence band into the conduction band through energy deposit from an incident particle. This electron then is transported through the conduction band where it can drop back down to the valence band. Though if it dropped back directly, a photon would be emitted which could immediately excite another electron in the valence band. What makes scintillators special is the existence of traps which reduce the energy of the emitted photons. Those photons then do not have enough energy to excite electrons in the material so they can pass through it. With the use of a photomultiplier, the emitted photons can then be detected. One type of Photomultiplier is the \acrfull{sipm}, which is an array of single-photon avalanche diode which are photodiodes operating above the reverse-bias break-over voltage resulting in an avalanche upon interaction with even a single photon. The multiplicity of avalanches then is related to the number of photons interacting with the photomultiplier.
+First, an electron is excited from the valence band into the conduction band through energy deposit from an incident particle. This electron is then transported within the conduction band to where it can drop back down to the valence band through traps. Were the electron to drop back directly, a photon would be emitted which could immediately excite another electron in the valence band. The defining features of scintillators is the existence of traps which reduce the energy of the emitted photons. Those photons then do not have enough energy to excite electrons in the material so they can pass through it. With the use of a photomultiplier, the emitted photons can then be detected. One type of Photomultiplier is the \acrfull{sipm}, which is an array of photodiodes operating above the reverse-bias break-over voltage, resulting in an avalanche upon interaction with even a single photon. The multiplicity of avalanches then is related to the number of photons interacting with the photomultiplier.
 
 \section{Detectors}
 \subsection{Station}
@@ -248,14 +247,14 @@ Each detector station consists of a Scintillator with \acrshort{sipm} assembly, 
 	\caption{Detector station assembly without Raspberry Pi computer}
 	\label{fig:station_assembly}
 \end{figure}
-In figure \ref{fig:station_assembly} each component excluding the Raspberry Pi is shown. The SiPM is still detached from the Scintillator for this picture since it would not be visible as separate part otherwise. The preamplifier is part of the SiPM assembly and prepares the signal to the readout board in order to prevent loss of signal over the transmission line. The readout board supports two input channels which can be linked logically either per AND or XOR, though per default only one channel is used.
+In figure \ref{fig:station_assembly} each component excluding the Raspberry Pi is shown. The SiPM is still detached from the Scintillator in this image since otherwise it would not be visible as distinct part. The preamplifier is part of the SiPM assembly and prepares the signal for the readout board in order to prevent loss of signal over the transmission line. The readout board supports two input channels which can be linked logically either per AND or XOR, though by default only one channel is used.
 
 The readout board uses a ublox NEO GNSS receiver chip which features an interrupt input to accurately timestamp input signals with a maximum resolution of $21\,\text{ns}$ \cite{ublox-datasheet} with a deadtime of $100\,\text{ms}$.
-This deadtime makes it unsuitable for high frequency applications though due to the scintillator size of $286.5\,\text{cm}^2$ and an integral intensity of Muons over the whole energy spectrum above $1\,\text{GeV}$ of $1\,\text{cm}^{-2}\text{min}^{-1}$\cite[512]{10.1093/ptep/ptaa104} the expected maximum detection rate of $4.7\,\text{Hz}$ is within the capabilities of this setup. \\
+This deadtime makes it unsuitable for high frequency applications, but due to the scintillator size of $286.5\,\text{cm}^2$ and an integral intensity of Muons over the whole energy spectrum above $1\,\text{GeV}$ of $1\,\text{cm}^{-2}\text{min}^{-1}$\cite[512]{10.1093/ptep/ptaa104} the expected maximum detection rate of $4.7\,\text{Hz}$ is within the capabilities of this setup. \\
 \clearpage
-The detector software collects various information in addition to the timestamp with each event and sends it to the server via the \acrfull{mqtt} protocol. This is a text-based protocol providing reliable information transfer with minimal overhead\cite{mqtt}. Additional to the event information the station sends log information in regular intervals indicative of the current state of the detector station.
+The detector software collects various information in addition to the timestamp with each event and sends it to the server via the \acrfull{mqtt} protocol. This is a text-based protocol providing reliable information transfer with minimal overhead\cite{mqtt}. Additional to the event information the station sends log information at regular intervals which report the current state of the detector station.
 \subsection{Data exchange format}
-\paragraph{Event messages} contain information about the event with additional details about the current state of the detector station. Each message consists of $8$ fields, one of which is part of the \acrshort{mqtt} message topic and $7$ are part of the payload. An example is shown in listing \ref{lst:mqtt-event}, the fields are described in table \ref{tab:event-message}.
+\paragraph{Event messages} contain information about the event with additional details about the current state of the detector station. Each message consists of eight fields, one of which is part of the \acrshort{mqtt} message topic and seven are part of the payload. An example is shown in listing \ref{lst:mqtt-event}, the fields are described in table \ref{tab:event-message}. The first two fields are separated by a / character, the others are separated by spaces.
 \begin{lstfloat}[H]
 	\centering
 	\begin{verbatim}
@@ -292,7 +291,7 @@ The detector software collects various information in addition to the timestamp 
 \end{table}
 
 
-\paragraph{Log messages} contain various information about the current station state and are formatted as shown in Listing \ref{lst:mqtt-log}, the unit field is not present in all log messages. A small excerpt of various log message identifiers is shown in Table \ref{tab:station_logs}.
+\paragraph{Log messages} contain various information about the current state of the station and are formatted as shown in Listing \ref{lst:mqtt-log}, the unit field is not present in all log messages. A small excerpt of various log message identifiers is shown in Table \ref{tab:station_logs}.
 \begin{lstfloat}[H]
 	\centering
 	\begin{verbatim}
@@ -330,7 +329,9 @@ The detector software collects various information in addition to the timestamp 
 	\label{tab:station_logs}
 \end{table}
 \footnotetext{\acrfull{dop}: Numerical value for the statistical dispersion of GNSS measurements}
-Since the detector network is not at known locations but distributed across multiple cities and countries at different users locations, in order to be able to make attempts at particle reconstruction, the location information is one of the more important information from the log messages. Additionally to this, the accuracy measurement values are used to determine in what state the detector station is to be able to judge the data integrity.
+As the station in the detector network are not at known locations but distributed across multiple cities and countries at different user locations, in order to make attempts at particle reconstruction, the location information is one of the more important pieces of information from the log messages.
+Additionally to this, the current quality of data is judged according to the various accuracy measurement values provided in the log messages. This is done through different approached explained in a later section.
+
 \clearpage
 \subsection{Network}
 All detector stations are part of a larger network of detectors with a central data processor which analyses all incoming event data for possible coincidences. The entire analysis stack is shown in Figure \ref{fig:network-stack}.
@@ -371,7 +372,7 @@ A current overview of active and future stations in Europe can be seen in figure
 \end{figure}
 
 \subsection{Data}
-The shower front shape of a cosmic shower can initially be assumed to be a thick spherical cap with a thickness of $1\,\text{to}\,2\,\text{m}$\cite{grapes-3-2019}. This shape however fluctuates between shower events and measurements range from spherical cap shapes\cite{chitnis-2002} to conical shapes\cite{grapes-3-2019}. The thickness and deviation from the shape of a spherical cap introduce uncertainties in the calculations presented in this thesis in section \ref{sec:reconstruction}.
+The shower front shape of a cosmic shower can initially be assumed to be a thick spherical cap with a thickness of $1\,\text{to}\,2\,\text{m}$\cite{grapes-3-2019}. This shape, however, fluctuates between shower events and measurements range from spherical cap shapes\cite{chitnis-2002} to conical shapes\cite{grapes-3-2019}. The thickness and deviation from the shape of a spherical cap introduce uncertainties in the calculations presented in this thesis in section \ref{sec:reconstruction}.
 \begin{figure}[H]
 	\centering
 	\begin{tikzpicture}
@@ -432,23 +433,23 @@ This highlights the relationship between coincidence rate and detector distance 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\linewidth]{data/pair-count-rate}
-	\caption{Relationship between detector pair distance and coincidence rate\cite{muonpi}}
+	\caption{Relationship between detector pair distance and coincidence rate}
 	\label{fig:pair-count-rate}
 \end{figure}
 
 
 \section{Real-time analysis}\label{sec:analysis}
-In order to detect coincidences from all incoming single data points, each data point has to be compared with all others to find all possible combinations. To be able to do this, a useful criterium for a coincidence has to be found. A simple approach is to select a fixed maximum time difference which two events can have in order to be counted towards a coincidence. This however is inefficient and leads to large numbers of false positives, since a fixed interval can not perform well for detector combinations with large and short distances at the same time. Due to this a variable distance based criterium is used. For this purpose, the geodetic coordinates of both detector stations are taken and the straight line distance is calculated through \acrfull{enu} coordinates with the WGS84 model. The \acrshort{enu} coordinate system is a right handed local tangent plane carthesian coordinate system $\left(\hat{e}_{East},\hat{e}_{North},\hat{e}_{Up}\right)$ which is used to set different coordinates in relation to each other. The WGS84 model describes the shape of earth as an ellipsoid and provides reference measurements for this shape.
+In order to detect coincidences from all incoming single data points, each data point has to be compared with all others to find all possible combinations. To be able to do this a useful criterium for a coincidence has to be found. A simple approach is to select a fixed maximum time difference that two events can have in order to be counted towards a coincidence. This, however, is inefficient and leads to large numbers of false positives, since a fixed interval cannot perform well for detector combinations with large and short distances at the same time. Therefore a variable distance based criterium is used. For this purpose, the geodetic coordinates of both detector stations are taken and the straight line distance is calculated through \acrfull{enu} coordinates with the WGS84 model. The \acrshort{enu} coordinate system is a right handed local tangent plane carthesian coordinate system $\left(\hat{e}_{East},\hat{e}_{North},\hat{e}_{Up}\right)$ which is used to set different coordinates in relation to each other. The WGS84 model describes the shape of earth as an ellipsoid and provides reference measurements for this shape.
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.7\linewidth]{data/cr_fig5_SeaLevelMuSpectra_09}
 	\caption[Muon energy spectrum from vertical and inclined muons at sea level\cite{10.1093/ptep/ptaa104}]{Muon energy spectrum from vertical and inclined \tikz \draw[rotate=45] (0,0) rectangle(0.125,0.125); muons at sea level \cite[512]{10.1093/ptep/ptaa104}}
 	\label{fig:muon-energy-spectrum}
 \end{figure} \\
-With this distance, the time of flight for the speed of light is calculated in order to receive the maximum physically viable time difference for one detector pair. This value however has large uncertainties especially for detector pairs which are close together.
+With this distance the time of flight for the speed of light is calculated in order to receive the maximum physically viable time difference for one detector pair. However, this value has large uncertainties especially for detector pairs which are close together.
 
-Since there is a constant timing offset of a few nanoseconds for each detector pair which arises through the specific hardware setup, a minimum coincidence window must be defined to capture coincidences even for pairs with a large offset. A practical value of $150\,\text{ns}$ has been chosen.
-It is also necessary to define an upper window, since the range of muons in air is limited and detector pairs with extremely large distances would create an abnormal and unphysical number of coincidences if left unconstrained. In order to find a useful upper limit for the coincidence window, the maximum possible flight distance for atmospheric muons has to be detemined. For that, the expected maximum range of muons in air is calculated. In order to do that, first a maximum expected energy is determined through the muon energy spectrum at sea level. Figure \ref{fig:muon-energy-spectrum} shows the muon energy spectrum at sea level for two different inclinations. A cutoff value of $10\,\text{TeV}$ is selected to calculate the maximum expected distance in air. Assuming the \acrfull{csda} range for a $10\,\text{TeV}$ muon taken from \cite{muon-range} of $7.634\cdot10^5\,\frac{\text{g}}{\text{cm}^2}$ and assuming standard condition air density of $1.225\,\frac{\text{kg}}{\text{m}^3}$, the maximum expected range of muons at sea level is $62.3\,\text{km}$. That equates to a time of flight of $207.87\,\mu\text{s}$ and thus a coincidence window of larger than that is not useful.
+Since there is a constant timing offset of a few nanoseconds for each detector pair which arises through the specific hardware setup, a minimum coincidence window must be defined to capture coincidences even for pairs with a large offset. A practical value of $150\,\text{ns}$ was chosen.
+It is also necessary to define an upper window, since the range of muons in air is limited and detector pairs with extremely large distances would create an abnormal and unphysical number of coincidences if left unconstrained. In order to find a useful upper limit for the coincidence window, the maximum possible flight distance for atmospheric muons has to be detemined. For that, the expected maximum range of muons in air is calculated. In order to do this, a maximum expected energy must be determined through the muon energy spectrum at sea level. Figure \ref{fig:muon-energy-spectrum} shows the muon energy spectrum at sea level for two different inclinations. A cutoff value of $10\,\text{TeV}$ is selected to calculate the maximum expected distance in air. Assuming the \acrfull{csda} range for a $10\,\text{TeV}$ muon taken from \cite{muon-range} of $7.634\cdot10^5\,\frac{\text{g}}{\text{cm}^2}$ and assuming standard condition air density of $1.225\,\frac{\text{kg}}{\text{m}^3}$, the maximum expected range of muons at sea level is $62.3\,\text{km}$. That equates to a time of flight of $207.87\,\mu\text{s}$ and thus a coincidence window of larger than that is not useful.
 \subsection{Coincidence and plausability determination}\label{sec:coinc-calc}
 In order to determine coincidences, each event needs to be checked against all other events which are currently in the event buffer. To determine whether two events contain a coincidence, it is beneficial to calculate a score for each pair as follows:
 \begin{equation}\label{eq:coinc_score}
@@ -474,7 +475,7 @@ In equation \ref{eq:coinc_score} $t_1$ and $t_2$ denote the timestamps of both e
 		;
 		\path[draw, dashed]
 		(s1) edge node[below] {$c_{14}$} (s4)
-		(s2) edge node[below] {$c_{13}$} (s4)
+		(s2) edge node[below] {$c_{24}$} (s4)
 		;
 		
 		\draw[ultra thick, -> , >=latex] (4,0) -- ++(5,0) node[below] {$t$};
@@ -490,7 +491,7 @@ In equation \ref{eq:coinc_score} $t_1$ and $t_2$ denote the timestamps of both e
 In the case that multiple stations need to be compared, a complete graph needs to be calculated with edge weights equalling the score of the pair connected by this edge. An example of this construction is shown in figure \ref{fig:conflicts}.
 There, \tikz \draw (0,0) -- (0.5,0); marks a physical time difference and \tikz \draw[dashed] (0,0) -- (0.5,0); marks an unphysical time difference. This leads to a conflict, since all stations $s_{1,2,3,4}$ have at least one physical coincidence time to at least one other station, but the data for $s_4$ only fits together with the data of $s_3$. This means that the whole coincidence is not physically viable, though an unknown number of partial coincidences can be.
 
-In order to quantify this problem as one number, the unweighted plausibility score is introduced. Consider the graph with vertices $V = (s_1; s_2; s_3; s_4)$ from figure \ref{fig:conflicts} where the edges describe possible coincidences and the vertices detector stations. Only the set of edges $E = (c_{12}; c_{13}; c_{23}; c_{24})$ contains valid coincidences. The plausibility score of a full event with $n$ detector stations is then defined through
+In order to quantify this problem as one number, the unweighted plausibility score is introduced. Consider the graph with vertices $V = (s_1; s_2; s_3; s_4)$ from figure \ref{fig:conflicts} where the edges describe possible coincidences and the vertices detector stations. Only the set of edges $E = (c_{12}; c_{13}; c_{23}; c_{34})$ contains valid coincidences. The plausibility score of a full event with $n$ detector stations is then defined through
 \begin{equation}
 p = \frac{|E|}{\Delta_{n-1}}=\frac{2\cdot|E|}{n(n-1)}
 \end{equation}
@@ -509,7 +510,7 @@ This approximation can be done through selectively removing the vertex $s_i$ wit
 \begin{equation}
 _wrank(s_i) = \sum_{j}^{n}c_{ij}
 \end{equation}
-in the graph and recalculating $_wp$, this is repeated until $p=1$ is reached. Should this prove to be impossible without removing too many edges for the purpose of preserving potentially useful data the process is cancelled and the whole event is accepted tentatively.
+in the graph and recalculating $_wp$ as well as $p$. This is repeated until $p=1$ is reached and $_wp$ reaches a maximum value. Should this prove to be impossible without removing too many edges for the purpose of preserving potentially useful data, the process is cancelled and the whole event is accepted tentatively.
 
 \subsection{Reconstruction of possible primary incident angles} \label{sec:reconstruction}
 Through the assumptions shown in figure \ref{fig:angle-assumptions}, the possible source directions of a primary particle can be reduced. There, the geometry of a coincidence with $n=2$ is shown.
@@ -544,9 +545,9 @@ Through the assumptions shown in figure \ref{fig:angle-assumptions}, the possibl
 	\caption{Assumption for possible incidence angles}
 	\label{fig:angle-assumptions}
 \end{figure} \\
-Since the shower front can be simplified as a spherical cap and the propagation speed can be assumed to be near the speed of light, two spheres with a shared tangent can be constructed. One spherical surface is the shower front, the other is a sphere around the detector which had the later event timing. Its radius $\ell$ is equal to the propagation time of light for the coincidence time. Through geometrical analysis of this arrangement, the radius and angle pair can be derived as a function of the angle $\alpha$. This creates a curve in the plane on which the primary interaction must have taken place. Due to the symmetry of this arrangement however, in 3-D space, this curve becomes a rotational surface. \\
-In the case of a coincidence with $n>2$ multiple curves can be calculated relative to the same root detector. This allows for the intersection points of each rotational surface to be calculated, which results in a reduced possible origin area for the primary interaction. \\
-Given that the shower front is not a complete spherical surface but only a spherical cap, the possible origin directions can be reduced with this approach. In the case of higher coincidence numbers, the possible direction can be reduced further. Additionally to the possible directions, this approach also provides a lower limit for the shower radius and footprint radius, suggesting a minimum Particle energy.
+Since the shower front can be simplified as a spherical cap and the propagation speed can be assumed to be near the speed of light, two spheres with a shared tangent can be constructed. One spherical surface is the shower front, the other is a sphere around the detector which had the later event timing. Its radius $\ell$ is equal to the propagation time of light for the coincidence time. Through geometrical analysis of this arrangement, the radius and angle pair can be derived as a function of the angle $\alpha$. This creates a curve in the plane on which the primary interaction must have taken place. Due to the symmetry of this arrangement, in 3-D space this curve becomes a rotational surface. \\
+In the case of a coincidence with $n>2$, a root detector station can be selected. This detector can be used to calculate a curve for each other station. This allows for the intersection points of each rotational surface to be calculated, which results in a reduced possible origin area for the primary interaction. \\
+Given that the shower front is not a complete spherical surface but only a spherical cap, the possible origin directions can be reduced with this approach. In the case of higher coincidence numbers, the possible direction can be reduced further. In addition to the possible directions, this approach also provides a lower limit for the shower radius and footprint radius, suggesting a minimum particle energy.
 Calculating the angles $\beta$ and $\gamma$ and length $s$, the equations
 \begin{equation*}
 	\beta = \arctan\left(\frac{\ell\cdot\cos\alpha}{d - \ell\sin\alpha}\right),
@@ -600,10 +601,8 @@ Due to the inherent rotational symmetry of the system around the connecting stra
 	\label{fig:reconstruction_example_ground}
 \end{figure}\\
 Figure \ref{fig:reconstruction_example_ground} shows this construction for a coincidence $n=3$, where the reference detector is located in the center and both other detectors are located towards the right. The real world distance between the reference station and station1 is $3.4\,\text{km}$, between the reference and station2 $2\,\text{km}$.
-It can be seen that the curves overlap in the bottom half of the plot, indicating a possible origin region for the primary interaction.
-
-
-Though due to the fact that the space of possible origin points is a rotational body, the cross section between both curves is a region in 3D space.
+It can be seen that the curves overlap in the bottom half of the plot, indicating a possible origin region for the primary interaction. Due to the fact that the space of possible origin points is a rotational body, the cross section between both curves is a region in 3D space.
+\clearpage
 \section{Program layout}
 The analysis program uses a data driven pipeline design for efficient execution. This is an approach where the processing units in the software do not continuously poll for data but only get called once data is available. Though for time critical applications, a maximum waiting time is defined after which the processing unit is invoked.
 
@@ -665,9 +664,9 @@ Additionally it augments each event with the location and user data which is not
 	\caption{Criteria for detector station reliability}
 	\label{fig:station_reliability}
 \end{figure}
-Figure \ref{fig:station_reliability} shows the decision process how each station is determined to be reliable. Each event is analysed and the mean event rate as well as the standard deviation of the rate is calculated continuously. If $\sigma\geq{k}\cdot\mu$ is true, where $\sigma$ is the standard deviation of the rate, $\mu$ the mean rate and $k$ a constant, the detector station is determined to have a highly unstable rate and is excluded from contributing events to the analysis.
+Figure \ref{fig:station_reliability} shows the decision process by which means each station is determined to be reliable. Each event is analysed and the mean event rate as well as the standard deviation of the rate is calculated continuously. If $\sigma\geq{k}\cdot\mu$ is true, where $\sigma$ is the standard deviation of the rate, $\mu$ the mean rate and $k$ a constant, the detector station is determined to have a highly unstable rate and is excluded from contributing events to the analysis.
 
-Additionally two more factors can determine the reliability of a station. Those factors are normed so that a value of higher than 1 causes an unreliability mark.
+Two additional factors can determine the reliability of a station, those factors are normed so that a value of higher than 1 causes an unreliability mark.
 $\bar{f}_{time}$ is the mean time accuracy and $\bar{f}_{loc}$ the mean location precision of the \acrshort{gnss} receiver.
 
 The time accuracy is determined through the detector station itself and results from different factors such as the \acrshort{gnss} signal quality.
@@ -752,16 +751,17 @@ The time-base supervisor determines a baseline waiting interval by observing the
 	f = max(1, \frac{\mu_{r} - r}{\sigma_{r}})
 \end{equation*}
 where $r$ is the current event rate, $\mu_{r}$ the mean rate and $\sigma_{r}$ the standard deviation of the rate over a long sample time. This factor is then relative to the expected event rate of the detector station and is always greater or equal to 1. This is calculated for all detector stations and the maximum value is used as a scaling factor for the previously described time-base.
-\clearpage
-The resulting time value can then be used by the coincidence filter as a timeout value for the construction of coincidence events.
 
+
+
+The resulting time value can then be used by the coincidence filter as a timeout value for the construction of coincidence events.
 \begin{figure}[ht!]
 	\centering
 	\input{data/timeout.tikz}
 	\caption{Example of timebase and timeout factor over $4\,\text{hour}$ period}
 	\label{fig:timeout-example}
 \end{figure}
-In figure \ref{fig:timeout-example} the timeout can be seen over a period over $4\,\text{hours}$. In green is the timebase, in pink and dashed the timeout with applied factor. Especially notable is the spike in timebase around $10$. This is due to at least one detector having a temporary network outage and sending its events with a substantial delay. The spikes in the timeout factor are different detector stations experiencing slight network problems and thus reporting a quickly dropping rate.
+In figure \ref{fig:timeout-example} the timeout can be seen over a period over $4\,\text{hours}$. The timebase is green, the timeout with applied factor in pink dashes. Especially notable is the spike in timebase around $10$. This is due to at least one detector having a temporary network outage and sending its events with a substantial delay. The spikes in the timeout factor are different detector stations experiencing slight network problems and thus reporting a quickly dropping rate.
 \clearpage
 \subsection{Coincidence filter}\label{subsec:coincidence-f}
 In order to create the coincidence, the coincidence filter analyses each event and calculates the time differences to all other events currently in the local event buffer. It does so by utilising various coincidence criteria. One of them uses the distance based approach as described in section \ref{sec:coinc-calc}.
@@ -831,12 +831,12 @@ After the last constructor has been passed, all constructors in the queue are co
 	\caption{Timeout update and committing of event constructors}
 	\label{fig:event-constructors}
 \end{figure}
-After a certain time, the constructors need to be send off to the next station. This is done regularly by checking all constructors if their timeout has been reached. The flow chart in figure \ref{fig:event-constructors} shows how this is done. In the same process, each constructor is also updated with the latest timeout value.
+After a certain time, the constructors need to be sent off to the next station. This is done regularly by checking all constructors if their timeout has been reached. The flow chart in figure \ref{fig:event-constructors} shows how this is done. In the same process, each constructor is also updated with the latest timeout value.
 \clearpage
 \begin{figure}[ht!]
 \centering
 \input{data/events.tikz}
-\caption{Example of incoming raw and outgoing coincidence event rate over $4\,\text{hour}$ period}
+\caption{Example of raw and coincidence event rate over $4\,\text{hour}$ period}
 \label{fig:rates-example}
 \end{figure}
 
@@ -860,7 +860,7 @@ Each edge in the graph represents the number of coincidences of the associated d
 \section{Conclusion and outlook}
 This thesis described the possibility and implementation of a real-time system to analyse data from a loose network of low-cost scintillator detectors. This approach offers the benefit of being able to pre-filter all incoming data for a first plausibility determination. With this, not every data point needs to be saved and the infrastructure has a lower total load.
 
-At this point in time the application only does the filtering step and discards the raw data. A comparison with simultaneously running post-processing analysis software has shown that the real-time application runs reliable and finds all coincidences. In fact it can be observed that the real-time system detects a larger number of coincidences since the post-processing analysis needs to read and write large amounts to and from a database on execution it creates a substantial load on the system. This leads to data being lost during that time interval since the system cannot handle those loads. The real-time system has no large load spikes so does not lose data the same way. As a backup the raw data is still stored through other means however those have not been necessary so far.
+At this point in time the application only does the filtering step and discards the raw data. A comparison with simultaneously running post-processing analysis software has shown that the real-time application runs reliably and finds all coincidences. In fact it can be observed that the real-time system detects a larger number of coincidences since the post-processing analysis needs to read and write large amounts to and from a database on execution it creates a substantial load on the system. This leads to data being lost during that time interval since the system cannot handle those loads. The real-time system has no large load spikes so does not lose data in the same way. As a backup the raw data is still stored through other means however those have not been necessary so far.
 
 Additional benefits of a real-time system are of visual nature. It allows the real-time visualisation of found coincidences on a map through a website and so can give a visual aid as to the validity of recorded data.
 
