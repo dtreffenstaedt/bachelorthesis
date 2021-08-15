@@ -146,7 +146,7 @@ A different interaction of \acrshort{uhecr} with the atmosphere is the Cherenkov
 	\beta=\frac{1}{\sqrt{1 + \left(\frac{E_{rest}}{E_{kin}}\right)^2}}
 \end{equation}
 
-In the example of the Oh-My-God particle with an energy of $3.2\cdot10^{20}\,\text{eV}$ which is assumed to have been a proton with a rest energy of $\approx938.272\,\text{MeV}$, this calculates to
+In the example of the \textit{Oh-My-God} particle with an energy of $3.2\cdot10^{20}\,\text{eV}$ which is assumed to have been a proton with a rest energy of $\approx938.272\,\text{MeV}$, this calculates to
 \begin{equation}
 	\frac{E_{kin}}{E_{rest}} = \frac{3.2\cdot10^{20}\,\text{eV}}{938.27208816\,\text{MeV}}
 \end{equation}
@@ -188,20 +188,20 @@ The angle $\theta$ can be calculated through the relation $\cos\left(\theta\righ
 
 \acrshort{uhecr} can be detected using three main methodologies.\\
 Two methods depend on the cosmic air showers described in the section \ref{subsec:airshowers}, namely the muonic and the electromagnetic component. The other method relies on the Cherenkov radiation where UV telescopes can be used to detect the UV light directly. By observing the same source through multiple locations, the origin can be reconstructed.
-A popular example of a particle being detected through these means is the so called Oh-My-God particle, likely a proton or heavier nucleus with an energy of  $3.2\pm0.9\cdot10^{20}\,\text{eV}$ of energy. This particular particle is interesting since it was the first particle to exceed the \acrshort{gzkl}. It has been detected by the HiRes detector in Utah.
+A popular example of a particle being detected through these means is the so called \textit{Oh-My-God} particle, likely a proton or heavier nucleus with an energy of  $3.2\pm0.9\cdot10^{20}\,\text{eV}$\cite{Bird_1995} of energy. This particular particle is interesting since it was the first particle to exceed the \acrshort{gzkl}. It has been detected by the HiRes detector in Utah.
 
-A method using the electromagnetic component of a cosmic air shower exploits the fact that the frequencies lie in the radio range\cite{NELLES201513} and can be detected through normal radio Antennae\cite{SCHRODER20171}. Due to the polarisation of the radio signal, often multiple antennae with different polarisation characteristics are used.
+A method using the electromagnetic component of a cosmic air shower exploits the fact that the frequencies lie in the radio range\cite{NELLES201513} and can be detected through normal radio antennae\cite{SCHRODER20171}. Due to the polarisation of the radio signal, often multiple antennae with different polarisation characteristics are used.
 
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=\linewidth]{data/bethe-bloch}
-	\caption{Expected energy deposit $\left\langle-\od{E}{x}\right\rangle$ of $\mu^+$ in copper \cite[536]{10.1093/ptep/ptaa104}}
+	\caption{Expected energy deposit $\left\langle-\od{E}{x}\right\rangle$ of $\mu^+$ in copper \cite[536]{10.1093/ptep/ptaa104}.}
 	\label{fig:bethe-bloch}
 \end{figure}
-Another method is to detect the muonic component, this can be done through Scintillator detectors. Due to the muon being a charged particle, it interacts with matter and deposits energy according to figure \ref{fig:bethe-bloch}. The expected amount of deposited energy for a charged particle in matter can be described by the Bethe-Bloch formalism for $0.1\leq\beta\gamma\leq10^3$. Notably the deposited energy mainly depends on the relativistic speed of the particle described by $\beta\gamma$ where $\beta$ is the ratio of the velocity and speed of light and $\gamma$ the Lorentz factor. Using $\beta\gamma$ is especially useful since it can be easily calculated through the ratio between kinetic and rest energy. Figure \ref{fig:bethe-bloch} shows the mass stopping power of positive muons in copper with the Bethe-Bloch formalism describing the middle section.
+Another method is to detect the muonic component, this can be done through scintillation detectors. Due to the muon being a charged particle, it interacts with matter and deposits energy according to figure \ref{fig:bethe-bloch}. The expected amount of deposited energy for a charged particle in matter can be described by the Bethe-Bloch formalism for $0.1\leq\beta\gamma\leq10^3$. Notably the deposited energy mainly depends on the relativistic speed of the particle described by $\beta\gamma$ where $\beta$ is the ratio of the velocity and speed of light and $\gamma$ the Lorentz factor. Using $\beta\gamma$ is especially useful since it can be easily calculated through the ratio between kinetic and rest energy. Figure \ref{fig:bethe-bloch} shows the mass stopping power of positive muons in copper.
 
 
-Certain materials can give off this energy via photons, a process which is known as scintillation. Figure \ref{fig:scintillator} shows the mechanism through which scintillation occurs.
+Certain materials can convert the deposited energy to photons, a process which is known as scintillation. Figure \ref{fig:scintillator} shows the mechanism through which scintillation occurs.
 \begin{figure}[ht!]
 	\centering
 	\begin{tikzpicture}[->]
@@ -229,11 +229,11 @@ Certain materials can give off this energy via photons, a process which is known
 	\caption{Mechanism for inorganic crystal scintillators}
 	\label{fig:scintillator}
 \end{figure}
-First, an electron is excited from the valence band into the conduction band through energy deposit from an incident particle. This electron is then transported within the conduction band to where it can drop back down to the valence band through traps. Were the electron to drop back directly, a photon would be emitted which could immediately excite another electron in the valence band. The defining features of scintillators is the existence of traps which reduce the energy of the emitted photons. Those photons then do not have enough energy to excite electrons in the material so they can pass through it. With the use of a photomultiplier, the emitted photons can then be detected. One type of Photomultiplier is the \acrfull{sipm}, which is an array of photodiodes operating above the reverse-bias break-over voltage, resulting in an avalanche upon interaction with even a single photon. The multiplicity of avalanches then is related to the number of photons interacting with the photomultiplier.
+First, an electron is excited from the valence band into the conduction band through energy deposit from an incident particle. This electron is then transported within the conduction band to where it can drop back down to the valence band through traps. Were the electron to drop back directly, a photon would be emitted which could immediately excite another electron in the valence band. The defining features of scintillators is the existence of traps which reduce the energy of the emitted photons. Those photons then do not have enough energy to excite electrons in the material so they can pass through it. With the use of a photomultiplier, the emitted photons can then be detected. One type of Photomultiplier is the \acrfull{sipm}, which is an array of photodiodes operating above the reverse-bias break-down voltage, resulting in an avalanche upon interaction with even a single photon. The multiplicity of avalanches then is related to the number of photons interacting with the photomultiplier.
 
 \section{Detectors}
 \subsection{Station}
-Each detector station consists of a Scintillator with \acrshort{sipm} assembly, a readout board and Raspberry Pi single-board computer and is called a \acrfull{cdu}.
+Each detector station consists of a Scintillator with \acrshort{sipm} assembly, a readout board and a Raspberry Pi single-board computer and is called a \acrfull{cdu}. The detectors are developed by the MuonPi project\cite{muonpi}.
 \begin{figure}[H]
 	\centering
 	\begin{tikzpicture}
@@ -244,13 +244,13 @@ Each detector station consists of a Scintillator with \acrshort{sipm} assembly, 
 		\draw[fill=black] (0.75,3.5) circle(0.1) -- ++(-2,0) node[left] {Preamplifier};
 		\draw[fill=black] (4,3) circle(0.1) -- ++(3,0) node[right] {Readout board};
 	\end{tikzpicture}
-	\caption{Detector station assembly without Raspberry Pi computer}
+	\caption{Detector station assembly without Raspberry Pi computer.\cite{muonpi}}
 	\label{fig:station_assembly}
 \end{figure}
 In figure \ref{fig:station_assembly} each component excluding the Raspberry Pi is shown. The SiPM is still detached from the Scintillator in this image since otherwise it would not be visible as distinct part. The preamplifier is part of the SiPM assembly and prepares the signal for the readout board in order to prevent loss of signal over the transmission line. The readout board supports two input channels which can be linked logically either per AND or XOR, though by default only one channel is used.
 
-The readout board uses a u-blox NEO GNSS receiver chip which features an interrupt input to accurately timestamp input signals with a maximum resolution of $21\,\text{ns}$ \cite{ublox-datasheet} with a dead-time of $100\,\text{ms}$.
-This dead-time makes it unsuitable for high frequency applications, but due to the scintillator size of $286.5\,\text{cm}^2$ and an integral intensity of Muons over the whole energy spectrum above $1\,\text{GeV}$ of $1\,\text{cm}^{-2}\text{min}^{-1}$\cite[512]{10.1093/ptep/ptaa104} the expected maximum detection rate of $4.7\,\text{Hz}$ is within the capabilities of this setup. \\
+The readout board uses a u-blox NEO GNSS\cite{ublox-website} receiver chip which features an interrupt input to accurately timestamp input signals with a maximum resolution of $\approx20\,\text{ns}$ \cite{ublox-datasheet} with a dead-time of $100\,\text{ms}$.
+This dead-time makes it unsuitable for high frequency applications, but due to the scintillator size of $286.5\,\text{cm}^2$ and an integral intensity of muons over the whole energy spectrum above $1\,\text{GeV}$ of $1\,\text{cm}^{-2}\text{min}^{-1}$\cite[512]{10.1093/ptep/ptaa104} the expected maximum detection rate of $4.7\,\text{Hz}$ is within the capabilities of this setup. \\
 \clearpage
 The detector software collects various information in addition to the timestamp with each event and sends it to the server via the \acrfull{mqtt} protocol. This is a text-based protocol providing reliable information transfer with minimal overhead\cite{mqtt}. Additional to the event information the station sends log information at regular intervals which report the current state of the detector station.
 \subsection{Data exchange format}
@@ -260,7 +260,7 @@ The detector software collects various information in addition to the timestamp 
 	\begin{verbatim}
 		jlu/HBR16Lab105_1 1625745406.606430870 1625745406.606431974 26 13526 1 2 1
 	\end{verbatim}
-	\caption{Event message format example}
+	\caption{Event message format example.}
 	\label{lst:mqtt-event}
 \end{lstfloat}
 \begin{table}[H]
@@ -269,7 +269,7 @@ The detector software collects various information in addition to the timestamp 
 		\hline
 		\textbf{Position} & \textbf{Description} \\
 		\hline
-		$1$ & detector station user and id \\
+		$1$ & Detector station user and id \\
 		\hline
 		$2$ & Nanosecond rising edge timestamp \\
 		\hline
@@ -286,7 +286,7 @@ The detector software collects various information in addition to the timestamp 
 		$8$ & GNSS time grid flag \\
 		\hline
 	\end{tabular}
-	\caption{Event message field description}
+	\caption{Event message field description.}
 	\label{tab:event-message}
 \end{table}
 
@@ -297,7 +297,7 @@ The detector software collects various information in addition to the timestamp 
 	\begin{verbatim}
 		jlu/HBR16Lab105_1 <message identifier> <value> [unit]
 	\end{verbatim}
-	\caption{Log message format}
+	\caption{Log message format.}
 	\label{lst:mqtt-log}
 \end{lstfloat}
 \begin{table}[H]
@@ -325,10 +325,10 @@ The detector software collects various information in addition to the timestamp 
 		\verb*|timeDOP| & Time dilution of precision \\
 		\hline
 	\end{tabular}
-	\caption{Excerpt from detector station log message content}
+	\caption{Excerpt from detector station log message content.}
 	\label{tab:station_logs}
 \end{table}
-\footnotetext{\acrfull{dop}: Numerical value for the statistical dispersion of GNSS measurements}
+\footnotetext{\acrfull{dop}: Numerical value for the statistical dispersion of GNSS measurements.}
 As the station in the detector network are not at known locations but distributed across multiple cities and countries at different user locations, in order to make attempts at particle reconstruction, the location information is one of the more important pieces of information from the log messages.
 Additionally to this, the current quality of data is judged according to the various accuracy measurement values provided in the log messages. This is done through different approached explained in a later section.
 
@@ -360,7 +360,7 @@ All detector stations are part of a larger network of detectors with a central d
 		\draw (dnp) -- (db);
 		\draw (db) -- (analysis);
 	\end{tikzpicture}
-	\caption{Detector network analysis stack}
+	\caption{Detector network analysis stack.}
 	\label{fig:network-stack}
 \end{figure}
 A current overview of active and future stations in Europe can be seen in figure \ref{fig:station-overview}, additional stations are located in north America and Australia. 
@@ -383,7 +383,7 @@ The shower front shape of a cosmic shower can initially be assumed to be a thick
 		\path (det2) arc(-55:-70:7.1) coordinate(source);
 		\draw[<-, >=latex] (source) -- ++ (110:5) node[left] {propagation direction};
 	\end{tikzpicture}
-	\caption{Propagation of the shower front}
+	\caption{Propagation of the shower front.}
 	\label{fig:data-shape}
 \end{figure}
 Figure \ref{fig:data-shape} shows the propagation of the shower front in relation to two detectors. Assuming both detectors have a detection efficiency of $100\,\%$, both will show an event at their respective timestamps $t_1$ and $t_2$. The time difference between both measured timestamps can help to reconstruct the direction of propagation, a method how to do this is shown later in this thesis.
@@ -418,7 +418,7 @@ Comparing the timestamps of single detector hits can be used to correlate single
 			\end{axis}
 		\end{tikzpicture}
 	\end{subfigure}
-	\caption{Coincidence time histograms for various distances}
+	\caption{Coincidence time histograms for various distances.}
 	\label{fig:histogram-data}
 \end{figure}
 When recording all coincidence times of one detector pair the different times can be plotted in a histogram. Figure \ref{fig:histogram-data} shows histograms for three different detector pairs with different distances. The plot \ref{fig:histogram-data:close} shows the closest distance of a few meters, plot \ref{fig:histogram-data:mid} a medium distance of roughly $130\,\text{m}$ and plot \ref{fig:histogram-data:far} a distance of $950\,\text{km}$.
@@ -433,17 +433,17 @@ This highlights the relationship between coincidence rate and detector distance 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\linewidth]{data/pair-count-rate}
-	\caption{Relationship between detector pair distance and coincidence rate}
+	\caption{Relationship between detector pair distance and coincidence rate.}
 	\label{fig:pair-count-rate}
 \end{figure}
 
 
 \section{Real-time analysis}\label{sec:analysis}
-In order to detect coincidences from all incoming single data points, each data point has to be compared with all others to find all possible combinations. To be able to do this a useful criterion for a coincidence has to be found. A simple approach is to select a fixed maximum time difference that two events can have in order to be counted towards a coincidence. This, however, is inefficient and leads to large numbers of false positives, since a fixed interval cannot perform well for detector combinations with large and short distances at the same time. Therefore a variable distance based criterion is used. For this purpose, the geodetic coordinates of both detector stations are taken and the straight line distance is calculated through \acrfull{enu} coordinates with the WGS84 model. The \acrshort{enu} coordinate system is a right handed local tangent plane Cartesian coordinate system $\left(\hat{e}_{East},\hat{e}_{North},\hat{e}_{Up}\right)$ which is used to set different coordinates in relation to each other. The WGS84 model describes the shape of earth as an ellipsoid and provides reference measurements for this shape.
+In order to detect coincidences from all incoming single data points, each data point has to be compared with all others to find all possible combinations. To be able to do this a useful criterion for a coincidence has to be found. A simple approach is to select a fixed maximum time difference that two events can have in order to be counted towards a coincidence. This, however, is inefficient and leads to large numbers of false positives, since a fixed interval cannot perform well for detector combinations with large and short distances at the same time. Therefore a variable distance based criterion is used. For this purpose, the geodetic coordinates of both detector stations are taken and the straight line distance is calculated through \acrfull{enu} coordinates with the WGS84 model. The \acrshort{enu} coordinate system is a right handed local tangent plane Cartesian coordinate system $\left(\hat{e}_{East},\hat{e}_{North},\hat{e}_{Up}\right)$ which is used to set different coordinates in relation to each other. The WGS84 model describes the shape of earth as an ellipsoid and provides reference measurements for this shape\cite{wgs94}.
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.7\linewidth]{data/cr_fig5_SeaLevelMuSpectra_09}
-	\caption[Muon energy spectrum from vertical and inclined muons at sea level\cite{10.1093/ptep/ptaa104}]{Muon energy spectrum from vertical and inclined \tikz \draw[rotate=45] (0,0) rectangle(0.125,0.125); muons at sea level \cite[512]{10.1093/ptep/ptaa104}}
+	\caption[Muon energy spectrum from vertical and inclined muons at sea level\cite{10.1093/ptep/ptaa104}]{Muon energy spectrum from vertical \tikz \fill (0,0) rectangle(0.125,0.125); and inclined \tikz \draw[rotate=45] (0,0) rectangle(0.125,0.125); muons at sea level \cite[512]{10.1093/ptep/ptaa104}.}
 	\label{fig:muon-energy-spectrum}
 \end{figure} \\
 With this distance the time of flight for the speed of light is calculated in order to receive the maximum physically viable time difference for one detector pair. However, this value has large uncertainties especially for detector pairs which are close together.
@@ -504,7 +504,7 @@ In order to attempt to resolve this conflict additionally the weighted plausibil
 	_wp = \frac{\sum^{n}_{i}\sum^{n}_{j} c_{ij}}{\Delta_{n-1}}
 \end{equation}
 
-The goal in resolving conflicting data is to maximise $_wp$ and reach $p=1$. Without access to more data is is impossible to definitively resolve this conflict, however an approximation can be performed.
+The goal in resolving conflicting data is to maximise $_wp$ and approach $p=1$. Without access to more data is is impossible to definitively resolve this conflict, however an approximation can be performed.
 
 This approximation can be done through selectively removing the vertex $s_i$ with lowest weighted rank
 \begin{equation}
@@ -674,7 +674,7 @@ The location precision is calculated through
 \begin{equation*}
 loc = dop\cdot\sqrt{h_{acc}^2 + v_{acc}^2}
 \end{equation*}
-where $dop$ is the delusion of precision, $h_{acc}$ the horizontal and $v_{acc}$ the vertical accuracy of the \acrshort{gnss} receiver. All those values are also determined in each detector station for itself.
+where $dop$ is the dilution of precision, $h_{acc}$ the horizontal and $v_{acc}$ the vertical accuracy of the \acrshort{gnss} receiver. All those values are also determined in each detector station for itself.
 
 For all determining factors, a hysteresis is used in order to provide a more stable status of each detector station.
 \begin{figure}[ht!]
@@ -858,17 +858,17 @@ Which is the same definition for the number of edges in a complete graph. In mem
 Each edge in the graph represents the number of coincidences of the associated detector pair and contains a histogram over a sample interval of $24\,\text{hours}$. After the sample interval is elapsed, all current histograms are stored to the disk and the structure in memory is reset.
 \clearpage
 \section{Conclusion and outlook}
-This thesis described the possibility and implementation of a real-time system to analyse data from a loose network of low-cost scintillator detectors. This approach offers the benefit of being able to pre-filter all incoming data for a first plausibility determination. With this, not every data point needs to be saved and the infrastructure has a lower total load.
+This thesis described the possibility and implementation of a real-time system to analyse data from a distributed network of low-cost scintillation detectors. This approach offers the benefit of being able to pre-filter all incoming data for a first plausibility determination. With this, not every data point needs to be saved and the infrastructure has a lower total load.
 
 At this point in time the application only does the filtering step and discards the raw data. A comparison with simultaneously running post-processing analysis software has shown that the real-time application runs reliably and finds all coincidences. In fact it can be observed that the real-time system detects a larger number of coincidences since the post-processing analysis needs to read and write large amounts to and from a database on execution it creates a substantial load on the system. This leads to data being lost during that time interval since the system cannot handle those loads. The real-time system has no large load spikes so does not lose data in the same way. As a backup the raw data is still stored through other means however those have not been necessary so far.
 
-Additional benefits of a real-time system are of visual nature. It allows the real-time visualisation of found coincidences on a map through a website and so can give a visual aid as to the validity of recorded data.
+Additional benefits of a real-time system are of visual nature. It allows the real-time visualisation of found coincidences on a map through a website and so can give a visual aid as to the validity of recorded data\cite{muonpi}.
 
 
 The system functions at a good base level already, though further functionality is planned.
 Among the planned improvements is an introspection system with which the application can be monitored in real-time and offer runtime configuration options.
 
-The methods described in \ref{sec:analysis} need to be tested rigorously. They have undergone a basic analysis and have shown to work on a basic level though the reliability is not clear as of yet.
+The methods described in section \ref{sec:analysis} need to be tested rigorously. They have undergone a basic analysis and have shown to work on a basic level though the reliability is not clear as of yet.
 
 \clearpage
 
