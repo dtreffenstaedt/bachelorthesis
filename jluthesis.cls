@@ -246,7 +246,7 @@
 	
 	\ifdefined\@abstr
 	\iflanguage{english}{\section*{Abstract}\addcontentsline{toc}{section}{Abstract}}{}
-	\iflanguage{ngerman}{\section*{Kurzbeschreibung}\addcontentsline{toc}{section}{Abstract}}{}
+	\iflanguage{ngerman}{\section*{Kurzfassung}\addcontentsline{toc}{section}{Kurzfassung}}{}
 	\begin{abstract}#1\end{abstract}
 	\fi
 }

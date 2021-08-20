@@ -32,14 +32,29 @@
 \begin{document}
 \input{data/definitions.tex}
 
-	
+
 \makebeginning{
-	Extensive Air Showers produced by ultra high energy cosmic radiation are still an active area of research. Due to the low number of such events collecting statistics requires a lot of time. Different approaches to collecting data about these events can be taken, one approach is the usage of a distributed network of low-cost scintillation detectors which can be operated by persons outside the university environment to cover a maximum area without the need for large investments.
+	Extensive Air Showers produced by ultra high energy cosmic radiation are still an active area of research. Due to the low rate of such events collecting statistics requires a lot of time. Different approaches to collecting data about these events can be taken, one approach is the usage of a distributed network of low-cost scintillation detectors which can be operated by persons outside the university environment to cover a maximum area without the need for large investments.
 	
-	In this thesis, a method is developed to perform real-time analysis for a network of low-cost plastic scintillator detectors. This network consists of small scintillator detectors with silicon Photomultiplier units which are attached to a Raspberry-Pi computer. Those detection units are distributed across multiple countries though the largest number is located throughout Germany. They send their data to a server where it is continuously monitored for coincidences.
+	In this thesis, a method is developed to perform real-time analysis for a network of low-cost plastic scintillator detectors. This network consists of small scintillator detectors with silicon Photomultiplier units which are attached to a Raspberry-Pi mini computer. Those detection units are distributed across multiple countries though the largest number is located throughout Germany. They send their data to a server where it is continuously monitored for coincidences.
 	
 	An approach to reconstructing the possible incident direction of the primary particle as well as an approximation for plausible energies is presented.
 }
+\clearpage
+
+\begin{otherlanguage}{ngerman}
+\section*{Kurzfassung}\addcontentsline{toc}{section}{Kurzfassung}
+
+Luftschauer, welche durch ultrahochenergetische kosmische Strahlung erzeugt werden sind ein aktives Forschungsthema. Durch die sehr geringe Rate solcher Schauer muss zum Sammeln einer ausreichend großer Datenmenge sehr viel Zeit aufgebracht werden. Die Daten können mithilfe verschiedener Methoden aufgezeichnet werden, eine ist der Einsatz eines verteilten Netzwerkes aus günstigen Szintillationsdetektoren. Diese Detektoren können aufgrund ihres niedrigen Preises und gut verfügbarer Bauteile auch durch Personen außerhalb des universitären Umfeldes betrieben werden. Das hat zum Vorteil, dass mit vergleichbar geringem finanziellen Aufwand große Flächen abgedeckt werden können. \\
+
+
+In dieser Thesis wird eine Methode vorgestellt, mit welcher die Daten von solch einem Netzwerk aus Plastik-Szintillationsdetektoren in Echtzeit verarbeitet und analysiert werden können. Jeder der Detektoren besteht dabei aus einem Plastik-Szintillator mit angeschlossenem Silicon-Photomultiplier welche durch eine dedizierte Ausleseelektronik an einem Raspberry-Pi Minicomputer angeschlossen werden. Diese Detektoreinheiten werden über mehrere Länder von Privatpersonen betrieben, die größte Zahl befindet sich jedoch in Deutschland. Die Daten werden an einen zentralen Server gesendet, wo sie auf Koinzidenzen hin untersucht und abgelegt werden.
+
+
+Ein Ansatz zur Rekonstruktion des primären Vertex des ultrahochenergetischen Teilchens wird vorgestellt.
+\end{otherlanguage}
+\clearpage
+
 \includepdf[noautoscale=true, width=\paperwidth]{data/selbststaendigkeit.pdf}
 
 
@@ -418,14 +433,14 @@ Comparing the timestamps of single detector hits can be used to correlate single
 			\end{axis}
 		\end{tikzpicture}
 	\end{subfigure}
-	\caption{Coincidence time histograms for various distances.}
+	\caption{Coincidence time histograms for various distances between mutual detector pairs.}
 	\label{fig:histogram-data}
 \end{figure}
 When recording all coincidence times of one detector pair the different times can be plotted in a histogram. Figure \ref{fig:histogram-data} shows histograms for three different detector pairs with different distances. The plot \ref{fig:histogram-data:close} shows the closest distance of a few meters, plot \ref{fig:histogram-data:mid} a medium distance of roughly $130\,\text{m}$ and plot \ref{fig:histogram-data:far} a distance of $950\,\text{km}$.
 
-The closest distance shows the clearest signal and largest signal-to-noise ratio. However due to the location of both detectors, the GNSS signal is often weak which leads to a broad distribution due to low time resolution.
+The closest distance shows the clearest signal and largest signal-to-noise ratio. However due to the location of both detectors, the GNSS signal is often weak which leads to a broad distribution due to low time resolution
 
-In the medium distance plot, a still significant signal is visible, though the signal-to-noise ratio is much lower. The lower number of entries is due to the shorter total runtime of this particular detector pair.
+In the medium distance plot, a still significant signal is visible, though the signal-to-noise ratio is much lower. The lower number of entries is due to the shorter total runtime of this particular detector pair, which was roughly a quarter of the other two plots with about two weeks of data.
 
 The furthest distance plot shows no significant signal over the random background.
 
@@ -455,7 +470,7 @@ In order to determine coincidences, each event needs to be checked against all o
 \begin{equation}\label{eq:coinc_score}
 	c = 1 - \frac{|t_1 - t_2|}{t_{tof}}
 \end{equation}
-In equation \ref{eq:coinc_score} $t_1$ and $t_2$ denote the timestamps of both events and $t_{tof}$ the time of flight between both stations. This results in a number $c\leq1$ where a value $\leq0$ describes an non-physical coincidence.
+In equation \ref{eq:coinc_score} $t_1$ and $t_2$ denote the timestamps of both events and $t_{tof}$ the time of flight between both stations. This results in a number $c\leq1$ where a value $\leq0$ describes a non-physical coincidence.
 \begin{figure}[ht!]
 	\centering
 	\begin{tikzpicture}
@@ -485,7 +500,7 @@ In equation \ref{eq:coinc_score} $t_1$ and $t_2$ denote the timestamps of both e
 		\draw[dashed] (8,0.5) -- ++(0,-1) node[below] {$t_4$};
 		
 	\end{tikzpicture}
-	\caption{Visualisation of four single events with possible coincidences}
+	\caption{Visualisation of four single events with possible coincidences in an array of four detectors $s_{1,2,3,4}$ and timestamps $t_{1,2,3,4}$.}
 	\label{fig:conflicts}
 \end{figure} \\
 In the case that multiple stations need to be compared, a complete graph needs to be calculated with edge weights equalling the score of the pair connected by this edge. An example of this construction is shown in figure \ref{fig:conflicts}.
@@ -546,7 +561,7 @@ Through the assumptions shown in figure \ref{fig:angle-assumptions}, the possibl
 	\label{fig:angle-assumptions}
 \end{figure} \\
 Since the shower front can be simplified as a spherical cap and the propagation speed can be assumed to be near the speed of light, two spheres with a shared tangent can be constructed. One spherical surface is the shower front, the other is a sphere around the detector which had the later event timing. Its radius $\ell$ is equal to the propagation time of light for the coincidence time. Through geometrical analysis of this arrangement, the radius and angle pair can be derived as a function of the angle $\alpha$. This creates a curve in the plane on which the primary interaction must have taken place. Due to the symmetry of this arrangement, in 3-D space this curve becomes a rotational surface. \\
-In the case of a coincidence with $n>2$, a root detector station can be selected. This detector can be used to calculate a curve for each other station. This allows for the intersection points of each rotational surface to be calculated, which results in a reduced possible origin area for the primary interaction. \\
+In the case of a coincidence with $n>2$, a root detector station can be selected. This detector can be used to calculate a curve for each other station. This allows for the intersection points of each rotational surface to be calculated, which results in a reduced angular range for the possible origin of the primary interaction. \\
 Given that the shower front is not a complete spherical surface but only a spherical cap, the possible origin directions can be reduced with this approach. In the case of higher coincidence numbers, the possible direction can be reduced further. In addition to the possible directions, this approach also provides a lower limit for the shower radius and footprint radius, suggesting a minimum particle energy.
 Calculating the angles $\beta$ and $\gamma$ and length $s$, the equations
 \begin{equation*}
@@ -559,7 +574,7 @@ and
 \begin{equation*}
 	s = \sqrt{\left(l\cdot\cos\hspace{-2pt}\left(\alpha\right)\right)^2 + \left(d - l\cdot\sin\left(\alpha\right)\right)^2} = \sqrt{l^2 + d^2 - 2dl\sin\left(\alpha\right)}
 \end{equation*}
-can be derived. With those, the polar coordinates $(\phi, r)$ can be calculated with equations \ref{eq:phi} and \ref{eq:r}.
+can be derived. With those, the polar coordinates $(\phi, r)$ can be calculated to
 \begin{equation}\label{eq:phi}
 	\phi = \gamma + \beta = \frac{\pi}{2} - \alpha + 2\cdot\beta
 \end{equation}
@@ -568,7 +583,7 @@ can be derived. With those, the polar coordinates $(\phi, r)$ can be calculated 
 \end{equation}
 
 
-Figure \ref{fig:reconstruction_example} shows an example for possible combinations of $r$ and $\phi$ as calculated above for a detector pair with distance of $3.4\,\text{km}$ and a coincidence time of $7.37\,\mu\text{s}$. Following the curve, the free parameter $\alpha$ is varied. The minimum possible distance is reached when $\alpha=\frac{\pi}{2}$, since then the centre of the constructed circle in figure \ref{fig:angle-assumptions} lies directly on the line between both detectors. As $\alpha$ approaches $0$, the possible radius tends to infinity and $\phi$ tends to a stationary value $\phi_\infty$.
+Figure \ref{fig:reconstruction_example} shows an example for possible combinations of $r$ and $\phi$ as calculated above for a detector pair with distance of $3.4\,\text{km}$ and a coincidence time of $7.37\,\mu\text{s}$. Following the curve, the free parameter $\alpha$ is varied. The minimum possible distance is reached when $\alpha=\frac{\pi}{2}$, since then the centre of the constructed circle in figure \ref{fig:angle-assumptions} lies directly on the line between both detectors. As $\alpha$ approaches $0$, the possible radius approaches infinity and $\phi$ assumes a stationary value $\phi_\infty$.
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.4\linewidth]{data/example_plot_vertical}
@@ -581,7 +596,7 @@ Figure \ref{fig:reconstruction_example} shows an example for possible combinatio
 		\lim_{\alpha\rightarrow0}\phi\left(\alpha\right) &= \phi_\infty
 	\end{aligned}
 \end{equation*}
-Noteworthy is that the possible values for $\alpha$ are constrained by a maximum value for $\delta$ due to a maximum shower footprint on earth. Adjusting for that, a lower limit for the radius r can be calculated iteratively through equation \ref{eq:delta_alpha}.
+Noteworthy is that the possible values for $\alpha$ are constrained by a maximum value for $\delta$ due to a maximum shower footprint on earth. Adjusting for that, a lower limit for the radius r can be calculated iteratively through
 \begin{equation}\label{eq:delta_alpha}
 	\delta = \pi - 2\cdot\gamma = 2\cdot\alpha - 2\cdot\arctan\left(\frac{\ell\cdot\cos\alpha}{d - \ell\sin\alpha}\right)
 \end{equation}
@@ -601,9 +616,9 @@ Due to the inherent rotational symmetry of the system around the connecting stra
 	\label{fig:reconstruction_example_ground}
 \end{figure}\\
 Figure \ref{fig:reconstruction_example_ground} shows this construction for a coincidence $n=3$, where the reference detector is located in the centre and both other detectors are located towards the right. The real world distance between the reference station and station1 is $3.4\,\text{km}$, between the reference and station2 $2\,\text{km}$.
-It can be seen that the curves overlap in the bottom half of the plot, indicating a possible origin region for the primary interaction. Due to the fact that the space of possible origin points is a rotational body, the cross section between both curves is a region in 3D space.
+It can be seen that the curves overlap in the bottom half of the plot, indicating a possible origin region for the primary interaction. Due to the fact that the space of possible origin points is a rotational body, the cross section between both curves is a three-dimensional manifold.
 \clearpage
-\section{Program layout}
+\section{Online Coincidence processing Program layout}
 The analysis program uses a data driven pipeline design for efficient execution. This is an approach where the processing units in the software do not continuously poll for data but only get called once data is available. Though for time critical applications, a maximum waiting time is defined after which the processing unit is invoked.
 
 Apart from processing all events, it takes over the task of supervision of itself and all detector stations. For the purpose of keeping track of internal changes and changes in detector station status, a trigger system is employed in order to receive status updates outside of the application.
@@ -636,7 +651,7 @@ An overview of the program layout for the real-time analysis is shown in Figure 
 	\label{fig:programlayout}
 \end{figure} \\
 
-The station log source and event source are abstract classes which can be implemented through multiple different protocols, though at the moment only a \acrshort{mqtt} implementation is used. The same is true for the Even Sink class, though there are three distinct implementations available. The first is a sink for use with an influxDB database which is used per default. Additionally there is a debugging sink which uses text output onto the console and the third is a sink to \acrshort{mqtt} which can be used if the application should be used as an instance for a local arrangement for a few detectors. This local instance then sends the processed data along to the next instance, effectively performing a preprocessing step for dense local arrangements.
+The station log source and event source are abstract classes which can be implemented through multiple different protocols, though at the moment only a \acrshort{mqtt} implementation is used. The same is true for the Even Sink class, though there are three distinct implementations available. The first is a sink for use with an influxDB\footnote{InfluxDB is a time-series database optimised for multiple data sources and large data streams.\cite{influxdb}} database which is used per default. Additionally there is a debugging sink which uses text output onto the console and the third is a sink to \acrshort{mqtt} which can be used if the application should be used as an instance for a local arrangement for a few detectors. This local instance then sends the processed data along to the next instance, effectively performing a preprocessing step for dense local arrangements.
 \subsection{Station supervision}\label{subsec:station-s}
 The station supervision tracks all currently active detector stations and classifies them according to reliable and unreliable data states.
 Additionally it augments each event with the location and user data which is not provided with the default event messages.
@@ -677,15 +692,15 @@ loc = dop\cdot\sqrt{h_{acc}^2 + v_{acc}^2}
 where $dop$ is the dilution of precision, $h_{acc}$ the horizontal and $v_{acc}$ the vertical accuracy of the \acrshort{gnss} receiver. All those values are also determined in each detector station for itself.
 
 For all determining factors, a hysteresis is used in order to provide a more stable status of each detector station.
-\begin{figure}[ht!]
+\begin{figure}[H]
 	\centering
 	\begin{tikzpicture}[->]
 		\node (terminal1) at (0,0) [draw, terminal] {event input};
 		\node (decide1) [below=of terminal1, draw, decision] {detector known};
 		\node (decide2) [below=of decide1, draw, decision] {detector reliable};
 		\node (decide3) [below=of decide2, draw, decision] {$f_{time}\gg1$};
-		\node (predproc1) [below=of decide3, draw, predproc, align=left] {Add location info};
-		\node (terminal2) [below=of predproc1, draw, terminal] {pass to coincidence filter};
+		\node (predproc1) [below=of decide3, draw, predproc, align=left] {add location info};
+		\node (terminal2) [right=of predproc1, draw, terminal] {pass to coincidence filter};
 		
 		\node (decide1r) [right=of decide1] {no};
 		\node (decide2r) [right=of decide2] {no};
@@ -762,7 +777,7 @@ The resulting time value can then be used by the coincidence filter as a timeout
 	\label{fig:timeout-example}
 \end{figure}
 In figure \ref{fig:timeout-example} the timeout can be seen over a period over $4\,\text{hours}$. The timebase is green, the timeout with applied factor in pink dashes. Especially notable is the spike in timebase around $10$. This is due to at least one detector having a temporary network outage and sending its events with a substantial delay. The spikes in the timeout factor are different detector stations experiencing slight network problems and thus reporting a quickly dropping rate.
-\clearpage
+
 \subsection{Coincidence filter}\label{subsec:coincidence-f}
 In order to create the coincidence, the coincidence filter analyses each event and calculates the time differences to all other events currently in the local event buffer. It does so by utilising various coincidence criteria. One of them uses the distance based approach as described in section \ref{sec:coinc-calc}.
 \begin{figure}[H]
@@ -846,7 +861,7 @@ After a certain time, the constructors need to be sent off to the next station. 
 	\caption{Example of event buffer size over $4\,\text{hour}$ period}
 	\label{fig:buffer-example}u
 \end{figure}
-Figures \ref{fig:rates-example} and \ref{fig:buffer-example} show the result of an increased timeout value as shown in the example in figure \ref{fig:timeout-example}. Figure \ref{fig:buffer-example} shows the buffer size rise in direct relation to the increased timeout value just after $10$. This in turn causes a drop immediately followed by an increase in outgoing coincidence events as visible in the green and dashed line in figure \ref{fig:rates-example}. In the same plot, the pink line shows the cumulative incoming events between all detector stations. It is important to note though that the event number is not the event rate directly but the total number of events in a sample interval.
+Figures \ref{fig:rates-example} and \ref{fig:buffer-example} show the result of an increased timeout value as shown in the example in figure \ref{fig:timeout-example}. Figure \ref{fig:buffer-example} shows the buffer size rise in direct relation to the increased timeout value just after $10\,\text{am}$. This in turn causes a drop immediately followed by an increase in outgoing coincidence events as visible in the green and dashed line in figure \ref{fig:rates-example}. In the same plot, the pink line shows the cumulative incoming events between all detector stations. It is important to note though that the event number is not the event rate directly but the total number of events in a sample interval.
 \subsection{Coincidence analysis}\label{subsec:coincidence-s}
 The coincidence analysis is used to collect useful statistics mainly about detector station pair coincidence rates and histograms. It receives all coincidence events and has knowledge of all current detector stations. \\
 With this information it creates a graph of all detector pairs where it tracks the event times and numbers for each pair. Though due to the large number of possible pairs in the number of detector stations, this needs to be done carefully in order to not use too much system memory. The number of pairs out of $n$ detectors can be calculated through the binomial coefficient which in the specific case for $k = 2$ can be calculated with
