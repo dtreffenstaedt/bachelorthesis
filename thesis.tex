@@ -67,14 +67,14 @@ Higher energy sources include other stars, supernovae or accretion disks around 
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.5\linewidth]{data/uhecr-sources}
-	\caption{Possible sources of \acrshort{uhecr} \cite{fargion2018ultra}}
+	\caption{Possible sources of \acrshort{uhecr} \cite{fargion2018ultra}.}
 	\label{fig:uhecr-sources}
 \end{figure} \\
 The spectrum of this cosmic radiation is shown in figure \ref{fig:cr_spectrum}.
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.75\linewidth]{data/cr_spectrum}
-	\caption{Spectrum of cosmic radiation \cite{evoli_carmelo_2020_4396125}}
+	\caption{Spectrum of cosmic radiation \cite{evoli_carmelo_2020_4396125}.}
 	\label{fig:cr_spectrum}
 \end{figure} \\
 There, measurements from different experiments are shown. The y axis shows the energy flux of cosmic rays in units of energy per second per square meter per solid angle $\frac{\text{GeV}}{\text{m}^2\cdot\text{s}\cdot\text{sr}}$. The x axis shows the primary energy of the cosmic rays, for comparison the upper axis shows the energy in units of Joule, the lower axis shows it in units of electron-Volt. Notable here is the much higher number of protons as compared to all other particles by two orders of magnitude. This allows one to make the reasonable assumption that most cosmic rays are protons or heavier nuclei. Energies above the labelled ankle originate almost exclusively from extragalactic sources.
@@ -96,7 +96,7 @@ These are supermassive black holes at the centre of galaxies which feature an ac
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.5\linewidth]{data/uhecr-sm-bh}
-	\caption{Trajectory of neutral particle around supermassive black hole \cite{Tursunov_2020}}
+	\caption{Trajectory of neutral particle around supermassive black hole \cite{Tursunov_2020}.}
 	\label{fig:uhecr-sm-bh}
 \end{figure}\\
 \clearpage
@@ -105,7 +105,7 @@ When a cosmic ray hits the atmosphere, it interacts with the nucleons of the dif
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.8\linewidth]{data/shower-45}
-	\caption{Proton Air Shower \cite{corsika-images}}
+	\caption{Proton Air Shower \cite{corsika-images}.}
 	\label{fig:proton-shower}
 \end{figure} \\
 Neutral Pions $\pi^0$ have two main decay modes; one is to two photons $\gamma$, the other to an electron positron pair and a photon. With probabilities of roughly $98.823$ and $1.174\,\%$\cite[1213]{10.1093/ptep/ptaa104}, the decay cross section for the $2\gamma$ production is much higher than that of the $e^\pm + \gamma$ production. All other decay modes have orders of magnitude lower probabilities.
@@ -129,7 +129,7 @@ The resulting secondary particles in the shower can be divided into three differ
 \begin{figure}[ht!]
 	\centering
 	\begin{tikzpicture}
-		\draw[->] (0,0.5) node[above] {primary particle} -- ++(0,-1.5) coordinate(primary);
+		\draw[->] (0,0.5) node[above] {Primary particle} -- ++(0,-1.5) coordinate(primary);
 		\draw[->] (primary) -- ++(-175:1.5) node[above] {$\pi^0$} -- ++(-175:2) coordinate (pi0);
 		\draw[->] (primary) -- ++(-105:1) node[left] {$\pi^\pm$} -- ++(-105:1.5) coordinate (pipm);
 		\draw[->] (primary) -- ++(-35:1) -- ++ (-35:2) coordinate (zn);
@@ -147,7 +147,7 @@ The resulting secondary particles in the shower can be divided into three differ
 		\draw[thin, dashed] (-2,0) -- ++(0,-5) ++ (-0.5,0) node[left] {Electromagnetic};
 		\draw[thin, dashed] (2,0) -- ++(0,-5) ++(-1,0) node[left] {Muonic} ++(1.5,0) node[right] {Hadronic};
 	\end{tikzpicture}
-	\caption{Components of a cosmic air shower}
+	\caption{Components of a cosmic air shower.}
 	\label{fig:shower-components}
 \end{figure}
 The figure does not show all interactions, nor does it show the Neutrinos produced through the different interactions.
@@ -241,7 +241,7 @@ Certain materials can convert the deposited energy to photons, a process which i
 		\node[left] at (0,0.5) {Conduction};
 		\node[left] at (0,-3.5) {Valence};
 	\end{tikzpicture}
-	\caption{Mechanism for inorganic crystal scintillators}
+	\caption{Mechanism for inorganic crystal scintillators.}
 	\label{fig:scintillator}
 \end{figure}
 First, an electron is excited from the valence band into the conduction band through energy deposit from an incident particle. This electron is then transported within the conduction band to where it can drop back down to the valence band through traps. Were the electron to drop back directly, a photon would be emitted which could immediately excite another electron in the valence band. The defining features of scintillators is the existence of traps which reduce the energy of the emitted photons. Those photons then do not have enough energy to excite electrons in the material so they can pass through it. With the use of a photomultiplier, the emitted photons can then be detected. One type of Photomultiplier is the \acrfull{sipm}, which is an array of photodiodes operating above the reverse-bias break-down voltage, resulting in an avalanche upon interaction with even a single photon. The multiplicity of avalanches then is related to the number of photons interacting with the photomultiplier.
@@ -259,7 +259,7 @@ Each detector station consists of a Scintillator with \acrshort{sipm} assembly, 
 		\draw[fill=black] (0.75,3.5) circle(0.1) -- ++(-2,0) node[left] {Preamplifier};
 		\draw[fill=black] (4,3) circle(0.1) -- ++(3,0) node[right] {Readout board};
 	\end{tikzpicture}
-	\caption{Detector station assembly without Raspberry Pi computer.\cite{muonpi}}
+	\caption{Detector station assembly without Raspberry Pi computer\cite{muonpi}.}
 	\label{fig:station_assembly}
 \end{figure}
 In figure \ref{fig:station_assembly} each component excluding the Raspberry Pi is shown. The SiPM is still detached from the Scintillator in this image since otherwise it would not be visible as distinct part. The preamplifier is part of the SiPM assembly and prepares the signal for the readout board in order to prevent loss of signal over the transmission line. The readout board supports two input channels which can be linked logically either per AND or XOR, though by default only one channel is used.
@@ -444,7 +444,7 @@ In the medium distance plot, a still significant signal is visible, though the s
 
 The furthest distance plot shows no significant signal over the random background.
 
-This highlights the relationship between coincidence rate and detector distance as shown in figure \ref{fig:pair-count-rate}. There, a number of experiments have been performed in order to determine the coincidence rates for different distances. A linear fit has been applied to the experimental data.
+This highlights the relationship between coincidence rate and detector distance as shown in figure \ref{fig:pair-count-rate}. There, a number of experiments have previously been performed by the MuonPi project\cite{muonpi} in order to determine the coincidence rates for different distances. A linear fit has been applied to the experimental data.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\linewidth]{data/pair-count-rate}
@@ -557,7 +557,7 @@ Through the assumptions shown in figure \ref{fig:angle-assumptions}, the possibl
 		\draw[<->] (det1) ++(8.584336297778657:3) node[above] {$s$};
 		
 	\end{tikzpicture}
-	\caption{Assumption for possible incidence angles}
+	\caption{Assumption for possible incidence angles.}
 	\label{fig:angle-assumptions}
 \end{figure} \\
 Since the shower front can be simplified as a spherical cap and the propagation speed can be assumed to be near the speed of light, two spheres with a shared tangent can be constructed. One spherical surface is the shower front, the other is a sphere around the detector which had the later event timing. Its radius $\ell$ is equal to the propagation time of light for the coincidence time. Through geometrical analysis of this arrangement, the radius and angle pair can be derived as a function of the angle $\alpha$. This creates a curve in the plane on which the primary interaction must have taken place. Due to the symmetry of this arrangement, in 3-D space this curve becomes a rotational surface. \\
@@ -587,7 +587,7 @@ Figure \ref{fig:reconstruction_example} shows an example for possible combinatio
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.4\linewidth]{data/example_plot_vertical}
-	\caption{Plot of an example to reconstruct the possible direction of incident primary particle}
+	\caption{Plot of an example to reconstruct the possible direction of incident primary particle.}
 	\label{fig:reconstruction_example}
 \end{figure}
 \begin{equation*}
@@ -603,7 +603,7 @@ Noteworthy is that the possible values for $\alpha$ are constrained by a maximum
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.4\linewidth]{data/example_plot_vertical_constrained}
-	\caption{Possible incident angles and radii constrained to a maximum possible angle $\delta_{max}$}
+	\caption{Possible incident angles and radii constrained to a maximum possible angle $\delta_{max}$.}
 	\label{fig:reconstruction_example_constrained}
 \end{figure}
 Figure \ref{fig:reconstruction_example_constrained} shows the same plot as figure \ref{fig:reconstruction_example} but with a constrained angle $\delta_{max} = \frac{\pi}{4}$.
@@ -618,7 +618,7 @@ Due to the inherent rotational symmetry of the system around the connecting stra
 Figure \ref{fig:reconstruction_example_ground} shows this construction for a coincidence $n=3$, where the reference detector is located in the centre and both other detectors are located towards the right. The real world distance between the reference station and station1 is $3.4\,\text{km}$, between the reference and station2 $2\,\text{km}$.
 It can be seen that the curves overlap in the bottom half of the plot, indicating a possible origin region for the primary interaction. Due to the fact that the space of possible origin points is a rotational body, the cross section between both curves is a three-dimensional manifold.
 \clearpage
-\section{Online Coincidence processing Program layout}
+\section{Online coincidence processing program layout}
 The analysis program uses a data driven pipeline design for efficient execution. This is an approach where the processing units in the software do not continuously poll for data but only get called once data is available. Though for time critical applications, a maximum waiting time is defined after which the processing unit is invoked.
 
 Apart from processing all events, it takes over the task of supervision of itself and all detector stations. For the purpose of keeping track of internal changes and changes in detector station status, a trigger system is employed in order to receive status updates outside of the application.
@@ -647,11 +647,11 @@ An overview of the program layout for the real-time analysis is shown in Figure 
 		
 		\draw[<->] (criterium) -- (filter);
 	\end{tikzpicture}
-	\caption{Program layout}
+	\caption{Program layout.}
 	\label{fig:programlayout}
 \end{figure} \\
 
-The station log source and event source are abstract classes which can be implemented through multiple different protocols, though at the moment only a \acrshort{mqtt} implementation is used. The same is true for the Even Sink class, though there are three distinct implementations available. The first is a sink for use with an influxDB\footnote{InfluxDB is a time-series database optimised for multiple data sources and large data streams.\cite{influxdb}} database which is used per default. Additionally there is a debugging sink which uses text output onto the console and the third is a sink to \acrshort{mqtt} which can be used if the application should be used as an instance for a local arrangement for a few detectors. This local instance then sends the processed data along to the next instance, effectively performing a preprocessing step for dense local arrangements.
+The station log and event sources are abstract classes which can be implemented through multiple different protocols, though at the moment only a \acrshort{mqtt} implementation is used. The same is true for the Even Sink class, though there are three distinct implementations available. The first is a sink for use with an influxDB\footnote{InfluxDB is a time-series database optimised for multiple data sources and large data streams.\cite{influxdb}} database which is used per default. Additionally there is a debugging sink which uses text output onto the console and the third is a sink to \acrshort{mqtt} which can be used if the application should be used as an instance for a local arrangement for a few detectors. This local instance then sends the processed data along to the next instance, effectively performing a preprocessing step for dense local detector arrangements.
 \subsection{Station supervision}\label{subsec:station-s}
 The station supervision tracks all currently active detector stations and classifies them according to reliable and unreliable data states.
 Additionally it augments each event with the location and user data which is not provided with the default event messages.
@@ -676,12 +676,12 @@ Additionally it augments each event with the location and user data which is not
 		\draw (decide2) |- (predproc2);
 		\draw (decide3) |- (predproc2);
 	\end{tikzpicture}
-	\caption{Criteria for detector station reliability}
+	\caption{Criteria for detector station reliability.}
 	\label{fig:station_reliability}
 \end{figure}
 Figure \ref{fig:station_reliability} shows the decision process by which means each station is determined to be reliable. Each event is analysed and the mean event rate as well as the standard deviation of the rate is calculated continuously. If $\sigma\geq{k}\cdot\mu$ is true, where $\sigma$ is the standard deviation of the rate, $\mu$ the mean rate and $k$ a constant, the detector station is determined to have a highly unstable rate and is excluded from contributing events to the analysis.
 
-Two additional factors can determine the reliability of a station, those factors are normed so that a value of higher than 1 causes an unreliability mark.
+Two additional factors can determine the reliability of a station, those factors are normalised so that a value of higher than 1 causes an unreliability mark.
 $\bar{f}_{time}$ is the mean time accuracy and $\bar{f}_{loc}$ the mean location precision of the \acrshort{gnss} receiver.
 
 The time accuracy is determined through the detector station itself and results from different factors such as the \acrshort{gnss} signal quality.
@@ -719,7 +719,7 @@ For all determining factors, a hysteresis is used in order to provide a more sta
 		\draw (decide2) -- (decide2r) -- (terminal3);
 		\draw (decide3) -- (decide3r) -| (terminal3);
 	\end{tikzpicture}
-	\caption{Path of an event through the station supervisor}
+	\caption{Path of an event through the station supervisor.}
 	\label{fig:event_station_supervisor}
 \end{figure}
 In figure \ref{fig:event_station_supervisor} the path of an event through the station supervisor is shown. There, only events which can be attributed to a reliable detector are accepted. Additionally, events where the time accuracy reaches extreme values are automatically discarded, since the method shown before in figure \ref{fig:station_reliability} has some inertia. This can cause single events with extremely inaccurate timestamps to artificially increase the time-base to extreme values.
@@ -757,7 +757,7 @@ Since the detector network is so widely distributed, network lag and outages can
 			\draw[dashed] (7,0.5) -- ++(0,-1) node[below] {$t_C'$};
 			\draw[dashed] (10,0.5) -- ++(0,-1) node[below] {$t_A'$};
 	\end{tikzpicture}
-	\caption{Network topology of detector network}
+	\caption{Network topology of detector network.}
 	\label{fig:network-topology}
 \end{figure}
 
@@ -773,7 +773,7 @@ The resulting time value can then be used by the coincidence filter as a timeout
 \begin{figure}[ht!]
 	\centering
 	\input{data/timeout.tikz}
-	\caption{Example of timebase and timeout factor over $4\,\text{hour}$ period}
+	\caption{Example of timebase and timeout factor over $4\,\text{hour}$ period.}
 	\label{fig:timeout-example}
 \end{figure}
 In figure \ref{fig:timeout-example} the timeout can be seen over a period over $4\,\text{hours}$. The timebase is green, the timeout with applied factor in pink dashes. Especially notable is the spike in timebase around $10$. This is due to at least one detector having a temporary network outage and sending its events with a substantial delay. The spikes in the timeout factor are different detector stations experiencing slight network problems and thus reporting a quickly dropping rate.
@@ -788,11 +788,12 @@ In order to create the coincidence, the coincidence filter analyses each event a
 		\node (process1) [below=of decide1, draw, process, align=left] {select next constructor};
 		\node (decide2) [below=of process1, draw, decision] {criterion met};
 		\node (decide3) [right=of process1, draw, decision] {queue empty};
-		\node (process2) [below left=of decide2, draw, process] {add constructor to queue};
+		\node (process2) [below=of decide2, draw, process] {add constructor to queue};
 		\node (process3) [below right=of decide3, draw, process] {create new constructor};
-		\node (process4) [below=of decide3, draw, process] {add event to constructor};
+		\node (process4) [below=of decide3, draw, process] {combine all constructors};
+		\node (process5) [below=of process4, draw, process] {add event to constructor};
 		
-		\node (terminal2) [below=of process4, draw, terminal] {END};
+		\node (terminal2) [below=of process5, draw, terminal] {END};
 		
 		\node (decide1r) [right=of decide1] {no};
 		\node (decide2l) [left=of decide2] {no};
@@ -802,8 +803,8 @@ In order to create the coincidence, the coincidence filter analyses each event a
 		\draw (terminal1) -- (decide1);
 		\draw (decide1) -- (process1);
 		\draw (process1) -- (decide2);
-		\draw (decide2) |- (process2);
-		\draw (process2) |- (decide1);
+		\draw (decide2) -- (process2);
+		\draw (process2) -- ++(-4,0) |- (decide1);
 		\draw (decide2) -- (decide2l) |- (decide1);
 		\draw (decide1) -- (decide1r) -| (decide3);
 		
@@ -811,9 +812,10 @@ In order to create the coincidence, the coincidence filter analyses each event a
 		
 		\draw (decide3) -- (process4);
 		\draw (process3) |- (terminal2);
-		\draw (process4) -- (terminal2);
+		\draw (process4) -- (process5);
+		\draw (process5) -- (terminal2);
 	\end{tikzpicture}
-	\caption{Flow of an event through the coincidence filter}
+	\caption{Flow of an event through the coincidence filter.}
 	\label{fig:coincidence-flow}
 \end{figure}
 The local event buffer uses so called event constructors. Those are objects which have the sole purpose of keeping the event information, holding the currently valid timeout period and the timestamp of when they were created. The flowchart in figure \ref{fig:coincidence-flow} shows the process when a new event arrives in the coincidence filter. All currently known event constructors are iterated through and checked for a positive fit with the current event. In the case of a positive match, the constructor is added to a queue and the loop continues until it doesn't have any more constructors to check. \\
@@ -843,7 +845,7 @@ After the last constructor has been passed, all constructors in the queue are co
 		\draw (decide1) -- (decide1r) -- (terminal2);
 		\draw (decide2) -- (decide2l) |- (decide1);
 	\end{tikzpicture}
-	\caption{Timeout update and committing of event constructors}
+	\caption{Timeout update and committing of event constructors.}
 	\label{fig:event-constructors}
 \end{figure}
 After a certain time, the constructors need to be sent off to the next station. This is done regularly by checking all constructors if their timeout has been reached. The flow chart in figure \ref{fig:event-constructors} shows how this is done. In the same process, each constructor is also updated with the latest timeout value.
@@ -851,15 +853,15 @@ After a certain time, the constructors need to be sent off to the next station. 
 \begin{figure}[ht!]
 \centering
 \input{data/events.tikz}
-\caption{Example of raw and coincidence event rate over $4\,\text{hour}$ period}
+\caption{Example of raw and coincidence event rate over $4\,\text{hour}$ period.}
 \label{fig:rates-example}
 \end{figure}
 
 \begin{figure}[ht!]
 	\centering
 	\input{data/buffer.tikz}
-	\caption{Example of event buffer size over $4\,\text{hour}$ period}
-	\label{fig:buffer-example}u
+	\caption{Example of event buffer size over $4\,\text{hour}$ period.}
+	\label{fig:buffer-example}
 \end{figure}
 Figures \ref{fig:rates-example} and \ref{fig:buffer-example} show the result of an increased timeout value as shown in the example in figure \ref{fig:timeout-example}. Figure \ref{fig:buffer-example} shows the buffer size rise in direct relation to the increased timeout value just after $10\,\text{am}$. This in turn causes a drop immediately followed by an increase in outgoing coincidence events as visible in the green and dashed line in figure \ref{fig:rates-example}. In the same plot, the pink line shows the cumulative incoming events between all detector stations. It is important to note though that the event number is not the event rate directly but the total number of events in a sample interval.
 \subsection{Coincidence analysis}\label{subsec:coincidence-s}
